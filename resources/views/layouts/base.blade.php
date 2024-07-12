@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>ECOTEC</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{{asset('img/logo-dgi-final.png')}}" rel="icon">
+    <link href="{{asset('img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+
+    <!-- Vendor CSS Files -->
+    <link href="{{asset('/theme/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/quill/quill.snow.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+    <link href="{{asset('/theme/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- Template Main CSS File -->
+    <link href="{{asset('theme/css/style.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+
+    <script src="{{ asset('css/sweetAlert/sweetalert2.all.min.js') }}"></script>
+    <link href="{{ asset('css/sweetAlert/sweetalert2.min.css') }}" rel="stylesheet">
+
+    @yield('css')
+    <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Nov 17 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+
+  @livewireStyles
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center justify-content-between">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="#" class="logo d-flex align-items-center">
+            <!--<img src="{{asset('img/logo-dgi-final.png')}}" alt="Logo">-->
+            <!--<img src="{{asset('img/armoirie_bf.png')}}" alt="Logo">-->
+            <span class="d-none d-lg-block custom-text-success p-size18">ECOTEC-BF</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn text-success"></i>
+    </div><!-- End Logo -->
+    <div class="d-flex justify-content-center mx-5">
+      <span class="text-success">Système de gestion integrée des bénéficaires</span>
+    </div>
+    <nav class="header-nav ms-1">
+      <ul class="d-flex align-items-center">
+
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->email}}</span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="bi bi-person"></i>
+                            <span>Mon Profil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center text-danger" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();"><i class="bi bi-box-arrow-right"></i>
+                        Se Deconnecter
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                </li>
+                 
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+    </header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('dashboard')}}">
+                <i class="bi bi-grid"></i>
+                <span>Tableau de bord</span>
+            </a>
+        </li>
+
+        @can("consultation")
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
+                    <i class="bi-currency-exchange"></i><span>Traitement</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="ca" class="nav-content collapse {{-- {{ setMenuActive('consultation.indicateurs.catva') || setMenuActive('consultation.indicateurs.caBilan') ? 'show':'' }} --}} {{ $active =='catva' || $active =='caBilan' || $active =='caDetail' || $active == 'certificationCa' || $active =='certificationCa' ? 'show':'' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="#" class="nav-link {{-- {{ setMenuActive('consultation.indicateurs.catva') }}" --}} {{ $active =='catva' ? 'active':'' }}">
+                            <i class="bi bi-circle"></i><span>Menu 1</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link {{-- {{ setMenuActive('consultation.indicateurs./* catva */') }}" --}} {{ $active =='caBilan' ? 'active':'' }}">
+                            <i class="bi bi-circle"></i><span>Menu 2</span>
+                        </a>
+                    </li>
+                </ul>
+            </li><!-- End Components Nav -->
+       @endcan
+
+       @can('user.create', Auth::user())
+        <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
+                    <i class="bi-currency-exchange"></i><span>Administration</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="ca" class="nav-content collapse"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('users.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Utilisateur</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('role.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Roles</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('permissions.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Permissions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('parametres.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Parametres</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('valeurs.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Valeurs</span>
+                        </a>
+                    </li>
+                   
+                </ul>
+            </li>
+            <!-- End Forms Nav -->
+        @endcan
+
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main {{-- {{ $active =='administration'? 'dashboard-content-bg':'' }} --}}">
+
+    @yield('content')
+    <!-- Overlay -->
+    <div id="overlay" class="overlay">
+        <div class="loader"></div>
+    </div>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer fixed-bottom">
+    <div class="copyright text-dark">
+        &copy; Tous droits reservés 2024
+        <img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt="Logo" class="dgi-logo mx-2"/>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="{{asset('theme/vendor/apexcharts/apexcharts.min.js')}}"></script>
+<script src="{{asset('theme/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('theme/vendor/chart.js/chart.umd.js')}}"></script>
+<script src="{{asset('theme/vendor/echarts/echarts.min.js')}}"></script>
+<script src="{{asset('theme/vendor/quill/quill.min.js')}}"></script>
+<script src="{{asset('theme/vendor/simple-datatables/simple-datatables.js')}}"></script>
+<script src="{{asset('theme/vendor/tinymce/tinymce.min.js')}}"></script>
+<script src="{{asset('theme/vendor/php-email-form/validate.js')}}"></script>
+
+<!-- Template Main JS File -->
+<script src="{{asset('theme/js/main.js')}}"></script>
+@yield('script')
+<script>
+  /*  document.getElementById('searchForm').onsubmit = function() {
+        // Show the overlay
+        document.getElementById('overlay').classList.add('overlay-active');
+    };*/
+</script>
+@livewireScripts
+</body>
+
+</html>
