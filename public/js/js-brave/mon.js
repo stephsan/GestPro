@@ -26,7 +26,7 @@
     $("#banque").hide();
 
     $('.handicap_precise').hide();
-    
+    $('#valider').prop('disabled', true);
     function empty_input_file(input) {
         $('#'+ input).val('');
 }

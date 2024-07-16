@@ -65,6 +65,17 @@ if (!function_exists('getlibelle')) {
                             return $nom_utilisateur;
                     }
                 }
+                if (!function_exists('calculer_age')) {
+                    function calculer_age($date)
+                        {
+                            $format = substr($date, 0, 4)."-".substr($date, 5, 7)."-".substr($date, 8, 10);
+                            $date = $format;
+                            $dob = new DateTime($date);
+                            $now = new DateTime();
+                            return $now->diff($dob)->y;
+                        }
+                    }
+
             if(!function_exists('monthletter')){
                 function monthletter($num)
                     {

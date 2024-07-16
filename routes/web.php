@@ -9,6 +9,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PromoteurController;
 use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\PreprojetController;
+use App\Http\Controllers\CritereController;
 
 use App\Http\Controllers\SouscriptionPEController;
 
@@ -50,16 +52,27 @@ Route::get('page/souscription/PF/entreprise', [SouscriptionPEController::class,'
 Route::resource("promoteur", PromoteurController::class);
 Route::resource("entreprise", EntrepriseController::class);
 Route::post("creation",[EntrepriseController::class, 'creation'])->name("entreprise.creation");
-Route::post("page/souscription/PF/preprojet/creation",[EntrepriseController::class, 'store_preprojet'])->name("preprojet.creation");
+Route::post("page/souscription/PF/preprojet/creation",[PreprojetController::class, 'store_preprojet'])->name("preprojet.creation");
 Route::get("recepisse/print/{promoteur}",[EntrepriseController::class,'genereRecpisse'])->name("generer.recepisse");
 Route::get("store/second/entreprise/{promoteur}", [EntrepriseController::class, 'create2'])->name("secondEntreprise.store");
 Route::post("/souscription/poursuivre/",[PromoteurController::class, 'searchfp'])->name("fp.search");
 Route::get("/rechercher/promoteur/parcode_promoteur",[PromoteurController::class, 'search_promoteur_parcode_promoteur'])->name("promoteur.search");
 Route::get("/souscription/control_doublon", [PromoteurController::class, 'control_doublon_souscription'])->name("souscription.control_doublon");
+Route::resource("souscription",PreprojetController::class);
+Route::get("/lister/souscription", [PreprojetController::class, 'lister'])->name("preprojet.lister");
+Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
+Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
+Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');
 
+Route::resource('critere', CritereController::class);
+Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');
+Route::post('store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
 Route::get('/accueil', function () {
     return view('index');
 })->name("accueil");
+Route::get("/test", function () {
+    return view('preprojet.show');
+})->name("test");
 Route::group([  
     "prefix" => "administration",
 ], function(){

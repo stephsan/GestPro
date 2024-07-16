@@ -61,8 +61,10 @@ class PromoteurController extends Controller
         $niveau_instructions=Valeur::where("parametre_id", env('PARAMETRE_NIVEAU_D_INSTRUCTION'))->get();
         $nb_annee_experience=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
         $proportiondedepences= Valeur::where('parametre_id', 31)->get();
+        $type_handicaps= Valeur::where('parametre_id', 48)->get();
+
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
-        return view("public.subscription", compact("regions", "niveau_instructions","nb_annee_experience","proportiondedepences","annees"));
+        return view("public.subscription", compact('type_handicaps',"regions", "niveau_instructions","nb_annee_experience","proportiondedepences","annees"));
     }
 
     /**
@@ -97,6 +99,12 @@ class PromoteurController extends Controller
         $details['nom'] = $this->nom;
         $details['prenom'] = $this->prenom;
         $details['code'] = $code_promoteur;
+        if($request->numero_identite_passport==null){
+            $numero_identite=$request->numero_identite_cnib;
+        }else{
+            $numero_identite=$request->numero_identite_passport;
+        }
+        //dd($numero_identite);
         $dest=dispatch(new SendEmailJob($details));
         $datenaiss= date('Y-m-d', strtotime($request->datenais_promoteur));
         $date_etabli_identite= date('Y-m-d', strtotime($request->date_identification));
@@ -106,11 +114,11 @@ class PromoteurController extends Controller
             'datenais' => $datenaiss,
             'genre' => $request->genre,
             'avec_handicape' => $request->handicape,
-            'desc_handicape' => $request->handicap_desc,
+            'type_handicap' => $request->type_handicap,
             'telephone_promoteur' => $request->telephone_promoteur,
             'email_promoteur' => $request->email_promoteur,
             'type_identite' => $request->type_identite_promoteur,
-            'numero_identite' => $request->numero_identite,
+            'numero_identite' => $numero_identite,
             'date_etabli_identite' => $date_etabli_identite,
             'mobile_promoteur' => $request->mobile_promoteur,
             'code_promoteur'=>$code_promoteur,

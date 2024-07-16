@@ -15,7 +15,8 @@ class SouscriptionPEController extends Controller
         $regions=Valeur::where('parametre_id',env('PARAMETRE_ID_REGION'))->get();
         $nbre_dannee_experiences=Valeur::where('parametre_id',22 )->get();
         $niveau_instructions=Valeur::where("parametre_id", env('PARAMETRE_NIVEAU_D_INSTRUCTION'))->get();
-        return view('programme_entreprendre.personne',compact('type_entreprise','nbre_dannee_experiences','regions','niveau_instructions'));
+        $type_handicaps= Valeur::where('parametre_id', 48)->get();
+        return view('programme_entreprendre.personne',compact('type_handicaps','type_entreprise','nbre_dannee_experiences','regions','niveau_instructions'));
     }
 
     public function contactSendMessage(Request $request){

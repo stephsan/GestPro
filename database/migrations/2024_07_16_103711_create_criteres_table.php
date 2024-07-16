@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('evaluations', function (Blueprint $table) {
+        Schema::create('criteres', function (Blueprint $table) {
             $table->id();
-            $table->integer("preprojet_id");
-            $table->string('type_evaluation',60);
-            $table->integer("critere_id");
-            $table->integer("note");
+            $table->string("libelle");
+            $table->string("categorie");
+            $table->integer("ponderation");
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluations');
+        Schema::dropIfExists('criteres');
     }
 };

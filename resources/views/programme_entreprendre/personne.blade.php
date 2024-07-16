@@ -11,7 +11,7 @@
       <div class="step-tab-panel" data-step="step1">
         <div class="row">
             <p class="message_doublon" style="color: red; display:none;">Désole vous vous êtes déjà enregistré sur la plateforme avec le code promoteur. Votre code promoteur vous sera envoyé par mail. </p>
-          <div class="col-lg-5">
+          <div class="col-lg-6">
                     <fieldset>
                            <legend>Informations générales</legend>
                              <input type="hidden" name="type_entreprise" value="{{ $type_entreprise }}">
@@ -40,7 +40,7 @@
                                </div>
                                <div class="form-group">
                                    <label class=" control-label" for="example-chosen">Sexe<span class="text-danger">*</span></label>
-                                       <select id="genre" name="genre" class="select-select2" data-placeholder="Choisir le genre" style="width: 100%;" required="Ce champ est obligatoire" title="Ce champ est obligatoire">
+                                       <select id="genre" name="genre" class="select-select2 test" data-placeholder="Choisir le genre" style="width: 100%;" required="Ce champ est obligatoire" title="Ce champ est obligatoire">
                                            <option></option>
                                            <option value="1" {{ old('genre') == 1 ? 'selected' : '' }}>Féminin</option>
                                            <option value="2" {{ old('genre') == 2 ? 'selected' : '' }}>Masculin</option>
@@ -56,40 +56,51 @@
                                     </select>
                                 </div>
                                 <div class="form-group handicap_precise">
-                                    <label class=" control-label" for="val_username">Precisez l'handicap:<span class="text-danger">*</span><span data-toggle="tooltip" title="Precisez votre handicap"><i class="fa fa-info-circle"></i></span></label>
-                                        <div class="input-group">
-                                            <input type="text"  name="handicap_desc" class="form-control" value="{{old('handicap_desc')}}" placeholder="Preciser l'handicap"  >
-                                        </div>
-                                        @if ($errors->has('handicap_desc'))
-                                        <span class="help-block text-danger">
-                                             <strong></strong>
-                                        </span>
-                                    @endif
+                                    
+                                        <label class=" control-label" for="example-chosen">Quel handicap avez vous<span class="text-danger">*</span></label>
+                                               <select id="type_handicap" name="type_handicap" class="select-select2" data-placeholder="Quel handicap avez vous ?.."  style="width: 100%;"  required>
+                                                   <option></option>
+                                                   @foreach ($type_handicaps as $type_handicap )
+                                                        <option value="{{ $type_handicap->id  }}" {{ old('type_handicap') == $type_handicap->id ? 'selected' : '' }}>{{ $type_handicap->libelle }}</option>
+                                                   @endforeach
+                                               </select>
+                                     
                                 </div>
                                </fieldset>
                                    </div>
-                                   <div class="offset-md-1 col-lg-5">
+                                   <div class="col-lg-6">
                                        <fieldset>
                                            <legend>Référence du document d’identité</legend>
                                            <div class="form-group select-list">
                                                <label class=" control-label" for="example-chosen">Type<span class="text-danger">*</span></label>
-                                                   <select id="type_identite_promoteur" name="type_identite_promoteur" data-placeholder="Choisir type identite" class="select-select2" style="width: 100%;" required>
+                                                   <select id="type_identite_promoteur" name="type_identite_promoteur" data-placeholder="Choisir type identite" onchange="afficherchampidentite()" class="select-select2" style="width: 100%;" required>
                                                        <option></option>
                                                        <option value="1" {{ old('type_identite_promoteur') == 1 ? 'selected' : '' }} >CNIB</option>
                                                        <option value="2" {{ old('type_identite_promoteur') == 2 ? 'selected' : '' }}>Passeport</option>
                                                    </select>
                                            </div>
-                                           <div class="form-group">
-                                               <label class=" control-label" for="">Numéro <span class="text-danger">*</span></label>
+                                           <div class="form-group" id='champ_cnib' style="display: none;">
+                                               <label class=" control-label" for="">Numéro de la cnib (Le NIP) <span class="text-danger">*</span> <span data-toggle="tooltip" title="Renseigner le long numero de la CNIB. Pas le numéro de la carte"><i class="fa fa-info-circle"></i></span></label>
                                                <div class="input-group">
-                                                   <input type="text" id="numero_identite" name="numero_identite" value="{{old('numero_identite')}}" class="form-control" placeholder="numéro.." onchange="controler_de_doublon_promotrice('numero_identite')" required>
+                                                   <input type="text" id="numero_identite_cnib" name="numero_identite_cnib" value="{{old('numero_identite')}}" class="form-control masked_cnib" placeholder="ex:090102001150029567" onchange="controler_de_doublon_promotrice('numero_identite')">
                                                </div>
                                                @if ($errors->has('numero_identite'))
                                                    <span class="help-block text-danger">
                                                         <strong>Un promoteur a déja été enregistré avec ce numéro d'identité</strong>
                                                    </span>
                                                @endif
-                                       </div>
+                                         </div>
+                                         <div class="form-group" id='champ_passport' style="display: none">
+                                            <label class=" control-label" for="">Numéro de passeport <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="text" id="numero_identite_passport" name="numero_identite_passport" value="{{old('numero_identite')}}" class="form-control" placeholder="numéro.." onchange="controler_de_doublon_promotrice('numero_identite')">
+                                            </div>
+                                            @if ($errors->has('numero_identite'))
+                                                <span class="help-block text-danger">
+                                                     <strong>Un promoteur a déja été enregistré avec ce numéro d'identité</strong>
+                                                </span>
+                                            @endif
+                                      </div>
                                        <div class="form-group">
                                            <label class=" control-label" for="">Date d'établissement <span class="text-danger">*</span></label>
                                        <div class="input-group">
@@ -98,8 +109,11 @@
                                        </div>
                                    
                            <div class="form-group{{ $errors->has('docidentite') ? ' has-error' : '' }}">
-                               <label class=" control-label" for="docidentite">Joindre une copie<span class="text-danger">*</span></label>
+                               <label class="control-label" for="docidentite">Joindre une copie<span class="text-danger">*</span></label>
                                    <input class="form-control" type="file" name="docidentite" id="docidentite1" accept=".pdf, .jpeg, .png"   placeholder="Charger une copie du document d'identification" onchange="VerifyUploadSizeIsOK('docidentite1')" required>
+                                   <span class="help-block" style="text-align: center; color:red;">
+                                    Taille maximale autorirée :2MB
+                                   </span>
                                @if ($errors->has('docidentite'))
                                    <span class="help-block">
                                        <strong>{{ $errors->first('docidentite') }}</strong>
@@ -114,9 +128,9 @@
                         <legend>Contacts</legend>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label class=" control-label" for="val_username">Télephone Principal:<span class="text-danger">*</span><span data-toggle="tooltip" title="Ce numéro de téléphone ne sera pas utilise pour d'autre souscription"><i class="fa fa-info-circle"></i></span></label>
+                                <label class=" control-label" for="val_username">Télephone Principal:<span class="text-danger">*</span><span data-toggle="tooltip" title="Ce numéro de téléphone ne sera pas utilisé pour d'autre souscription"><i class="fa fa-info-circle"></i></span></label>
                                     <div class="input-group">
-                                        <input type="text" id="telephone_promoteur" name="telephone_promoteur" class="form-control masked_phone" value="{{old('telephone_promoteur')}}" placeholder="Votre numéro de télephone" required="Ce champ est obligatoire" onchange="controler_de_doublon_promotrice('telephone_promoteur')">
+                                        <input type="text" id="telephone_promoteur" name="telephone_promoteur" class="form-control masked_phone"  data-inputmask='"mask": "(999) 999-9999"' value="{{old('telephone_promoteur')}}" placeholder="Votre numéro de télephone" required="Ce champ est obligatoire" onchange="controler_de_doublon_promotrice('telephone_promoteur')">
                                     </div>
                                     @if ($errors->has('telephone_promoteur'))
                                     <center>

@@ -34,6 +34,7 @@
                 @if($promoteur->suscription_etape != 3)
                 @if($promoteur->suscription_etape == 2)
                     <input type="hidden" name="entreprise" value="{{ $entreprise }}">
+                    
                 @endif
                    <input type="hidden" name="type_entreprise" value="{{ $type_entreprise }}">
                     <a href="#modal-complete-souscription" data-toggle="modal" class="btn btn-danger">Suspendre</a>
@@ -57,9 +58,9 @@
                     @endif --}}
                     <a href="{{ route("accueil") }}" class="btn btn-danger">Terminer</a>
                     @endif
-                @if($promoteur->suscription_etape == 2)
+                {{-- @if($promoteur->suscription_etape == 2)
                     <input type="hidden" name="entreprise" value="{{ $entreprise}}">
-                @endif
+                @endif --}}
         </form>
 
 </div>

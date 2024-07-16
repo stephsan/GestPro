@@ -63,12 +63,31 @@
 @yield('modal')
 <div id="preloader"></div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<div id="modal-complete-souscription" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Avertissement</h3>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+          </div>
+          <div class="modal-body" >
+              <div class="row">
+                  <span> <p style="color: red;"> NB: Vous devez completer cette souscription dans un delais de 72 soit trois jours. Sinon code promoteur sera invalide. </p></span>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <a href="{{ route('accueil') }}" class="btn btn-success">Ok</a>
+              <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+  </div>
+</div>
 <div id="modal-comment-souscrire"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Procedure de souscription</h3>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Procédure de souscription</h3>
           </div>
           <div class="modal-body" >
            <div class="row" style="text-align: justify;">
@@ -107,7 +126,7 @@
 </div>
 
 <div id="modal-fond-partenariat-startup"class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg" style="padding:10px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
@@ -141,7 +160,7 @@
 </div>
 <div id="modal-fond-partenariat-MPMEExistant"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+      <div class="modal-content" style="padding:10px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Entreprise Existante - Souscription au fond de partenariat</h3>
@@ -174,7 +193,7 @@
 </div>
 <div id="modal-programme-entreprendre"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+      <div class="modal-content" style="padding:10px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Description du programme entreprendre</h3>
@@ -213,7 +232,7 @@
 </div>
 <div id="modal-programme-fond-de-partenariat"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+      <div class="modal-content" style="padding:10px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Description du fonds de Partenariat</h3>
@@ -236,7 +255,8 @@
                      Les sous-projets se concentreront sur des solutions permettant d’intégrer les concepts d’énergie renouvelable et d’Economie Circulaire dans les chaînes de valeur et les réseaux de production locaux. On estime que 50 sous-projets seront attribués avec une subvention moyenne estimée à 75 000 000 FCFA.
                      Les sous-projets de transformation verte regroupent les MPME établies depuis au moins 3 ans avec un CA ≤ à 1 milliard F CFA. </p>
                      <div class="text-center" style="margin-top:10px">
-                      <a href="" data-toggle="modal"  class="btn btn-success"  >S'INSCRIRE AU FONDS</a>
+                      <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
+                      <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
                   </div>
               </ol>
          </p>
@@ -300,6 +320,7 @@
 <script src="{{asset('js/js-brave/app.js')}}"></script>
 <script src="{{asset('js/js-brave/mon.js')}}"></script>
 <script src="{{asset('js/js-brave/plugins.js')}}"></script>
+<script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
 <script src="{{asset('frontend/js/main.js')}}"></script>
 <script src="{{asset('js/js-brave/pages/formsWizard.js')}}"></script>
 {{-- <script src="{{ asset("js/js-brave/vendor/bootstrap.min.js") }}"></script> --}}
@@ -324,9 +345,29 @@
   
   <script>$(function(){ FormsWizard.init(); });</script>
   <script>
+     $('.masked_phone').mask('99-99-99-99');
+     $('.masked_cnib').mask('99999999999999999');
+
       function cacher(id_form){
         $('#'+id_form).toggle();
       }
+  </script>
+  <script>
+   function  afficherchampidentite(){
+      type_identite= $("#type_identite_promoteur").val();
+      if(type_identite==1){
+        $("#champ_cnib").show();
+        $("#numero_identite_passport").val('');
+        $("#numero_identite_cnib").prop('required',true);
+        $('#champ_passport').hide();
+      }
+      else{
+        $("#champ_cnib").hide();
+        $("#numero_identite_cnib").val('');
+        $("#numero_identite_passport").prop('required',true);
+        $('#champ_passport').show();
+      }
+   }
   </script>
   <script>
     function controler_de_doublon_promotrice(champ_controle){

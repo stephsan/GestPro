@@ -9,7 +9,7 @@
         <p style="background-color: rgb(231, 179, 179); color">Les champs marqué d'étoile en <span style="color:red; font-size:15px;">*</span> rouge sont obligatoires</p>
         <div class="row">
             
-            <div class="col-sm-10 col-sm-offset-1">
+            <div class="col-sm-12">
                 <!-- Wizard Progress Bar, functionality initialized in js/pages/formsWizard.js -->
                 <div class="progress progress-striped active">
                     <div id="progress-bar-wizard" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
@@ -187,6 +187,9 @@
                             <div class="docsite form-group{{ $errors->has('docsite') ? ' has-error' : '' }}" style="display: none">
                                 <label class=" control-label" for="docidentite">Joindre le document du site</label>
                                     <input class="form-control" type="file" id="docsite" accept=".pdf, .jpeg, .png" name="docsite"  placeholder="Charger une copie du document du site" required>
+                                    <span class="help-block" style="text-align: center; color:red;">
+                                        Taille maximale autorirée :2MB
+                                       </span>
                                 @if ($errors->has('docsite'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('docsite') }}</strong>
@@ -241,7 +244,7 @@
                 <div class="row">
                     <div class="row">
                         @foreach ($indicateur_previsionel_du_projets as $indicateur_previsionel_du_projet )
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                         <fieldset>
                             <legend>{{ $indicateur_previsionel_du_projet->libelle }} </legend>
                         {{-- @if($indicateur_previsionel_du_projet->id== 41)
@@ -259,7 +262,7 @@
                                     <label class="col-md-4 control-label" for="val_email">En {{ $futur_annee->libelle }}<span class="text-danger">*</span></label>
                                     <div class="col-md-6">
                                         <div class="input-group">
-                                            <input type="number"   id="num_rccm" name="{{ $indicateur_previsionel_du_projet->id }}{{$futur_annee->id }}" value="{{old('{!! $indicateur_previsionel_du_projet->id !!}{!! $futur_annee->id !!}')}}" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire.">
+                                            <input type="number"   id="" name="{{ $indicateur_previsionel_du_projet->id }}{{$futur_annee->id }}" value="{{old('{!! $indicateur_previsionel_du_projet->id !!}{!! $futur_annee->id !!}')}}" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire.">
                                         </div>
                                     </div>
                                 </div>

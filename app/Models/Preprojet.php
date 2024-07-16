@@ -12,6 +12,13 @@ class Preprojet extends Model
     public function entreprise(){
         return $this->belongsTo(Entreprise::class);
     }
+
+    public function effectif_previsionnels(){
+        return $this->hasMany(Infoeffectifentreprise::class,'preprojet_id');
+    }
+    public function evaluations(){
+        return $this->hasMany(Evaluation::class,'preprojet_id');
+    }
     protected static function boot(){
         parent::boot();
         static::creating(function($preprojet){
@@ -34,4 +41,7 @@ class Preprojet extends Model
     public function innovations(){
         return $this->hasMany(InnovationProjet::class);
    }
+   public function promoteur(){
+    return $this->belongsTo(Promoteur::class);
+}
 }

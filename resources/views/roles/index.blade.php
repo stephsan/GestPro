@@ -15,7 +15,7 @@
 
         <nav>
             <button type="button" class="btn btn-success">
-                <a href="{{route('roles.create')}}" class="text-white">
+                <a href="{{route('role.create')}}" class="text-white">
                     <i class="bi bi-plus-square"></i> Nouveau
                 </a>
             </button>

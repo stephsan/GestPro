@@ -11,10 +11,10 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="{{asset('img/logo-dgi-final.png')}}" rel="icon">
+    <link href="{{asset('frontend/img/logo-ecotec.jpg')}}" rel="icon">
     <link href="{{asset('img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Vendor CSS Files -->
     <link href="{{asset('/theme/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('/theme/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
@@ -25,7 +25,10 @@
     <link href="{{asset('/theme/vendor/simple-datatables/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link href="{{asset('css/css-brave/plugins.css')}}" rel="stylesheet">
+
     <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
     <link href="{{asset('theme/css/style.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
@@ -142,6 +145,28 @@
             </li><!-- End Components Nav -->
        @endcan
 
+       <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#sa" data-bs-toggle="collapse" href="#">
+            <i class="bi-currency-exchange"></i><span>Souscriptions</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="sa" class="nav-content collapse"
+            data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('preprojet.lister') }}?type_entreprise=startup" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Startups</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister') }}?type_entreprise=entreprise_existante" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Entreprise existante</span>
+                </a>
+            </li>
+           
+           
+        </ul>
+    </li>
+
+
        @can('user.create', Auth::user())
         <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
@@ -149,6 +174,11 @@
                 </a>
                 <ul id="ca" class="nav-content collapse"
                     data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('critere.index') }}" class="nav-link">
+                            <i class="bi bi-circle"></i><span>Criteres</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('users.index') }}" class="nav-link">
                             <i class="bi bi-circle"></i><span>Utilisateur</span>
@@ -204,7 +234,7 @@
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
-
+ @yield('modal_part')
 <!-- Vendor JS Files -->
 <script src="{{asset('theme/vendor/apexcharts/apexcharts.min.js')}}"></script>
 <script src="{{asset('theme/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -217,13 +247,27 @@
 
 <!-- Template Main JS File -->
 <script src="{{asset('theme/js/main.js')}}"></script>
-@yield('script')
+<script src="{{asset('jquery/jquery.min.js')}}"></script>
+<script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('js/js-brave/vendor/jquery.min.js')}}"></script>
+<script src="{{asset('js/js-brave/plugins.js')}}"></script>
+<script src="{{asset('js/adminlte.min.js')}}"></script>
 <script>
+    $(document).ready(function() {
+      $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+    })
+</script>
+<script>   
+ $('.select-select2').select2();</script>@yield('script')
+
+<script>
+    
   /*  document.getElementById('searchForm').onsubmit = function() {
         // Show the overlay
         document.getElementById('overlay').classList.add('overlay-active');
     };*/
 </script>
+
 @livewireScripts
 </body>
 

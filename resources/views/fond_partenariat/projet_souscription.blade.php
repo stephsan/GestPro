@@ -9,7 +9,7 @@
         <p style="background-color: rgb(231, 179, 179); color">Les champs marqué d'étoile en <span style="color:red; font-size:15px;">*</span> rouge sont obligatoires</p>
         <div class="row">
             
-            <div class="col-sm-10 col-sm-offset-1">
+            <div class="col-sm-12">
                 <!-- Wizard Progress Bar, functionality initialized in js/pages/formsWizard.js -->
                 <div class="progress progress-striped active">
                     <div id="progress-bar-wizard" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
@@ -78,11 +78,11 @@
                                 <div class="offset-md-1 col-lg-5">
                                     <div class="form-group">
                                         <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i></span> </label>
-                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" rows="9" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
+                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i></span></label>
-                                         <textarea id="objectifs_projet" name="objectifs_projet" rows="9" class="form-control" placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
+                                         <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
                                     </div>
                                 </div>
                         </div>
@@ -186,7 +186,10 @@
                             </div>
                             <div class="docsite form-group{{ $errors->has('docsite') ? ' has-error' : '' }}" style="display: none">
                                 <label class=" control-label" for="docidentite">Joindre le document du site</label>
-                                    <input class="form-control" type="file" id="docsite" accept=".pdf, .jpeg, .png" name="docsite"  placeholder="Charger une copie du document du site" required>
+                                    <input class="form-control" type="file" id="docsite" accept=".pdf, .jpeg, .png" name="docsite"  placeholder="Charger une copie du document du site" onchange="VerifyUploadSizeIsOK('docsite');"  required>
+                                    <span class="help-block" style="text-align: center; color:red;">
+                                        Taille maximale autorirée :2MB
+                                    </span>
                                 @if ($errors->has('docsite'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('docsite') }}</strong>
@@ -201,6 +204,7 @@
                             <fieldset>Présentation du coût total de votre projet</fieldset>
                         </div>
                        <div class="row">
+                        <div class="col-md-12">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="control-label" for="val_email">Coût total du Projet <span class="text-danger">*</span></label>
@@ -233,15 +237,16 @@
                                         </div>
                                 </div>
                             </div>
-                       </div>
-                    </div>
+                        </div>  
+                     </div>
+                </div>
             </div>
             <div id="progress-third" class="step">
             
                 <div class="row">
                     <div class="row">
                         @foreach ($indicateur_previsionel_du_projets as $indicateur_previsionel_du_projet )
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                         <fieldset>
                             <legend>{{ $indicateur_previsionel_du_projet->libelle }} </legend>
                         {{-- @if($indicateur_previsionel_du_projet->id== 41)

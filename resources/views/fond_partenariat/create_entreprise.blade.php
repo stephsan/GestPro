@@ -9,7 +9,7 @@
         <p style="background-color: rgb(231, 179, 179); color">Les champs marqué d'étoile en <span style="color:red; font-size:15px;">*</span> rouge sont obligatoires</p>
         <div class="row">
             
-            <div class="col-sm-10 col-sm-offset-1">
+            <div class="col-sm-12">
                 <!-- Wizard Progress Bar, functionality initialized in js/pages/formsWizard.js -->
                 <div class="progress progress-striped active">
                     <div id="progress-bar-wizard" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0"></div>
@@ -152,7 +152,10 @@
                                 </div>
                                 <div class="entreformalise form-group{{ $errors->has('docrccm') ? ' has-error' : '' }}">
                                     <label class=" control-label" for="docidentite">Joindre une copie du RCCM</label>
-                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" required>
+                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" onchange="VerifyUploadSizeIsOK('docrccm');" required>
+                                        <span class="help-block" style="text-align: center; color:red;">
+                                            Taille maximale autorirée :2MB
+                                           </span>
                                     @if ($errors->has('docrccm'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('docrccm') }}</strong>

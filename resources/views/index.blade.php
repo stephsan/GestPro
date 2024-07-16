@@ -7,8 +7,8 @@
       <div class="d-flex" >
         {{-- <button type="button"  class="btn-get-started scrollto" data-toggle="modal" class="btn-get-started scrollto" data-target="#modal-choix-option"> S'inscrire</button> --}}
         <div class="col-md-10" style="margin : auto; display: block;" >
-          <a href="" data-toggle="modal" class=" btn-get-started scrollto" >S'incrire au Programme Entreprendre</a>
-          <a href="" data-toggle="modal" class="btn-get-started scrollto"  style="margin-left:6px;">S'incrire au Fonds de Partenariat</a>
+          {{-- <a href="" data-toggle="modal" class=" btn-get-started scrollto" >S'incrire au Programme Entreprendre</a>
+          <a href="" data-toggle="modal" class="btn-get-started scrollto"  style="margin-left:6px;">S'incrire au Fonds de Partenariat</a> --}}
         </div>
         
       </div>
@@ -35,7 +35,7 @@
                 <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
               </ul>
               <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">Cliquez ici</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">S'inscrire</a>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@
                 <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
               </ul>
               <div class="btn-wrap">
-                <a href="#" class="btn-buy">Cliquez ici</a>
+                <a href="#" class="btn-buy">S'inscrire</a>
               </div>
             </div>
           </div>
@@ -64,7 +64,7 @@
                 <li>Vous souhaitez bénéficier d'un financement</li>
               </ul>
               <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Cliquez ici</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">S'inscrire</a>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@
                   <li>Vous souhaitez bénéficier d'un financement</li>
                 </ul>
               <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">Cliquez ici</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">S'inscrire</a>
               </div>
             </div>
           </div>

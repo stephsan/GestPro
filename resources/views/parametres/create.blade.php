@@ -29,7 +29,7 @@
                     <label class="col-md-4 control-label" for="typeorga">Parametre parent : </label>
                     <div class="col-md-6">
                         <div class="input-group">
-                            <select  class="form-control" id="parent" name="parent"  >
+                            <select  class="form-control select-select2" id="parent" name="parent"  >
                                 <option></option>
 
                                 @foreach($parametres as $parametre)

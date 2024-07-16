@@ -39,11 +39,10 @@ class recepisseMail extends Mailable
         $id_promo = $this->id_promoteur;
         $promoteur= Promoteur::where("id", $id_promo)->first();
         $preprojet= Preprojet::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
-
         //$entreprise= Entreprise::where("code_promoteur", $promoteur->code_promoteur)->orderBy('created_at','desc')->first();
         $data["email"] = $promoteur->email_promoteur;
         $this->email= $promoteur->email_promoteur;
-        $qrcode =  base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate("Ceci est un recepissé généré par la plateforme BRAVE WOMEN Burkina"."Code didentification:"." ".$promoteur->code_promoteur."_".$promoteur->id."BWBF"));
+        $qrcode =  base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate("Ceci est un recepissé généré par la plateforme de gestion des bénéficiaires du projet ECOTEC"."Code didentification:"." ".$promoteur->code_promoteur."_".$promoteur->id."ECOTEC"));
         $pdf = PDF::loadView('pdf.recepisse', compact('promoteur','preprojet','qrcode'));
         $details['email'] = $promoteur->email;
         $details['nom'] = $promoteur->nom;
