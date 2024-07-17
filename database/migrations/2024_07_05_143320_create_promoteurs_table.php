@@ -30,7 +30,7 @@ return new class extends Migration
             $table->integer("situation_residence");
             $table->integer("type_identite");
             $table->integer("avec_handicape")->nullable();
-            $table->string("desc_handicape");
+            $table->integer("type_handicap")->nullable();
             $table->string("numero_identite",30);
             $table->date("date_etabli_identite");
             $table->integer("niveau_instruction");

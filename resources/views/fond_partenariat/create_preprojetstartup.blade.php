@@ -208,7 +208,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="val_email">Coût total du Projet <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="number"   id="cout_total" name="cout_total"  class="form-control" placeholder=" Cout total du projet" autofocus required title="Ce champ est obligatoire.">
+                                            <input type="text"   id="cout_total" name="cout_total"  class="form-control" placeholder=" Cout total du projet" autofocus required title="Ce champ est obligatoire.">
                                         </div>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="val_email">Apport personnel  <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="number"   id="apport_personnel" name="apport_personnel"  class="form-control" placeholder=" Apport personnel" autofocus required title="Ce champ est obligatoire.">
+                                            <input type="text"   id="apport_personnel" name="apport_personnel"  class="form-control" placeholder=" Apport personnel" autofocus required title="Ce champ est obligatoire.">
                                         </div>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="val_email">Subvention sollicitée<span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="number"   id="subvention_sollicite" name="subvention_sollicite"  class="form-control" placeholder=" subvention sollicitée" autofocus required title="Ce champ est obligatoire.">
+                                            <input type="text"   id="subvention_sollicite" name="subvention_sollicite"  class="form-control" placeholder=" subvention sollicitée" autofocus required title="Ce champ est obligatoire.">
                                         </div>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="val_email">Autres sources de financement  <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="number"   id="autre_source" name="autre_source"  class="form-control" placeholder="Autres sources de financement" autofocus required title="Ce champ est obligatoire.">
+                                            <input type="text"   id="autre_source" name="autre_source"  class="form-control" placeholder="Autres sources de financement" autofocus required title="Ce champ est obligatoire." onchange="cout_preprojet('cout_total','apport_personnel','subvention_sollicite','autre_source')">
                                         </div>
                                 </div>
                             </div>

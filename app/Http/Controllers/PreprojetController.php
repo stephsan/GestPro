@@ -20,6 +20,11 @@ use App\Mail\resumeMail;
 use Illuminate\Support\Facades\Storage;
 class PreprojetController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except(["store_preprojet"]);
+    }
     function createEvaluation($idprojet,$indicateur,$note ){
      $evaluation=Evaluation::where('preprojet_id',$idprojet)->where('critere_id',$indicateur)->get();
      if(count($evaluation)==0){
@@ -184,10 +189,10 @@ class PreprojetController extends Controller
                 "site_disponible"=>$request->site_disponible,
                 "description"=>  $request->description_idee_de_projet,
                 "objectifs"=>  $request->objectifs_projet,
-                "cout_total"=>  $request->cout_total,
-                "apport_personnel"=>  $request->apport_personnel,
-                "subvention_souhaite"=>  $request->subvention_sollicite,
-                "autre_ninancement"=>  $request->autre_source,
+                "cout_total"=>  reformater_montant2($request->cout_total),
+                "apport_personnel"=>  reformater_montant2($request->apport_personnel),
+                "subvention_souhaite"=>  reformater_montant2($request->subvention_sollicite),
+                "autre_ninancement"=>  reformater_montant2($request->autre_source),
                 "num_projet"=>  $num_projet,
                 "entreprise_id"=>  $request->entreprise_id,
                 "promoteur_id"=> $promoteur->id
@@ -248,7 +253,6 @@ class PreprojetController extends Controller
             }
 //Debut de l'evaluation du preprojet
 //critere transversal
-
 /* age et sexe du promoteur */
 
 if($preprojet->promoteur->genre==1){
@@ -264,7 +268,7 @@ elseif($preprojet->promoteur->genre==2){
 }
 /* handicap promoteur */
 ($preprojet->promoteur->avec_handicap==1)?($note_handicap=5):($note_handicap=0);
-($preprojet->promoteur->situation_residence==2)?($note_note_situation_residence=5):($note_handicap=0);
+($preprojet->promoteur->situation_residence==2)?($note_situation_residence=5):($note_situation_residence=0);
 
 /* potentialite creation d'emploi */
 $creation_demploi=$preprojet->effectif_previsionnels->sum('homme')+$preprojet->effectif_previsionnels->sum('femme');
@@ -282,7 +286,7 @@ if($creation_demploi==0){
 }
 $this->createEvaluation($preprojet->id,1, $note_genre);
 $this->createEvaluation($preprojet->id,2, $note_handicap);
-$this->createEvaluation($preprojet->id,3, $note_note_situation_residence);
+$this->createEvaluation($preprojet->id,3, $note_situation_residence);
 $this->createEvaluation($preprojet->id,16, $note_creation_emplois);
 
 

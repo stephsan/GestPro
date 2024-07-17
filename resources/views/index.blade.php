@@ -31,7 +31,7 @@
               <h3> Programme entreprendre</h3>
               {{-- <h2>Programme entreprendre</h2> --}}
               <ul>
-                <li>Entreprise en demarrage</li>
+                <li>Entreprise en démarrage</li>
                 <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
               </ul>
               <div class="btn-wrap">
@@ -49,7 +49,8 @@
                 <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
               </ul>
               <div class="btn-wrap">
-                <a href="#" class="btn-buy">S'inscrire</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistant" href="#">S'inscrire</a>
+                {{-- <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistan" href="#">S'inscrire</a> --}}
               </div>
             </div>
           </div>

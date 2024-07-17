@@ -53,7 +53,7 @@
 <body>
 
         <div class="enteteGauche" >MEBF <br> ----------- <br> Projet ECOTEC </div>
-       <img class="enteteGauche" src="{{ public_path('frontend/img/MEBF.jpg') }}" style="width: 80px; height: 80px; margin-right:10px;">
+        <img class="enteteGauche" src="{{ public_path('frontend/img/MEBF.jpg') }}" style="width: 80px; height: 80px; margin-right:10px;">
        <img class="enteteGauche" src="{{ public_path('frontend/img/logo-ecotec.jpg') }}" style="width: 70px; height: 70px; ">
         {{-- <div class="enteteGauche"><img style="width: 130;" src="{{ public_path('frontend/img/logo-ecotec.jpg')}} " alt="Logo Burkina Textile"></div> --}}
 
@@ -75,8 +75,8 @@
         <br> 
         <p>Promoteur a souscrit sur la plateforme du projet ECOTEC avec l'idée de projet<span style="font-weight: bold;"> {{ $preprojet->titre_projet }}</span> dans le domaine de <span style="font-weight: bold;">  {{ getlibelle($preprojet->secteur_dactivite) }}  </span> et le maillon <span style="font-weight: bold;"> {{ getlibelle($preprojet->maillon_dactivite) }} </span>.</span> </p> <br>
         <p><span style="width: 40%; float: right;">Fait le : <span style="font-weight: bold;">{{ date("d-m-Y") }}</span> </span></p> <br>
-        <p style="font-size: x-small;  text-align: justify;">Ce récépissé constitue la preuve que le promoteur a pris connaissance des conditions d'interventions du projet ECOTEC auxquelles il souscrit entièrement notamment le processus de selection des bénéficiaires qui est conditionné par la mise à disposition du financement par le bailleur à la MEBF.Le promoteur certifie voir pris acte et s'engage à se conformer au processus de selection des bénéficiaires et aux délibérations du jury.</p>
-        <p style="font-size: x-small;"> Pour toute information contactez nos chefs de zone<br> NB: Ce récépissé constitue une preuve de depôt de dossier aux activités du projet ECOTEC.</p>
+        <p style="font-size: x-small;  text-align: justify;">Ce récépissé constitue la preuve que le promoteur a pris connaissance des conditions d'interventions du fond de partenariat du projet ECOTEC auxquelles il souscrit entièrement notamment le processus de selection des bénéficiaires.</p>
+        <p style="font-size: x-small;"> Pour toute information contactez nos antennes<br> NB: Ce récépissé constitue une preuve de depôt de dossier aux activités du projet ECOTEC.</p>
         {{-- <p style="margin-top: 60px">{{ $qrcode }}</p> --}}
         <img src="data:image/png;base64, {!! $qrcode !!}">
 </body>

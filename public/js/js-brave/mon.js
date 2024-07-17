@@ -36,25 +36,85 @@ function cout(){
     var cout_total= parseInt(cout_investissement) + parseInt(fonderoulement);
    $('#cout_total').attr("value",cout_total);
 }
-function deux_somme_complementaire(montant1, montant2, somme){
-    var valmontant1=$("#"+montant1).val();
-    var valsomme= $("#"+somme).val();
-    //console.log(valsomme/2 == valmontant1);
-    if(valsomme/2 == valmontant1 ){
-        var restant= valsomme - valmontant1;
-        $("#"+montant2).val(restant);
-        format_montant(montant2);
-        format_montant(montant1);
-        format_montant(somme);
+// function deux_somme_complementaire(montant1, montant2, somme){
+//     var valmontant1=$("#"+montant1).val();
+//     var valsomme= $("#"+somme).val();
+//     //console.log(valsomme/2 == valmontant1);
+//     if(valsomme/2 == valmontant1 ){
+//         var restant= valsomme - valmontant1;
+//         $("#"+montant2).val(restant);
+//         format_montant(montant2);
+//         format_montant(montant1);
+//         format_montant(somme);
      
+//     }
+//     else{
+       
+//         console.log("Attention le montant de la subvention ne doit pas être supérieur au coût du projet et la subvention doit être la moitié du coût total!!!");
+//         $("#"+montant1).val(' ');
+//         $("#"+somme).val(' ');
+//         $("#"+montant2).val(' ');
+      
+//     }
+ 
+//   }
+function format_montant(id){
+    //alert(id);
+var val= $('#'+id).val();
+
+var index = val.indexOf("XOF");
+if(index !== -1){
+    newval= val;
+}
+else{
+    var val1= val.split(" ").join("");
+     var newval= new Intl.NumberFormat('fr', {
+     style: 'currency',
+   currency: 'XOF',
+     }).format(val1);
+}
+
+$('#'+id).val(newval);
+}
+
+function cout_preprojet(inputcout,input_apport_perso,input_subvention,input_autre){
+    var cout= $("#"+inputcout).val();
+    var apport_perso= $("#"+input_apport_perso).val();
+    var autre= $("#"+input_autre).val();
+    var subvention= $("#"+input_subvention).val();
+    if(parseInt(subvention) +parseInt(apport_perso)+parseInt(autre) != parseInt(cout)){
+      $("#tester").prop('disabled', true);
+      alert("Verifier les montants saisis. La somme de l'apport personnel, de la subvention et autre financement doit égal au montant du projet!!!");
+      $("#"+inputcout).val(' ');
+      $("#"+input_apport_perso).val(' ');
+      $("#"+input_subvention).val(' ');
+      $("#"+input_autre).val(' ');
     }
     else{
-       
-        console.log("Attention le montant de la subvention ne doit pas être supérieur au coût du projet et la subvention doit être la moitié du coût total!!!");
-        $("#"+montant1).val(' ');
-        $("#"+somme).val(' ');
-        $("#"+montant2).val(' ');
-      
+          format_montant(inputcout);
+          format_montant(input_apport_perso);
+          format_montant(input_subvention);
+          format_montant(input_autre);
+    }
+ 
+  }
+  function deux_somme_complementaire(montant1, montant2, somme){
+    var valmontant1= $("#"+montant1).val();
+    var valsomme= $("#"+somme).val();
+    if(valsomme/2 != valmontant1 ){
+      $("#tester").prop('disabled', true);
+      alert("Attention le montant de la subvention ne doit pas être supérieur au coût du projet et la subvention doit être la moitié du coût total!!!");
+      $("#"+montant1).val(' ');
+      $("#"+somme).val(' ');
+      $("#"+montant2).val(' ');
+    }
+    else{
+       $("#tester").prop('disabled', false);
+          var restant= valsomme - valmontant1;
+          $("#"+montant2).val(restant);
+          format_montant(montant2);
+          format_montant(montant1);
+          format_montant(somme);
     }
  
   }
@@ -220,25 +280,7 @@ function activerLeBouttonRejet(raison_du_rejet,btnrejet){
         $('#'+btnrejet).prop('disabled', true);
     }
 }
-function format_montant(id){
-    //alert(id);
-var val= $('#'+id).val();
-$('#montant_devi_cache').val(val);
-var index = val.indexOf("XOF");
-if(index !== -1){
-    newval= val;
-}
-else{
-    var val1= val.split(" ").join("");
-    // var newval= new Intl.NumberFormat('fr', {unitDisplay: 'long'}).format(val1);
-     var newval= new Intl.NumberFormat('fr', {
-     style: 'currency',
-   currency: 'XOF',
-     }).format(val1);
-}
 
-$('#'+id).val(newval);
-}
 function calculer_pourcentage(id_avance, id_montant_devis, id_montant_devi_cache,avance_exige_div){
 montant_devis= $('#'+ id_montant_devi_cache).val();
 montant_devis=montant_devis.replace('F CFA', '');

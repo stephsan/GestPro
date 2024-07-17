@@ -125,12 +125,91 @@
   </div>
 </div>
 
+
+<div id="modal-programme-entreprendre-MPMEExistant"class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="padding:10px;">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au Programme Entreprendre  - MPME Existante</h3>
+          </div>
+          <center><img src="{{ asset('img/oups.jpg') }}" width="300" alt=""></center>
+          <center><p style="color:brown; font-size:18px; font-weight:600;">La Souscription au programme entreprendre n'est pas encore ouverte</p></center>
+
+         {{--  <div class="modal-body" >
+
+            <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire</a>
+            <a href="" data-toggle="modal" onclick="cacher('forme_search')" class="btn btn-success" >Poursuivre ma souscription</a>
+          </div>
+          <form action="{{ route('fp.search') }}" method="post" id='forme_search' style="display: none">
+            @csrf
+          <div class="row">
+              <div class="form-group">
+                <div class="offset-md-1 col-md-10">
+                <input class="form-control" type="hidden" name="type_PE" value="MPMEExistant">
+                 <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
+                  <input id="code_promoteur_type_PE" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_type_FP','poursuivre')">
+                  <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
+                  <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
+                </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
+      </div>
+        </form> --}}
+        <div class="modal-footer">
+          <button type="button"class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+          </div>
+          
+      </div>
+  </div>
+
+<div id="modal-programme-entreprendre-startup"class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="padding:10px;">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au Programme Entreprendre  - Guichet Startup</h3>
+          </div>
+          <center><img src="{{ asset('img/oups.jpg') }}" width="300" alt=""></center>
+          <center><p style="color:brown; font-size:18px; font-weight:600;">La Souscription au programme entreprendre n'est pas encore ouverte</p></center>
+
+         {{-- <div class="modal-body" >
+            <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire</a>
+            <a href="" data-toggle="modal" onclick="cacher('forme_search')" class="btn btn-success" >Poursuivre ma souscription</a>
+          </div>
+           <form action="{{ route('fp.search') }}" method="post" id='forme_search' style="display: none">
+            @csrf
+          <div class="row">
+              <div class="form-group">
+                <div class="offset-md-1 col-md-10">
+                <input class="form-control" type="hidden" name="type_PE" value="startup">
+                 <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
+                  <input id="code_promoteur_type_PE" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_type_FP','poursuivre')">
+                  <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
+                  <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
+                </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button"class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
+      </div>
+        </form> --}}
+          <div class="modal-footer">
+            <button type="button"class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+          </div>
+          
+      </div>
+  </div>
 <div id="modal-fond-partenariat-startup"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="padding:10px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Choisir le programme auquel vous souhaitez souscrire</h3>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au fond de partenariat - Guichet Startup </h3>
           </div>
           <div class="modal-body" >
             <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire</a>
@@ -141,6 +220,7 @@
           <div class="row">
               <div class="form-group">
                 <div class="offset-md-1 col-md-10">
+                <input class="form-control" type="hidden" name="type_FP" value="startup">
                 <input class="form-control" type="hidden" name="type_FP" value="startup">
                  <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
                   <input id="code_promoteur_type_FP" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_type_FP','poursuivre')">
@@ -157,13 +237,13 @@
           
       </div>
   </div>
-</div>
+
 <div id="modal-fond-partenariat-MPMEExistant"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
       <div class="modal-content" style="padding:10px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Entreprise Existante - Souscription au fond de partenariat</h3>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au fond de partenariat - Guichet MPME Existante</h3>
           </div>
           <div class="modal-body" >
             <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire</a>
@@ -353,17 +433,25 @@
       }
   </script>
   <script>
+      function checkchoice(programme,guichet){
+          $('.programme').val(programme);
+          $('.guichet').val(guichet);
+      }
+  </script>
+  <script>
    function  afficherchampidentite(){
       type_identite= $("#type_identite_promoteur").val();
       if(type_identite==1){
         $("#champ_cnib").show();
         $("#numero_identite_passport").val('');
+        $("#numero_identite_passport").prop('required',false);
         $("#numero_identite_cnib").prop('required',true);
         $('#champ_passport').hide();
       }
       else{
         $("#champ_cnib").hide();
         $("#numero_identite_cnib").val('');
+        $("#numero_identite_cnib").prop('required',false);
         $("#numero_identite_passport").prop('required',true);
         $('#champ_passport').show();
       }

@@ -425,7 +425,7 @@
                         </div>
                     <div class="row">
                         <div class="col-md-5">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="control-label" for="example-chosen">Entreprise affectée par la covid? <span class="text-danger">*</span></label>
                                     <select id="affecte_par_covid" name="affecte_par_covid" class="select-select2" onchange="afficher();" data-placeholder="Entreprise affectée par la covid?" style="width: 100%;" required>
                                         <option></option>
@@ -433,11 +433,11 @@
                                             <option value="{{$ouinon_reponse->id  }}" {{ old('affecte_par_covid') == $ouinon_reponse->id ? 'selected' : '' }} value="{{ $ouinon_reponse->id }}">{{ $ouinon_reponse->libelle }}</option>
                                         @endforeach
                                     </select>
-                   </div>
-                            <div class="form-group">
+                   </div> --}}
+                            {{-- <div class="form-group">
                                 <label class=" control-label" for="example-textarea-input">Décrire les effects de COVID-19 sur l'activite<span data-toggle="tooltip" title="Décrivez brièvement comment votre entreprise a été affectée par la pandémie de COVID-19"><i class="fa fa-info-circle"></i></span> </label>
                                     <textarea id="description_effect_covid" name="description_effect_covid" rows="9" class="form-control" placeholder="Décrivez brièvement comment votre entreprise a été affectée par la pandémie de COVID-19" autofocus required title="Ce champ est obligatoire">{{old('description_activite') }}</textarea>
-                            </div>
+                            </div> --}}
     
                         </div>
                         <div class="offset-md-1 col-md-5">

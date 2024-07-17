@@ -58,7 +58,7 @@
                                 <div class="form-group handicap_precise">
                                     
                                         <label class=" control-label" for="example-chosen">Quel handicap avez vous<span class="text-danger">*</span></label>
-                                               <select id="type_handicap" name="type_handicap" class="select-select2" data-placeholder="Quel handicap avez vous ?.."  style="width: 100%;"  required>
+                                               <select id="type_handicap" name="type_handicap" class="select-select2" data-placeholder="Quel handicap avez vous ?.."  style="width: 100%;" >
                                                    <option></option>
                                                    @foreach ($type_handicaps as $type_handicap )
                                                         <option value="{{ $type_handicap->id  }}" {{ old('type_handicap') == $type_handicap->id ? 'selected' : '' }}>{{ $type_handicap->libelle }}</option>

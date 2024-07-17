@@ -217,23 +217,11 @@ public function genereRecpisse(Request $request)
     $promoteur= Promoteur::where("slug", $request->promoteur)->first();
     $preprojet= Preprojet::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
     $contact_chef_de_zone= env("NUMERO_SUPPORT");
-    // $chef_de_zone= User::where("zone",$entreprise->region)->first();
-    // if($chef_de_zone){
-    //     $contact_chef_de_zone= $chef_de_zone->telephone ;
-    // }
-    // else{
-    //     $contact_chef_de_zone= env("NUMERO_SUPPORT");
-    // }
-    // $effectif_permanent_entreprises= Infoeffectifentreprise::where("entreprise_id",$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
-    // $effectif_temporaire_entreprises= Infoeffectifentreprise::where("entreprise_id",$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
-    // $chiffre_daffaire= Infoentreprise::where("entreprise_id",$entreprise->id)->where("indicateur",env("VALEUR_CHIFFRE_D_AFFAIRE"))->get();
-    // $produit_vendus= Infoentreprise::where("entreprise_id",$entreprise->id)->where("indicateur",env("VALEUR_PRODUIT_VENDU"))->get();
-    // $benefice_nets= Infoentreprise::where("entreprise_id",$entreprise->id)->where("indicateur",env("VALEUR_PRODUIT_VENDU"))->get();
     $data["email"] = $promoteur->email_promoteur;
     $this->email= $promoteur->email_promoteur;
     $qrcode =  base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate("Ceci est un recepissé généré par la plateforme de gestion des bénéficiaires du projet ECOTEC"."Code didentification:"." ".$promoteur->code_promoteur."_".$promoteur->id."ECOTEC"));
     $pdf = PDF::loadView('pdf.recepisse', compact('promoteur','preprojet','contact_chef_de_zone','qrcode'));
-    return  $pdf->download('récépissé BRAVE WOMEN.pdf');
+    return  $pdf->download('récépissé_plateforme_ECOTEC.pdf');
 }
 
 public function create2(Promoteur $promoteur, Request $request)

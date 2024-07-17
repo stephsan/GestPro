@@ -105,7 +105,7 @@ class PromoteurController extends Controller
             $numero_identite=$request->numero_identite_passport;
         }
         //dd($numero_identite);
-        $dest=dispatch(new SendEmailJob($details));
+        
         $datenaiss= date('Y-m-d', strtotime($request->datenais_promoteur));
         $date_etabli_identite= date('Y-m-d', strtotime($request->date_identification));
        $promoteur= Promoteur::create([
@@ -153,7 +153,7 @@ class PromoteurController extends Controller
                   'url'=>$urldocidentite,
               ]);
         }
-       
+        $dest=dispatch(new SendEmailJob($details));
         return  view("fond_partenariat.validateStep1", compact("type_entreprise","promoteur"))->with('success','Item created successfully!');
     }
 
