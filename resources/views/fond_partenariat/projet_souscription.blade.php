@@ -345,7 +345,7 @@
 
             </div>
             <div class="row">
-               <p style="color: red"></p> NB: Une fois validé les informations soumises ne seront plus modifiables. Merci de reparcourir le formulaire avant de le valider.
+               <p style="color: red">NB: Une fois validé les informations soumises ne seront plus modifiables. Merci de réparcourir le formulaire avant de le valider.</p> 
 
             </div>
     </div>

@@ -79,7 +79,7 @@ class EntrepriseController extends Controller
         $entreprise=$request->entreprise;
         //dd($entreprise);
         if(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& $type_entreprise=='MPMEExistant'){
-            return view("fond_partenariat.create_entreprise", compact('difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","innovation_du_projets","ouinon_reponses","niveau_resiliences"));
+            return view("fond_partenariat.create_entreprise", compact('programme','difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","innovation_du_projets","ouinon_reponses","niveau_resiliences"));
         }
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme == 'FP' &&$type_entreprise!='MPMEExistant')){
             return view("fond_partenariat.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
@@ -87,7 +87,7 @@ class EntrepriseController extends Controller
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme=='PE' && $type_entreprise=='startup')){
             return view("programme_entreprendre.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
-        elseif($promoteur->suscription_etape==2 && $type_entreprise=='MPMEExistant'){
+        elseif($promoteur->suscription_etape==2 && ($programme=='FP' && $type_entreprise=='MPMEExistant')){
             //dd($projet_innovations);
             return view("fond_partenariat.projet_souscription", compact("projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
