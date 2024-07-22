@@ -18,7 +18,7 @@
             text-align: center;
         }
         .entetedroite{
-            float: left;
+            float: right;
             width: 40%;
             text-align: center;
         }
@@ -52,12 +52,12 @@
 </head>
 <body>
 
-        <div class="enteteGauche" >MEBF <br> ----------- <br> Projet ECOTEC </div>
+        {{-- <div class="enteteGauche" >MEBF <br> ----------- <br> Projet ECOTEC </div> --}}
         <img class="enteteGauche" src="{{ public_path('frontend/img/MEBF.jpg') }}" style="width: 80px; height: 80px; margin-right:10px;">
-       <img class="enteteGauche" src="{{ public_path('frontend/img/logo-ecotec.jpg') }}" style="width: 70px; height: 70px; ">
+       <img class="entetedroite" src="{{ public_path('frontend/img/logo-ecotec.jpg') }}" style="width: 70px; height: 70px; ">
         {{-- <div class="enteteGauche"><img style="width: 130;" src="{{ public_path('frontend/img/logo-ecotec.jpg')}} " alt="Logo Burkina Textile"></div> --}}
 
-        <div class="entetedroite">Burkina Faso <br> -----------  <br> Unité-Progres-Justice </div>
+        {{-- <div class="entetedroite">Burkina Faso <br> -----------  <br> Unité-Progres-Justice </div> --}}
         <div class="entete" style="margin-top:100px;"> Code promoteur {{ $promoteur->code_promoteur }} <hr> </div>
         <p class="contenu"><strong> Numero de dossier : </strong></p> <p class="contenu" > {{ $preprojet->num_projet }} </p> <br>
         <p class="contenu"><strong> Destinataire : </strong></p> <p class="contenu" > {{ $promoteur->nom }} {{ $promoteur->prenom }} </p> <br>
@@ -65,6 +65,7 @@
         <p class="contenu"><strong> Télephone du promoteur : </strong></p> <p class="contenu"> {{ $promoteur->telephone_promoteur }} / {{ $promoteur->mobile_promoteur }}</p> <br>
         <p class="contenu"> <strong>Email: </strong></p> <p class="contenu">{{ $promoteur->email_promoteur  }} </p> <br>
         <p class="contenu"><strong> Programme : </strong></p> <p class="contenu" > Fonds de Partenariat </p> <br>
+        <p class="contenu"><strong> Guichet : </strong></p> <p class="contenu" > {{ getlibelle($preprojet->guichet) }}</p> <br>
         <p class="contenu"> <strong>Catégorie : </strong></p> <p class="contenu">
             @if($preprojet->entreprise_id ==null)
               Startup 

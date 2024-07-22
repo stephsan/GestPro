@@ -15,6 +15,7 @@
                     <fieldset>
                            <legend>Informations générales</legend>
                              <input type="hidden" name="type_entreprise" value="{{ $type_entreprise }}">
+                             <input type="hidden" name="programme" value="{{ $programme }}">
                                    <div class="form-group">
                                        <label class="control-label" for="nom_promoteur">Nom <span class="text-danger">*</span></label>
                                        <div class="input-group">
@@ -148,7 +149,14 @@
                             </div>
                             
                         </div>
+
                         <div class="offset-md-1 col-lg-5">
+                            <div class="form-group">
+                                <label class=" control-label" for="val_email">Entrer le numéro d'un proche<span class="text-danger">*</span><span data-toggle="tooltip" title="Entrer le numéro de téléphone d'un proche "><i class="fa fa-info-circle"></i></span></label>
+                                    <div class="input-group">
+                                        <input type="text" id="numero_de_proche" name="numero_du_proche" class="form-control masked_phone" placeholder="Votre numéro de télephone d'un proche"  value="{{old('numero_du_proche')}}"  required="Ce champ est obligatoire" >
+                                    </div>
+                            </div>
                             <div class="form-group">
                                 <label class=" control-label" for="val_email">Email <span class="text-danger">*</span><span data-toggle="tooltip" title="Cet adresse sera utilisé pour les notifications sur votre dossier par email "><i class="fa fa-info-circle"></i></span></label>
                                     <div class="input-group">
@@ -192,7 +200,7 @@
                                     </select>
                             </div>
                             <div class="form-group">
-                                <label class=" control-label" for="example-chosen">Situation résidence<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="example-chosen">Situation de résidence<span class="text-danger">*</span></label>
                                     <select id="example-chosen" name="situation_residence" class="select-select2" value="{{old("situation_residence")}}"  data-placeholder="Quelle est votre situation de residence .." style="width: 100%;" required>
                                         <option></option>
                                         <option value="1" {{ old('situation_residence') == 1 ? 'selected' : '' }}>Resident</option>
@@ -232,7 +240,7 @@
                                             <option></option>
                                             <option value="1" {{ old('formation_activite') == 1 ? 'selected' : '' }}>Apprentissage sur le tas</option>
                                             <option value="2" {{ old('formation_activite') == 2 ? 'selected' : '' }}>Formation Technique</option>
-                                            {{-- <option value="3" {{ old('formation_activite') == 3 ? 'selected' : '' }}>Aucun</option> --}}
+                                            <option value="3" {{ old('formation_activite') == 3 ? 'selected' : '' }}>Stage</option> 
                                         </select>
                                 </div>
                                 <div class="form-group" id="domaine_formation">
@@ -255,6 +263,15 @@
                                                @endforeach
                                            </select>
                                 </div>
+                                <div class="form-group">
+                                    <label class=" control-label" for="example-chosen">Situation profssionnelle actuelle<span class="text-danger">*</span></label>
+                                        <select id="situation_professionnelle" name="situation_professionnelle"  value="{{old("situation_profession")}}"  class="select-select2" data-placeholder="Selectionnez une situation professionelle .." style="width: 100%;" required>
+                                            <option></option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
+                                            @foreach ($occupation_professionnelle_actuelles as $situation_professionnelle )
+                                                    <option value="{{ $situation_professionnelle->id  }}" {{ old('situation_professionnelle') == $situation_professionnelle->id ? 'selected' : '' }}>{{ $situation_professionnelle->libelle }}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
                                     <div class="form-group">
                                         <label class=" control-label" for="arrondissement_resident">Membre d'une association?<span class="text-danger">*</span><span data-toggle="tooltip" title="Etes-vous membre d’une association ou d’une organisation professionnelle? "><i class="fa fa-info-circle"></i></span></label>
                                             <select id="membre_ass" class="select-select2" name="membre_ass"  data-placeholder="Ou d'une organisation professionnel" onchange="afficher_citer_association();" style="width: 100%;" required>
@@ -273,9 +290,9 @@
                 <div class="row">
                     <div class="offset-md-1 col-md-10">
                         <div class="form-group">
-                            <label class="col-md-4 control-label"><a href="#modal-terms" data-toggle="modal">Lire et accepter les conditions</a> <span class="text-danger">*</span>
+                            <label class="col-md-5 control-label"><a href="#modal-terms" data-toggle="modal" style="color: #d9534f; font-size:17px;">Cliquer ici pour lire et accepter les conditions</a> <span class="text-danger">*</span>
                             </label>
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <label class="switch switch-primary" for="val_terms">
                                     <input type="checkbox" id="val_terms" name="val_terms" value="1" onclick="validerterme()">
                                     <span data-toggle="tooltip" title="Lire et accepter les conditions! Pour lire les conditions cliquer sur le lien<.Vous devez accepter avant de pouvoir enregister les données"></span>

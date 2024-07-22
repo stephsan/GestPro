@@ -127,7 +127,7 @@
 
 
 <div id="modal-programme-entreprendre-MPMEExistant"class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="padding:10px;">
+  <div class="modal-dialog modal-lg" style="padding:15px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
@@ -167,7 +167,7 @@
   </div>
 
 <div id="modal-programme-entreprendre-startup"class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="padding:10px;">
+  <div class="modal-dialog modal-lg" style="padding:15px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
@@ -205,7 +205,7 @@
       </div>
   </div>
 <div id="modal-fond-partenariat-startup"class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg" style="padding:10px;">
+  <div class="modal-dialog modal-lg" style="padding:15px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
@@ -240,7 +240,7 @@
 
 <div id="modal-fond-partenariat-MPMEExistant"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content" style="padding:10px;">
+      <div class="modal-content" style="padding:15px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au fond de partenariat - Guichet MPME Existante</h3>
@@ -273,7 +273,7 @@
 </div>
 <div id="modal-programme-entreprendre"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content" style="padding:10px;">
+      <div class="modal-content" style="padding:15px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Description du programme entreprendre</h3>
@@ -292,8 +292,9 @@
                      les pratiques de gestion et l’accès au marché, en mettant l’accent sur les certifications environnementales et de qualité,
                      y compris les pratiques commerciales écologiques et durables : mise en œuvre de stratégies d’économie circulaire et adoption de mesures de continuité des activités (résilience). </p>
                      <div class="text-center" style="margin-top:10px">
-                        <a href="{{ route('fp.create.personne') }}"  class="btn btn-success"  >S'INSCRIRE AU PROGRAMME</a>
-                    </div>
+                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
+                  </div>
               </ol>
          </p>
          <p>
@@ -312,7 +313,7 @@
 </div>
 <div id="modal-programme-fond-de-partenariat"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content" style="padding:10px;">
+      <div class="modal-content" style="padding:15px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Description du fonds de Partenariat</h3>
@@ -335,8 +336,8 @@
                      Les sous-projets se concentreront sur des solutions permettant d’intégrer les concepts d’énergie renouvelable et d’Economie Circulaire dans les chaînes de valeur et les réseaux de production locaux. On estime que 50 sous-projets seront attribués avec une subvention moyenne estimée à 75 000 000 FCFA.
                      Les sous-projets de transformation verte regroupent les MPME établies depuis au moins 3 ans avec un CA ≤ à 1 milliard F CFA. </p>
                      <div class="text-center" style="margin-top:10px">
-                      <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
-                      <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
                   </div>
               </ol>
          </p>

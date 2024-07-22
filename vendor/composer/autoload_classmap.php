@@ -61,6 +61,7 @@ return array(
     'App\\Models\\Preprojet' => $baseDir . '/app/Models/Preprojet.php',
     'App\\Models\\Promoteur' => $baseDir . '/app/Models/Promoteur.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
+    'App\\Models\\SourceDapprovisionnement' => $baseDir . '/app/Models/SourceDapprovisionnement.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\Valeur' => $baseDir . '/app/Models/Valeur.php',
     'App\\Policies\\AccomptePolicy' => $baseDir . '/app/Policies/AccomptePolicy.php',

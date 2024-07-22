@@ -10,13 +10,14 @@ use App\Models\Contact;
 class SouscriptionPEController extends Controller
 {
     function create_personne(Request $request){
-       $type_entreprise=$request->type_entreprise;
-      
+        $type_entreprise=$request->type_entreprise;
+        $programme=$request->programme;
+        $occupation_professionnelle_actuelles =Valeur::where("parametre_id",env('PARAMETRE_OCCUPATION_PROFESSIONNELLE'))->get();
         $regions=Valeur::where('parametre_id',env('PARAMETRE_ID_REGION'))->get();
         $nbre_dannee_experiences=Valeur::where('parametre_id',22 )->get();
         $niveau_instructions=Valeur::where("parametre_id", env('PARAMETRE_NIVEAU_D_INSTRUCTION'))->get();
         $type_handicaps= Valeur::where('parametre_id', 48)->get();
-        return view('programme_entreprendre.personne',compact('type_handicaps','type_entreprise','nbre_dannee_experiences','regions','niveau_instructions'));
+        return view('programme_entreprendre.personne',compact('programme','occupation_professionnelle_actuelles','type_handicaps','type_entreprise','nbre_dannee_experiences','regions','niveau_instructions'));
     }
 
     public function contactSendMessage(Request $request){

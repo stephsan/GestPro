@@ -89,46 +89,50 @@
   <header id="header" class="d-flex align-items-center">
     <div class=" container position-relative d-flex align-items-center justify-content-between">
 
-      {{-- <h1 class="logo"><a href="index.html">PARGFM<span>.</span></a></h1> --}}
-      <!-- Uncomment below if you prefer to use an image logo -->
-    <a href="index.html" class="logo"><img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt=""></a>
+    <a href="index.html" class="logo"><img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt="" width="150"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="{{route('index')}}">Accueil</a></li>
           <li><a class="nav-link scrollto" data-toggle="modal"  data-target="#modal-comment-souscrire" href="#modal-comment-souscrire">Comment Postuler</a></li>
           {{-- <button type="button"  class="btn-get-started scrollto" data-toggle="modal" class="btn-get-started scrollto" data-target="#modal-choix-option"> Programme Entreprendre</button> --}}
-          <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-entreprendre" href="#">Programme Entreprendre</a></li>
-          <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-fond-de-partenariat" href="#">Fonds de Partenariat</a></li>
-
-          {{-- <li class="dropdown"><a href="#"><span>Fonds de Partenariat</span> <i class="bi bi-chevron-down"></i></a>
+          {{-- <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-entreprendre" href="#">Programme Entreprendre</a></li>
+          <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-fond-de-partenariat" href="#">Fonds de Partenariat</a></li> --}}
+          <li class="dropdown"><a href="#"><span>Documents</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
-              <li><a href="#">Au Statups</a></li>
-              <li><a href="#">MPME existants</a></li>
-              <li><a href="#">Entreprenariat Vert</a></li>
-            </ul>
-          </li> --}}
-          <li><a class="nav-link scrollto " href="#portfolio">Poursuivre</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Créer un compte</a></li>
-          <li><a class="nav-link scrollto " href="{{ route('login') }}">Se Connecter</a></li>
-          <!-- <li><a class="nav-link scrollto" href="#team">Team</a></li> -->
-          <!-- <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+              <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
+                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Flyers</a></li>
+                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription fonds de partenariat">Formulaire type</a></li>
                 </ul>
               </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
+              <li class="dropdown"><a href="#"><span>Programme Entreprendre</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">Flyers</a></li>
+                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription au programme entreprendre">Formulaire type</a></li>
+                </ul>
+              </li>
             </ul>
-          </li> -->
+          </li>
+         <li class="dropdown"><a href="#"><span>Poursuivre</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Startup</a></li>
+                  <li><a  data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">MPME Existante</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="#"><span>Programme Entreprendre</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">Startup</a></li>
+                  <li><a  data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistant" href="#">MPME Existante</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          {{-- <li><a class="nav-link scrollto " href="#portfolio">Créer un compte</a></li>
+          <li><a class="nav-link scrollto " href="{{ route('login') }}">Se Connecter</a></li> --}}
+          
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>

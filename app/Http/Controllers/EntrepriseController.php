@@ -45,6 +45,7 @@ class EntrepriseController extends Controller
     public function creation(Request $request)
     {
         $type_entreprise=$request->type_entreprise;
+        $programme=$request->programme;
         $promoteur_code= $request->promoteur_code;
         $promoteur=Promoteur::where('code_promoteur',$promoteur_code )->first();
         if(!empty($request->entreprise)){
@@ -60,31 +61,35 @@ class EntrepriseController extends Controller
         $sys_suivi_activites=Valeur::where('parametre_id',13 )->get();
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
         $futur_annees=Valeur::where('parametre_id',17 )->get();
-        $rentabilite_criteres=Valeur::where('parametre_id',14)->whereIn('id',[env("VALEUR_ID_NOMBRE_CLIENT"),env("VALEUR_ID_CHIFFRE_DAFFAIRE")])->get();
+        $rentabilite_criteres=Valeur::where('parametre_id',14)->whereIn('id',[env("VALEUR_ID_CHIFFRE_DAFFAIRE")])->get();
         $effectifs=Valeur::where('parametre_id',15 )->get();
         $secteur_activites= Valeur::where('parametre_id', env('PARAMETRE_SECTEUR_ACTIVITE_ID') )->get();
         $nb_annee_activites= Valeur::where('parametre_id', env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT') )->get();
         $techno_utilisees= Valeur::where('parametre_id', env('PARAMETRE_TECHNO_UTILISE_ENTREPRISE_ID') )->get();
-        $nouveaute_entreprises=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
+        $projet_innovations=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
+     
         $ouinon_reponses=Valeur::where('parametre_id',env("PARAMETRE_REPONSES_OUINON_ID") )->get();
         $niveau_resiliences=Valeur::where('parametre_id',env("PARAMETRE_NIVEAUDE_RESILIENCE_ID") )->get();
-
+        $guichets=Valeur::where('parametre_id',49 )->get();
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
         $difficultes=Valeur::where('parametre_id',47 )->get();
 
-        $indicateur_previsionel_du_projets=Valeur::where('parametre_id',46 )->whereNotIn('id',[7155])->get();
+        $indicateur_previsionel_du_projets=Valeur::where('parametre_id',46 )->whereIn('id',[7155])->get();
         $futur_annees=Valeur::where('parametre_id',17 )->get();
         $entreprise=$request->entreprise;
         //dd($entreprise);
         if(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& $type_entreprise=='MPMEExistant'){
-            return view("fond_partenariat.create_entreprise", compact('difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","nouveaute_entreprises","ouinon_reponses","niveau_resiliences"));
+            return view("fond_partenariat.create_entreprise", compact('difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","innovation_du_projets","ouinon_reponses","niveau_resiliences"));
         }
-        elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& $type_entreprise!='MPMEExistant'){
-            return view("fond_partenariat.create_preprojetstartup", compact('difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","nouveaute_entreprises","ouinon_reponses","niveau_resiliences"));
+        elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme == 'FP' &&$type_entreprise!='MPMEExistant')){
+            return view("fond_partenariat.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+        }
+        elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme=='PE' && $type_entreprise=='startup')){
+            return view("programme_entreprendre.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         elseif($promoteur->suscription_etape==2 && $type_entreprise=='MPMEExistant'){
-           
-            return view("fond_partenariat.projet_souscription", compact('difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","nouveaute_entreprises","ouinon_reponses","niveau_resiliences"));
+            //dd($projet_innovations);
+            return view("fond_partenariat.projet_souscription", compact("projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         else{
             return view("fond_partenariat.validateStep1", compact("promoteur"))->with('success','Item created successfully!');
@@ -102,9 +107,9 @@ class EntrepriseController extends Controller
     {
         $promoteur=Promoteur::where("code_promoteur",$request->code_promoteur)->first();
         $type_entreprise=$request->type_entreprise;
-      
+        $programme=$request->programme;
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get(); 
-        $rentabilite_criteres=Valeur::where('parametre_id',14)->whereIn('id',[env("VALEUR_ID_NOMBRE_CLIENT"),env("VALEUR_ID_CHIFFRE_DAFFAIRE")])->get();
+        $rentabilite_criteres=Valeur::where('parametre_id',14)->whereIn('id',[env("VALEUR_ID_CHIFFRE_DAFFAIRE")])->get();
         $effectifs=Valeur::where('parametre_id',15 )->get();
         $nouveaute_entreprises=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
         $entreprises= Entreprise::where('promoteur_id',$promoteur->id)->get();
@@ -127,18 +132,11 @@ class EntrepriseController extends Controller
             'formalise'=>$request->formalise,
             'date_de_formalisation'=>$date_de_formalisation,
             'num_rccm'=>$request->num_rccm,
-            'forme_juridique'=>$request->forme_juridique,
-            'num_rccm'=>$request->num_rccm,
             'structure_financiere'=>$request->structure_financiere_entreprise,
             //'banque_entreprise'=>$request->structure_financiere_entreprise,
             'compte_dispo'=>$request->compte_dispo,
-            'systeme_suivi'=>$request->systeme_suivi,
-            'type_sys_suivi'=>$request->type_de_systeme_suivi,
             'code_promoteur'=>$request->code_promoteur,
             'promoteur_id'=>$promoteur->id,
-            'affecte_par_securite'=>$request->affecte_par_securite,
-            'desc_affecte_par_securite'=>$request->description_effet_securite,
-            'niveau_resilience'=>$request->niveau_resilience,
             'status'=>0,
             'phase_de_souscription'=>2,
         ]);
@@ -164,10 +162,10 @@ class EntrepriseController extends Controller
             $difficultes=$request->difficultes;
             if($difficultes){
                 foreach($difficultes as $difficulte){
-                        EntrepriseDifficulte::create([
-                                'entreprise_id'=>$entreprise->id,
-                                'difficulte_id'=>$difficulte,
-                        ]);
+                    EntrepriseDifficulte::create([
+                    'entreprise_id'=>$entreprise->id,
+                    'difficulte_id'=>$difficulte,
+                ]);
                 }
                 }
         foreach($rentabilite_criteres as $rentabilite_critere){
@@ -201,11 +199,12 @@ class EntrepriseController extends Controller
     $entreprise_nn_traite= Entreprise::where('code_promoteur', $promoteur->code_promoteur)->get();
         //nombre de nouvelle entreprise enregistré pas le promoteur
         $nbre_ent_nn_traite = count($entreprise_nn_traite);
+       // dd($entreprise_nn_traite);
  }
  else{
    $entreprise= Entreprise::where("code_promoteur",$promoteur->code_promoteur)->where("denomination",$request->denomination)->first()->id;
  }
-return view("fond_partenariat.validateStep1", compact("type_entreprise","promoteur","entreprise","nbre_ent_nn_traite"));
+return view("fond_partenariat.validateStep1", compact("programme","type_entreprise","promoteur","entreprise"));
 
 // else{
 //     return view("fond_partenariat.validateStep2", compact("promoteur") );
@@ -232,7 +231,6 @@ $entreprise_nn_traite= Entreprise::where('code_promoteur', $request->promoteur_c
     $entreprise= Entreprise::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
     $promoteur_code=$promoteur->code_promoteur;
     $regions=Valeur::where('parametre_id',1 )->whereNotIn('id', [62,64,63,59,58,53])->get();
-
     $forme_juridiques=Valeur::where('parametre_id',8 )->get();
     $nature_clienteles=Valeur::where('parametre_id',10 )->get();
     $provenance_clients=Valeur::where('parametre_id',9 )->get();

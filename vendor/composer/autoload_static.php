@@ -674,6 +674,7 @@ class ComposerStaticInit9a4913df48d16945f93c7a0c81571182
         'App\\Models\\Preprojet' => __DIR__ . '/../..' . '/app/Models/Preprojet.php',
         'App\\Models\\Promoteur' => __DIR__ . '/../..' . '/app/Models/Promoteur.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
+        'App\\Models\\SourceDapprovisionnement' => __DIR__ . '/../..' . '/app/Models/SourceDapprovisionnement.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\Valeur' => __DIR__ . '/../..' . '/app/Models/Valeur.php',
         'App\\Policies\\AccomptePolicy' => __DIR__ . '/../..' . '/app/Policies/AccomptePolicy.php',

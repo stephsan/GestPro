@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="section-title">
-      <h3>Information sur l'activité</h3>
+      <h3>Informations de l'entreprise</h3>
       </div>
       
       <div class="block">
@@ -70,161 +70,75 @@
 
                                         </div>
                                     </div>
-
                                  <div class="offset-md-1 col-lg-5">
                                     </fieldset>
                                             <fieldset>
-                                                <legend>Contact</legend>
+                                                <legend>Informations sur l'activite</legend>
                                                 <div class="form-group">
-                                                    <label class="control-label" for="email_entreprise">Email <span class="text-danger">*</span></label>
+                                                    <label class="control-label" for="val_email">Secteur d'activité <span class="text-danger">*</span></label>
                                                         <div class="input-group">
-                                                            <input  type="email" id="email_entreprise" name="email_entreprise" class="form-control" value="{{old("email_entreprise")}}" placeholder="test@example.com" required >
-
+                                                            <select id="secteur_activite" name="secteur_activite" class="select-select2" data-placeholder="Renseigner le secteur d'activite de votre entreprise" value="{{old("region")}}"   style="width:100%;" required>
+                                                                <option></option><!-- Required for data-placeholder attribute to work with select2 plugin -->
+                                                                @foreach ($secteur_activites as $secteur_activite )
+                                                                        <option value="{{ $secteur_activite->id  }}" {{ old('secteur_activite') == $secteur_activite->id ? 'selected' : '' }}>{{ $secteur_activite->libelle }}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label" for="val_email">Téléphone<span class="text-danger">*</span></label>
+                                                    <label class=" control-label" for="example-chosen">Maillon d'activité<span class="text-danger">*</span></label>
+                                                        <select id="maillon_activite" name="maillon_activite" class="select-select2" data-placeholder="Choisir le maillon d'activite" style="width: 100%;" required onchange="afficherautre('maillon_activite',  {{ env('VALEUR_ID_AUTRE_MAILLON_ACTIVITE') }} ,'autre_maillon_activite');">
+                                                            <option></option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
+                                                            @foreach ($maillon_activites as $maillon_activite )
+                                                                <option value="{{ $maillon_activite->id  }}" {{ old('maillon_activite') == $maillon_activite->id ? 'selected' : '' }} value="{{ $maillon_activite->id }}">{{ $maillon_activite->libelle }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class=" control-label" for="example-chosen">Nombre d’années d’existence de l’entreprise  <span class="text-danger">*</span></label>
+                                                           <select id="nbre_dannee_experience" name="nombre_annee_experience" class="select-select2" data-placeholder="Quel est votre niveau d'instruction.."  style="width: 100%;"  required>
+                                                               <option></option>
+                                                               @foreach ($nbre_dannee_experiences as $nbre_dannee_experience )
+                                                                    <option value="{{ $nbre_dannee_experience->id  }}" {{ old('nombre_annee_experience') == $nbre_dannee_experience->id ? 'selected' : '' }}>{{ $nbre_dannee_experience->libelle }}</option>
+                                                               @endforeach
+                                                           </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label" for="example-chosen">Entreprise est-elle formalisée?<span class="text-danger">*</span></label>
+                
+                                                        <select id="formalise" name="formalise" class="select-select2" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
+                                                            <option></option>
+                                                            <option value="1" {{ old('formalise') == 1 ? 'selected' : '' }}>Oui</option>
+                                                            <option value="2" {{ old('formalise') == 2 ? 'selected' : '' }}>Non</option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
+                                                        </select>
+                
+                                                </div>
+                                                <div class="form-group entreformalise">
+                                                    <label class=" control-label" for="val_username">Date de formalisation</label>
                                                         <div class="input-group">
-                                                            <input type="text" id="val_email" name="telephone_entreprise" class="form-control masked_phone" placeholder="numéro de téléphone de l'entreprise" value="{{old("telephone_entreprise")}}" required >
+                                                            <input type="text" id="" name="date_de_formalisation" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="Date de formalisation de l'entreprise .." value="{{old('date_de_formalisation')}}" >
                                                         </div>
                                                 </div>
-                            </fieldset>
-                        </div>
-                    </div>
-                <div class="row">
-                    <fieldset>
-                        <legend>Informations sur l'activite</legend>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label class="control-label" for="val_email">Secteur d'activité <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <select id="secteur_activite" name="secteur_activite" class="select-select2" data-placeholder="Renseigner le secteur d'activite de votre entreprise" value="{{old("region")}}"   style="width:100%;" required>
-                                                <option></option><!-- Required for data-placeholder attribute to work with select2 plugin -->
-                                                @foreach ($secteur_activites as $secteur_activite )
-                                                        <option value="{{ $secteur_activite->id  }}" {{ old('secteur_activite') == $secteur_activite->id ? 'selected' : '' }}>{{ $secteur_activite->libelle }}</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-
-                                </div>
-                                {{-- <div class="form-group">
-                                    <label class=" control-label" for="val_email">Nombre d'annee d'existence de l'entreprise <span class="text-danger">*</span><span data-toggle="tooltip" title="Nombre d’années d’existence de l’entreprise (depuis le début des activités"><i class="fa fa-info-circle"></i></span></label>
-
-                                        <div class="input-group">
-                                            <select id="nombre_annee_existence" name="nombre_annee_existence" class="select-select2" data-placeholder="Le nombre d'année d'existence de l'entreprise .." value="{{old("region")}}"   style="width:100%;" required>
-                                                <option></option><!-- Required for data-placeholder attribute to work with select2 plugin -->
-                                                @foreach ($nb_annee_activites as $nb_annee_activite )
-                                                        <option value="{{ $nb_annee_activite->id  }}" {{ old('nb_annee_activite') == $nb_annee_activite->id ? 'selected' : '' }}>{{ $nb_annee_activite->libelle }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                </div> --}}
-                                <div class="form-group">
-                                    <label class="control-label " for="">Nombre d'annee d'existence de l'entreprise<span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <input id="nombre_annee_existence" type="number" min="0" max="100" name="nombre_annee_existence" class="form-control" data-placeholder="Nombre d'année d'expérience dans l'activité" value="{{old("nombre_annee_existence")}}" required >
-                                        </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class=" control-label" for="example-chosen">Maillon d'activité<span class="text-danger">*</span></label>
-                                        <select id="maillon_activite" name="maillon_activite" class="select-select2" data-placeholder="Choisir le maillon d'activite" style="width: 100%;" required onchange="afficherautre('maillon_activite',  {{ env('VALEUR_ID_AUTRE_MAILLON_ACTIVITE') }} ,'autre_maillon_activite');">
-                                            <option></option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
-                                            @foreach ($maillon_activites as $maillon_activite )
-                                                <option value="{{ $maillon_activite->id  }}" {{ old('maillon_activite') == $maillon_activite->id ? 'selected' : '' }} value="{{ $maillon_activite->id }}">{{ $maillon_activite->libelle }}</option>
-                                            @endforeach
-                                        </select>
-
-                                </div>
-                                <div class="form-group" id="autre_maillon_activite">
-                                    <label class=" control-label" for="">Précisez autre maillon</label>
-
-                                    <div class="input-group">
-                                        <input type="text"   name="autre_maillon_activite" class="form-control" placeholder="Précisez autre maillon d'activité " value="{{old("autre_maillon_activite")}}">
-
-                                    </div>
-                        </div>
-                                <div class="form-group">
-                                    <label class="control-label" for="example-chosen">Entreprise est-elle formalisée?<span class="text-danger">*</span></label>
-
-                                        <select id="formalise" name="formalise" class="select-select2" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
-                                            <option></option>
-                                            <option value="1" {{ old('formalise') == 1 ? 'selected' : '' }}>Oui</option>
-                                            <option value="2" {{ old('formalise') == 2 ? 'selected' : '' }}>Non</option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
-                                        </select>
-
+                                                <div class="form-group entreformalise">
+                                                    <label class=" control-label" for="val_email">Numéro RCCM</label>
+                                                        <div class="input-group">
+                                                            <input type="text" id="num_rccm" name="num_rccm" class="form-control" placeholder="numéro RCCM" value="{{old('num_rccm')}}" >
+                
+                                                        </div>
+                
+                                                </div>
+                                                <div class="entreformalise form-group{{ $errors->has('docrccm') ? ' has-error' : '' }}">
+                                                    <label class=" control-label" for="docidentite">Joindre une copie du RCCM</label>
+                                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" required>
+                                                    @if ($errors->has('docrccm'))
+                                                        <span class="help-block">
+                                                            <strong>{{ $errors->first('docrccm') }}</strong>
+                                                        </span>
+                                                        @endif
+                                                </div>
+                                     </fieldset>
                                 </div>
                             </div>
-                            <div class="offset-md-1 col-md-5">
-                                <div class="form-group entreformalise">
-                                    <label class=" control-label" for="val_username">Date de formalisation</label>
-                                        <div class="input-group">
-                                            <input type="text" id="" name="date_de_formalisation" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="Date de formalisation de l'entreprise .." value="{{old('date_de_formalisation')}}" >
-                                        </div>
-                                </div>
-                                <div class="form-group entreformalise">
-                                    <label class=" control-label" for="val_email">Numéro RCCM</label>
-                                        <div class="input-group">
-                                            <input type="text" id="num_rccm" name="num_rccm" class="form-control" placeholder="numéro RCCM" value="{{old('num_rccm')}}" >
-
-                                        </div>
-
-                                </div>
-                                <div class="entreformalise form-group{{ $errors->has('docrccm') ? ' has-error' : '' }}">
-                                    <label class=" control-label" for="docidentite">Joindre une copie du RCCM</label>
-                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" required>
-                                    @if ($errors->has('docrccm'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('docrccm') }}</strong>
-                                        </span>
-                                        @endif
-                                </div>
-
-                                <div class="form-group entreformalise">
-                                    <label class=" control-label" for="example-chosen">La forme juridique de l'entreprise</label>
-                                        <select id="forme_juridique" name="forme_juridique" class="select-chosen" data-placeholder="Choisir la forme juridique" style="width: 100%;" onchange="afficherautre('forme_juridique',  {{ env('VALEUR_ID_AUTRE_FORME_JURIDIQUE') }} ,'autre_forme_juridique');">
-                                            <option></option>
-                                            @foreach ($forme_juridiques as $forme_juridique)
-                                                <option value="{{ $forme_juridique->id  }}" {{ old('forme_juridique') == $forme_juridique->id ? 'selected' : '' }} value="{{ $forme_juridique->id }}">{{ $forme_juridique->libelle }}</option>
-                                            @endforeach
-                                        </select>
-                                </div>
-                                               {{-- <div class="form-group" id="autre_forme_juridique">
-                                    <label class=" control-label" for="">Précisez autre forme</label>
-                                    <div class="input-group">
-                                        <input type="text"   name="autre_forme_juridique" class="form-control" placeholder="Précisez autre forma juridique " value="{{old("autre_forme_juridique")}}" >
-
-                                    </div>
-                                </div> --}}
-                                <div class="form-group">
-                                    <label class=" control-label" for="example-chosen">Un agrément ou une autorisation est-il exigé pour votre activité ?<span class="text-danger">*</span></label>
-                                        <select id="agrement_exige" name="agrement_exige" class="select-select2" onchange="afficherSiOui('agrement_exige','aggrementdoc');" data-placeholder="Aggrément exigé pour l'activite?" style="width: 100%;" required>
-                                            <option></option>
-                                            <option value="1" {{ old('agrement_exige') == 1 ? 'selected' : '' }}>Oui</option>
-                                            <option value="2" {{ old('agrement_exige') == 2 ? 'selected' : '' }}>Non</option>
-                                            <!-- Required for data-placeholder attribute to work with Chosen plugin -->
-                                        </select>
-                                </div>
-                                {{-- <div class="form-group  col-md-5 aggremendispo" style="margin-left: 5%" >
-                                    <label class=" control-label" for="example-chosen">Agrement disponible?</label>
-                                        <select id="agrement_dispo" name="agrement_dispo" class="select-chosen"  data-placeholder="Choisir le genre" onchange="afficherSiOui('agrement_dispo','aggrementdoc');" style="width: 100%;" >
-                                            <option></option>
-                                            <option value="1" {{ old('agrement_dispo') == 1 ? 'selected' : '' }}>Oui</option>
-                                            <option value="2" {{ old('agrement_dispo') == 2 ? 'selected' : '' }}>Non</option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
-                                        </select>
-                                </div> --}}
-                                <div class="aggrementdoc form-group{{ $errors->has('docagrement') ? ' has-error' : '' }}">
-                                    <label class=" control-label" for="docagrement">Joindre l'agrement</label>
-                                        <input class="form-control" type="file" id="docagrement" accept=".pdf, .jpeg, .png" name="docagrement"  placeholder="Joindre une copie de l'agrement" required>
-                                    @if ($errors->has('docagrement'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('docagrement') }}</strong>
-                                        </span>
-                                        @endif
-                                </div>
-                            </div>
-                    </fieldset>
-                </div>
             </div>
 
         <div id="progress-second" class="step">
@@ -425,20 +339,7 @@
                         </div>
                     <div class="row">
                         <div class="col-md-5">
-                            {{-- <div class="form-group">
-                                <label class="control-label" for="example-chosen">Entreprise affectée par la covid? <span class="text-danger">*</span></label>
-                                    <select id="affecte_par_covid" name="affecte_par_covid" class="select-select2" onchange="afficher();" data-placeholder="Entreprise affectée par la covid?" style="width: 100%;" required>
-                                        <option></option>
-                                        @foreach ($ouinon_reponses as $ouinon_reponse )
-                                            <option value="{{$ouinon_reponse->id  }}" {{ old('affecte_par_covid') == $ouinon_reponse->id ? 'selected' : '' }} value="{{ $ouinon_reponse->id }}">{{ $ouinon_reponse->libelle }}</option>
-                                        @endforeach
-                                    </select>
-                   </div> --}}
-                            {{-- <div class="form-group">
-                                <label class=" control-label" for="example-textarea-input">Décrire les effects de COVID-19 sur l'activite<span data-toggle="tooltip" title="Décrivez brièvement comment votre entreprise a été affectée par la pandémie de COVID-19"><i class="fa fa-info-circle"></i></span> </label>
-                                    <textarea id="description_effect_covid" name="description_effect_covid" rows="9" class="form-control" placeholder="Décrivez brièvement comment votre entreprise a été affectée par la pandémie de COVID-19" autofocus required title="Ce champ est obligatoire">{{old('description_activite') }}</textarea>
-                            </div> --}}
-    
+                           
                         </div>
                         <div class="offset-md-1 col-md-5">
                                 <div class="form-group">
@@ -451,7 +352,7 @@
                                         </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class=" control-label" for="example-textarea-input">Décrire les effects de la crise sécuritaire sur l'activite <span data-toggle="tooltip" title="Décrivez brièvement comment votre entreprise a été affectée par la crise securitaire"><i class="fa fa-info-circle"></i></span> </label>
+                                    <label class=" control-label" for="example-textarea-input">Décrire les effets de la crise sécuritaire sur l'activité <span data-toggle="tooltip" title="Décrivez brièvement comment votre entreprise a été affectée par la crise securitaire"><i class="fa fa-info-circle"></i></span> </label>
                                         <textarea id="description_effet_securite" name="description_effet_securite" rows="9" class="form-control" placeholder="Décrivez brièvement comment votre entreprise a été affectée par la crise securitaire" autofocus required title="Ce champ est obligatoire">{{old('description_activite') }}</textarea>
                                 </div>
                         </div>

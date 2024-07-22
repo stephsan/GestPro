@@ -14,7 +14,7 @@
 
     <!-- Wizard with Validation Title -->
     <div class="block-title">
-        <h2><strong>Enregistrement des données personelles de la promotrice </h2>
+        <h2><strong>Enregistrement des données personnelles du promoteur </h2>
     </div>
     @if($promoteur->suscription_etape == 1)
         <p> Vous avez validé la prémière étape de la souscription.</p>
@@ -30,6 +30,8 @@
             @csrf
             <input type="hidden" name="promoteur_code" value="{{ $promoteur->code_promoteur }}">
              <input type="hidden" name="type_entreprise" value={{ $type_entreprise }}>
+             <input type="hidden" name="programme" value={{ $programme }}>
+
             
                 @if($promoteur->suscription_etape != 3)
                 @if($promoteur->suscription_etape == 2)

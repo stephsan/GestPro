@@ -48,6 +48,8 @@ Route::middleware([
 });
 Route::post("/contact/message/", [SouscriptionPEController::class, "contactSendMessage"])->name("contact");
 Route::get('page/souscription/PF/personne', [SouscriptionPEController::class,'create_personne'])->name('fp.create.personne');
+Route::get('page/souscription/PE/personne', [SouscriptionPEController::class,'create_personne'])->name('pe.create.personne');
+
 Route::get('page/souscription/PF/entreprise', [SouscriptionPEController::class,'create_entreprise'])->name('fp.create.entreprise');
 Route::resource("promoteur", PromoteurController::class);
 Route::resource("entreprise", EntrepriseController::class);

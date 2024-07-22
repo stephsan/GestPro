@@ -1,80 +1,81 @@
 @extends('layouts.frontend')
 @section('content')
-<section id="hero" class="d-flex align-items-center">
-    <div class="container" data-aos="zoom-out" data-aos-delay="100">
-      <h1><p class="titre-entete1">Bienvenue sur le portail de souscription de <span>ECOTEC</span></p> </h1>
-   <h3 class="titre-entete"> <center>PROJET D’APPUI À L’ENTREPRENARIAT, AU DEVELOPPEMENT DES COMPETENCES ET À L’ADOPTION TECHNOLOGIQUE </center></h3> 
-      <div class="d-flex" >
-        {{-- <button type="button"  class="btn-get-started scrollto" data-toggle="modal" class="btn-get-started scrollto" data-target="#modal-choix-option"> S'inscrire</button> --}}
-        <div class="col-md-10" style="margin : auto; display: block;" >
-          {{-- <a href="" data-toggle="modal" class=" btn-get-started scrollto" >S'incrire au Programme Entreprendre</a>
-          <a href="" data-toggle="modal" class="btn-get-started scrollto"  style="margin-left:6px;">S'incrire au Fonds de Partenariat</a> --}}
-        </div>
-        
-      </div>
-    </div>
+<section id="hero" class="d-flex align-items-center" >
+  <div class="row"  data-aos="zoom-out">
+     <img src="{{ asset('/img/banniere.jpeg') }}"  alt="">
+  </div>
+    {{-- <div class="container" data-aos="zoom-out" data-aos-delay="100">
+    </div> --}}
   </section><!-- End Hero -->
     <!-- ======= Featured Services Section ======= -->
-    <section id="pricing" class="pricing">
+    {{-- <section id="services" class="services">
       <div class="container" data-aos="fade-up">
 
-        {{-- <div class="section-title">
-          <h3>Les liens de <span>Souscription</span></h3>
-          <p>Choisir un la rubrique aui vous concerne.</p>
-        </div> --}}
-
         <div class="row">
-
-          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
-              <span class="advanced">Startup</span>
-              <h3> Programme entreprendre</h3>
-              {{-- <h2>Programme entreprendre</h2> --}}
-              <ul>
-                <li>Entreprise en démarrage</li>
-                <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
-              </ul>
-              <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">S'inscrire</a>
-              </div>
+          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bxl-dribbble"></i></div>
+              <h4><a href="">Programme entreprendre </a></h4>
+              <p>Renforcer les capacités des PME et l’adoption des technologies</p>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-file"></i></div>
+              <h4><a href="">Fonds de partenariat </a></h4>
+              <p>Améliorer l’accès des PME au financement et aux investissements verts </p>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </section> --}}
+    <section id="pricing" class="pricing">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+
+          </div>
+        </div>
+          <div class="col-lg-6 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
             <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
-              <span class="advanced">MPME Existant</span>
+              {{-- <span class="advanced">MPME Existant</span> --}}
               <h3>Programme entreprendre</h3>
-              <ul>
-                <li>Entreprise Existante</li>
-                <li>Vous souhaitez bénéficier d'un renforcement de capacité</li>
-              </ul>
+              <p style="font-size: 18px;   text-align: justify;">
+                Le Programme Entreprendre et de renforcement des capacités des entreprises ou « Programme Entreprendre », fournira une formation de groupe et une assistance technique. Le programme permettra de mettre à niveau des chaînes de valeur et des grappes industrielles précises.
+              </p>
+
               <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistant" href="#">S'inscrire</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre" href="#">S'inscrire</a>
                 {{-- <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistan" href="#">S'inscrire</a> --}}
               </div>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
+          <div class="col-lg-6 col-md-6 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
             <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
-              <span class="advanced">Startup</span>
+              {{-- <span class="advanced">Startup</span> --}}
               <h3>Fonds de partenariat</h3>
               {{-- <h4><sup>$</sup>29<span> / month</span></h4> --}}
-              <ul>
-                <li>Entreprise en démarrage</li>
-                <li>Vous souhaitez bénéficier d'un financement</li>
-              </ul>
+              <p style="font-size: 18px;   text-align: justify;">
+                Le Fonds de Partenariat cofinancera les investissements dans les biens d’équipement, l’assistance technique pour soutenir l’adoption des technologies, l’innovation des entreprises et des produits, l’obtention de certifications des produits et d’accréditations de la qualité
+              </p>
+              {{-- <ul>
+                <li>Le Fonds de Partenariat cofinancera les investissements dans les biens d’équipement, l’assistance technique pour soutenir l’adoption des technologies, l’innovation des entreprises et des produits, l’obtention de certifications des produits et d’accréditations de la qualité</li>
+              </ul> --}}
               <div class="btn-wrap">
-                <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">S'inscrire</a>
+                <a class="btn-buy" data-toggle="modal" data-target="#modal-programme-fond-de-partenariat" href="#">S'inscrire</a>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-3 col-md-6 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
+          {{-- <div class="col-lg-3 col-md-6 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="400">
             <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
               <span class="advanced">MPME Existante</span>
               <h3>Fonds de partenariat</h3>
-              {{-- <h4><sup>$</sup>49<span> / month</span></h4> --}}
                 <ul>
                   <li>Entreprise Existante</li>
                   <li>Vous souhaitez bénéficier d'un financement</li>
@@ -83,8 +84,7 @@
                 <a class="btn-buy" data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">S'inscrire</a>
               </div>
             </div>
-          </div>
-
+          </div> --}}
         </div>
 
       </div>
@@ -130,54 +130,9 @@
         </div>
 
       </div>
-      
+
     </section><!-- End Featured Services Section -->
-    <section id="services" class="services">
-      <div class="container" data-aos="fade-up">
 
-        <div class="section-title">
-          <!-- <h2>Services</h2> -->
-          <h3>OBJECTIFS</h3>
-          <!-- <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p> -->
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4><a href="">Renforcer les capacités des PME et l’adoption des technologies </a></h4>
-              <p>Renforcer les capacités des PME et l’adoption des technologies</p>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-file"></i></div>
-              <h4><a href="">Améliorer l’environnement des affaires et le développement des PME </a></h4>
-              <p>Améliorer l’environnement des affaires et le développement des PME </p>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4><a href="">Améliorer l’accès des PME au financement et aux investissements verts </a></h4>
-              <p>Améliorer l’accès des PME au financement et aux investissements verts </p>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-world"></i></div>
-              <h4><a href="">Développer une main-d’œuvre productive et entreprenante</a></h4>
-              <p>Développer une main-d’œuvre productive et entreprenante</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
     <div class="section-title">
       <h3>QUELQUES RESULTATS ATTENDUS</h3>
       </div>
@@ -189,7 +144,7 @@
           <div class="col-lg-3 col-md-6">
             <div class="count-box">
               <i class="bi bi-emoji-smile"></i>
-              <span data-purecounter-start="0" data-purecounter-end="1300" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" data-purecounter-end="1550" data-purecounter-duration="1" class="purecounter"></span>
               <p>Entrepreneurs/entreprises participant au Programme de renforcement des capacités </p>
             </div>
           </div>
@@ -205,7 +160,7 @@
           <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
             <div class="count-box">
               <i class="bi bi-headset"></i>
-              <span data-purecounter-start="0" data-purecounter-end="8000000000" data-purecounter-duration="1" class="purecounter">FCFA</span>
+              <span data-purecounter-start="0" data-purecounter-end="" data-purecounter-duration="1" class="purecounter">8 Milliars FrCFA</span>
               <p> De co-investissements privés mobilisé par le Fonds de partenariat </p>
             </div>
           </div>
@@ -260,7 +215,7 @@
     <!-- End Clients Section -->
 
     <!-- ======= Services Section ======= -->
-    
+
 
     <!-- ======= Testimonials Section ======= -->
     <div class="section-title">
@@ -271,7 +226,7 @@
     <section id="testimonials" class="testimonial">
       <div class="container" data-aos="zoom-in">
 
-        
+
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
           <div class="swiper-wrapper">
               <div class="swiper-slide" >
@@ -302,7 +257,7 @@
       </div>
     </section><!-- End Testimonials Section -->
 
-   
+
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
@@ -320,14 +275,20 @@
               <i class="bx bx-map"></i>
               <h3>Notre Adresse</h3>
               <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+              <hr>
+              {{-- <p><span class="col-md-3">Centre Est</span> <span class="col-md-8"> 70000000 </span> </p>
+              <p><span class="col-md-3">Nord</span> <span class="col-md-8"> 70000000 </span> </p>
+              <p><span class="col-md-3">Hauts-Bassin</span> <span class="col-md-8"> 70000000 </span> </p>
+              <p><span class="col-md-3">Centre-nord</span> <span class="col-md-8"> 70000000 </span> </p> --}}
             </div>
+           
           </div>
 
           <div class="col-lg-3 col-md-6">
             <div class="info-box  mb-4">
               <i class="bx bx-envelope"></i>
               <h3>Envoyez-nous un mail</h3>
-              <p>info@me.bf</p>
+              <p>infoecotec@me.bf</p>
             </div>
           </div>
 
@@ -340,7 +301,32 @@
           </div>
 
         </div>
-
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+          
+            <div class="info-box col-md-3 mb-4">
+              <i class="bx bx-map"></i>
+              <h3>Nord</h3>
+              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+          
+          </div>
+            
+            <div class="info-box col-md-3 mb-4">
+              <i class="bx bx-map"></i>
+              <h3>Hauts-Bassin</h3>
+              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+            </div>
+            <div class="info-box col-md-3 mb-4">
+              <i class="bx bx-map"></i>
+              <h3>Centre Est</h3>
+              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+            </div>
+            <div class="info-box col-md-3 mb-4">
+              <i class="bx bx-map"></i>
+              <h3>Centre-Ouest</h3>
+              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+            </div>
+          
+        </div>
         <div class="row" data-aos="fade-up" data-aos-delay="100">
 
           <div class="col-lg-6 ">
@@ -414,7 +400,7 @@
 
             <a href="" data-toggle="modal" class="btn btn-success" >Programme Entreprendre</a>
             <a href="" data-toggle="modal" class="btn btn-success" >Fonds de Partenariat</a>
-              
+
           </div>
           <div class="modal-footer">
               <button type="button"class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
@@ -429,4 +415,4 @@
 
 
 
-@endsection  
+@endsection

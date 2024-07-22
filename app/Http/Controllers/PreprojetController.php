@@ -10,6 +10,7 @@ use App\Models\Infoeffectifentreprise;
 use App\Models\Promoteur;
 use App\Models\Evaluation;
 use App\Models\InnovationProjet;
+use App\Models\SourceDapprovisionnement;
 use Illuminate\Support\Facades\DB;
 use App\Models\Valeur;
 use App\Models\Entreprise;
@@ -154,15 +155,16 @@ class PreprojetController extends Controller
     public function store_preprojet(Request $request){
         //dd($request->all());
         $type_entreprise=$request->type_entreprise;
-
+        $programme=$request->programme;
        // dd($type_entreprise);
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
         $indicateur_previsionel_du_projets=Valeur::where('parametre_id',46 )->whereNotIn('id',[7155])->get();
         $futur_annees=Valeur::where('parametre_id',17 )->get();
+        $source_appros=Valeur::where('parametre_id',12 )->get();
         $effectifs=Valeur::where('parametre_id',15 )->get();
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
         $promoteur= Promoteur::where('code_promoteur',$request->code_promoteur)->first();
-
+        $nouveaute_projets=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
         $lastOne = DB::table('preprojets')->latest('id')->first();
         if($lastOne){
             $num_projet = $promoteur->code_promoteur.'_00'.$lastOne->id;
@@ -173,6 +175,7 @@ class PreprojetController extends Controller
         $entreprise_nn_traite= Entreprise::where('promoteur_id', $promoteur->id)->get();
         $preprojet_controle_doublon= Preprojet::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
         //dd(count($preprojet_controle_doublon));
+        //dd($request->all());
             if(count($preprojet_controle_doublon)==0){
             $preprojet=Preprojet::create([
                 "titre_projet"=> $request->titre_projet,
@@ -181,18 +184,36 @@ class PreprojetController extends Controller
                 "region"=>  $request->region,
                 "province"=>  $request->province,
                 "commune"=>  $request->commune,
+                "guichet"=>  $request->guichet,
                 "secteur_village"=>  $request->arrondissement,
-                "aggrement_exige"=>  $request->agrement_exige,
-                "promesse_de_financement"=>  $request->promesse_de_financement,
+                
+
+            'nbre_innovation'=>$request->nbre_innovation,
+            'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
+            'nbre_nouveau_produit'=>$request->nbre_nouveau_produit,
+            'effectif_permanent_homme'=>$request->effectif_permanent_homme,
+            'effectif_permanent_femme'=>$request->effectif_permanent_femme,
+            'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
+            'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
+
                 "origine_clientele"=> $request->provenance_clientele,
                 "type_clientele"=>  $request->nature_client,
                 "site_disponible"=>$request->site_disponible,
+                "type_site"=>$request->type_site,
                 "description"=>  $request->description_idee_de_projet,
                 "objectifs"=>  $request->objectifs_projet,
                 "cout_total"=>  reformater_montant2($request->cout_total),
                 "apport_personnel"=>  reformater_montant2($request->apport_personnel),
                 "subvention_souhaite"=>  reformater_montant2($request->subvention_sollicite),
-                "autre_ninancement"=>  reformater_montant2($request->autre_source),
+                "autre_financement"=>  reformater_montant2($request->autre_source),
+                'nbre_innovation'=>$request->nbre_innovation,
+                'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
+                'nbre_nouveau_produit'=>$request->nbre_nouveau_produits,
+                'effectif_permanent_homme'=>$request->effectif_permanent_homme,
+                'effectif_permanent_femme'=>$request->effectif_permanent_femme,
+                'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
+                'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
+                'chiffre_daffaire_previsionnel'=>$request->chiffre_daffaire_previsionnel,
                 "num_projet"=>  $num_projet,
                 "entreprise_id"=>  $request->entreprise_id,
                 "promoteur_id"=> $promoteur->id
@@ -216,32 +237,44 @@ class PreprojetController extends Controller
             else{
                 $urldocsite=null;
             }
-        foreach($indicateur_previsionel_du_projets as $indicateur_previsionel_du_projet){
-            foreach($futur_annees as $futur_annee){
-                $variable=$indicateur_previsionel_du_projet->id.$futur_annee->id;
-                Infoentreprise::create([
-                    "indicateur"=>$indicateur_previsionel_du_projet->id,
-                    "annee"=>$futur_annee->id,
-                    "quantite"=>$request->$variable,
-                    "preprojet_id"=>$preprojet->id,
-                    "code_promoteur"=>$request->code_promoteur
-                ]);
-            }
-        }
-        foreach($effectifs as $effectif){
-            foreach($futur_annees as $futur_annee){
-                $homme=$effectif->id.$futur_annee->id."homme";
-                $femme=$effectif->id.$futur_annee->id."femme";
-                Infoeffectifentreprise::create([
-                    "effectif"=>$effectif->id,
-                    "annee"=>$futur_annee->id,
-                    "homme"=>$request->$homme,
-                    "femme"=>$request->$femme,
-                    "preprojet_id"=>$preprojet->id,
-                    "code_promoteur"=>$request->code_promoteur
-                ]);
-            }
-        }
+        // foreach($indicateur_previsionel_du_projets as $indicateur_previsionel_du_projet){
+        //     foreach($futur_annees as $futur_annee){
+        //         $variable=$indicateur_previsionel_du_projet->id.$futur_annee->id;
+        //         Infoentreprise::create([
+        //             "indicateur"=>$indicateur_previsionel_du_projet->id,
+        //             "annee"=>$futur_annee->id,
+        //             "quantite"=>$request->$variable,
+        //             "preprojet_id"=>$preprojet->id,
+        //             "code_promoteur"=>$request->code_promoteur
+        //         ]);
+        //     }
+        // }
+        // foreach($nouveaute_projets as $nouveaute_projet){
+        //     foreach($futur_annees as $futur_annee){
+        //         $variable=$nouveaute_projet->id.$futur_annee->id;
+        //         Infoentreprise::create([
+        //             "indicateur"=>$nouveaute_projet->id,
+        //             "annee"=>$futur_annee->id,
+        //             "quantite"=>$request->$variable,
+        //             "preprojet_id"=>$preprojet->id,
+        //             "code_promoteur"=>$request->code_promoteur,
+        //         ]);
+        //     }
+        // }
+        // foreach($effectifs as $effectif){
+        //     foreach($futur_annees as $futur_annee){
+        //         $homme=$effectif->id.$futur_annee->id."homme";
+        //         $femme=$effectif->id.$futur_annee->id."femme";
+        //         Infoeffectifentreprise::create([
+        //             "effectif"=>$effectif->id,
+        //             "annee"=>$futur_annee->id,
+        //             "homme"=>$request->$homme,
+        //             "femme"=>$request->$femme,
+        //             "preprojet_id"=>$preprojet->id,
+        //             "code_promoteur"=>$request->code_promoteur
+        //         ]);
+        //     }
+        // }
         $innovations=$request->innovation_du_projets;
         if($innovations){
             foreach($innovations as $innovation){
@@ -251,6 +284,16 @@ class PreprojetController extends Controller
                     ]);
             }
             }
+        
+            $sources_dapprovisionnements=$request->source_appros;
+            if($sources_dapprovisionnements){
+                foreach($sources_dapprovisionnements as $sources_dapprovisionnement){
+                    SourceDapprovisionnement::create([
+                                'projet_id'=>$preprojet->id,
+                                'source_id'=>$sources_dapprovisionnement,
+                        ]);
+                }
+                }
 //Debut de l'evaluation du preprojet
 //critere transversal
 /* age et sexe du promoteur */
@@ -310,7 +353,7 @@ elseif($preprojet->entreprise_id==null){
         
     }
         $nbre_ent_nn_traite = count($entreprise_nn_traite);
-        return view("fond_partenariat.validateStep1", compact("type_entreprise","promoteur","nbre_ent_nn_traite"));
+        return view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
   }
     /**
      * Show the form for editing the specified resource.

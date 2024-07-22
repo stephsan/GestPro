@@ -62,9 +62,9 @@ class PromoteurController extends Controller
         $nb_annee_experience=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
         $proportiondedepences= Valeur::where('parametre_id', 31)->get();
         $type_handicaps= Valeur::where('parametre_id', 48)->get();
-
+        $occupation_professionnelle_actuelles =Valeur::where("parametre_id",env('PARAMETRE_OCCUPATION_PROFESSIONNELLE'))->get();
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
-        return view("public.subscription", compact('type_handicaps',"regions", "niveau_instructions","nb_annee_experience","proportiondedepences","annees"));
+        return view("public.subscription", compact('occupation_professionnelle_actuelles','type_handicaps',"regions", "niveau_instructions","nb_annee_experience","proportiondedepences","annees"));
     }
 
     /**
@@ -76,6 +76,8 @@ class PromoteurController extends Controller
     public function store(Request $request)
     {
         $type_entreprise= $request->type_entreprise;
+        $programme= $request->programme;
+        // dd( $type_entreprise.''.$programme);
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
         $this->email = $request->email_promoteur;
         $this->nom = $request->nom_promoteur;
@@ -129,13 +131,14 @@ class PromoteurController extends Controller
             'arrondissement_residence' => $request->arrondissement_residence,
             'niveau_instruction' => $request->niveau_instruction,
             'autre_niveau_dinstruction' => $request->autre_niveau_instruction,
-            'autre_occupation_pro'=> $request->autre_occupation,
+            'numero_du_proche'=> $request->numero_du_proche,
             // 'domaine_formation'=> $request->domaine_formation,
             'nombre_annee_experience'=> $request->nombre_annee_experience,
             'precision_residence' => $request->precision_residence,
             'formation_en_rapport_avec_activite' => $request->formation_activite,
             'occupation_professionnelle_actuelle' => $request->occupation_pro_actuelle,
             'membre_ass' => $request->membre_ass,
+            'occupation_professionnelle_actuelle'=>$request->situation_professionnelle,
             // 'compte_perso_existe' => $request->compte_perso_existe,
             // 'structure_financiere_personne'=> $request->structure_financiere_personne,
             'associations' => $request->associations,
@@ -154,7 +157,7 @@ class PromoteurController extends Controller
               ]);
         }
         $dest=dispatch(new SendEmailJob($details));
-        return  view("fond_partenariat.validateStep1", compact("type_entreprise","promoteur"))->with('success','Item created successfully!');
+        return  view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
     }
 
     public function afficherform(){
