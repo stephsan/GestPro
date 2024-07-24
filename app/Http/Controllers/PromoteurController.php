@@ -264,9 +264,11 @@ class PromoteurController extends Controller
 
     }
     }
-    public function searchfp(Request $request){
+    public function search_promoteur(Request $request){
         $promoteur = Promoteur::where("code_promoteur", $request->code_promoteur)->first();
         $type_entreprise = $request->type_FP;
+        $programme = $request->programme;
+        //dd($type_entreprise);
        // dd($type_entreprise);
         if($promoteur==null){
             
@@ -283,14 +285,14 @@ class PromoteurController extends Controller
             if($promoteur->suscription_etape==2){
                 $entreprise= Entreprise::where("promoteur_id",$promoteur->id)->first();
                 $entreprise=$entreprise->id;
-                return view("fond_partenariat.validateStep1", compact('type_entreprise',"promoteur","entreprise",'nbre_ent_nn_traite'));
+                return view("fond_partenariat.validateStep1", compact('programme','type_entreprise',"promoteur","entreprise",'nbre_ent_nn_traite'));
             }
                 elseif($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null ){
-                return view("fond_partenariat.validateStep1", compact('type_entreprise',"promoteur"));
+                return view("fond_partenariat.validateStep1", compact('programme','type_entreprise',"promoteur"));
             }
             else{
                
-                return view("fond_partenariat.validateStep1", compact('type_entreprise',"promoteur","nbre_ent_nn_traite"));
+                return view("fond_partenariat.validateStep1", compact('programme','type_entreprise',"promoteur","nbre_ent_nn_traite"));
             }
         // }
         //     //S'il a une entreprise 
@@ -329,6 +331,7 @@ class PromoteurController extends Controller
     }
 
     public function search_promoteur_parcode_promoteur(Request $request){
+
                $promoteur= Promoteur::where('code_promoteur',$request->code_promoteur)->first();
                 if($promoteur){
                     return true;

@@ -76,6 +76,26 @@ else{
 
 $('#'+id).val(newval);
 }
+function controle_subvention(subvention,guichet){
+    var valsubvention= parseInt($("#"+subvention).val());
+    var valguichet= $("#"+guichet).val();
+    if(valguichet==7165 && valsubvention>10000000){
+            $('.message_subvention').show();
+            $("#"+subvention).val('');
+    }
+    else if(valguichet==7166 && valsubvention>50000000){
+        $('.message_subvention').show();
+        $("#"+subvention).val('');
+    }
+    else if(valguichet==7167 && valsubvention>100000000){
+        $('.message_subvention').show();
+        $("#"+subvention).val('');
+    }
+    else{
+        $('.message_subvention').hide();
+    }
+
+}
 
 function cout_preprojet(inputcout,input_apport_perso,input_subvention,input_autre){
     var cout= $("#"+inputcout).val();

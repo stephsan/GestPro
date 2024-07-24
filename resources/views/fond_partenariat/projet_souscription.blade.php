@@ -21,6 +21,7 @@
                     <div id="progress-first" class="step">
                         <input type="hidden" id="code_promoteur" name="code_promoteur" value="{{ $promoteur_code }}">
                         <input type="hidden" id="entreprise_id" name="entreprise_id" value="{{ $entreprise }}">
+                        <input type="hidden" id="programme" name="programme" value="{{ $programme }}">
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -161,8 +162,9 @@
                                     <div class="input-group">
                                      {{-- <input type="number"   id="num_rccm" name="te" value="" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire."> --}}
                                      {{-- <input type="text" id="denomination" name="denomination" class="form-control" placeholder="Entrez votre la dénomination" value="{{old("denomination")}}" required > --}}
-                                        <input type="text"   id="subvention_sollicite" name="subvention_sollicite"  class="form-control" placeholder=" subvention sollicitée" autofocus required>
+                                        <input type="text"   id="subvention_sollicite" name="subvention_sollicite"  class="form-control" placeholder=" subvention sollicitée" autofocus required onchange="controle_subvention('subvention_sollicite','guichet')">
                                     </div>
+                                    
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -172,7 +174,9 @@
                                         <input type="text"   id="autre_source" name="autre_source"  class="form-control" placeholder="Autres sources de financement" required title="Ce champ est obligatoire." onchange="cout_preprojet('cout_total','apport_personnel','subvention_sollicite','autre_source')">
                                     </div>
                             </div>
+                           
                         </div>
+                        <p class="message_subvention" style="color:red; display:none">Attention ! Vous ne pouvez pas bénéficier de cette subvention au regard du guichet sélectionné.</p>
                     </div>  
                  
             </div>
@@ -253,6 +257,17 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
+                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                            <select id="forme_juridique_envisage" name="forme_juridique_envisage" class="select-select2" data-placeholder="La nature de la clientèle" style="width: 100%;"  required >
+                                <option></option>
+                                @foreach ($forme_juridiques as $forme_juridique )
+                                <option value="{{$forme_juridique->id  }}" {{ old('nature_client') == $forme_juridique->id ? 'selected' : '' }} value="{{ $forme_juridique->id }}">{{ $forme_juridique->libelle }}</option>
+                                @endforeach
+                            </select>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
                             <label class="control-label" for="nbre_innovation">Nombre d'innovations introduites dans l'activités <pan class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <input type="text"   id="nbre_innovation" name="nbre_innovation"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
@@ -266,6 +281,20 @@
                          </div>
                     </div>
                     <div class="col-md-offset-1 col-md-5">
+                        <div class="form-group" >
+                            <label class=" control-label" for="example-chosen">Une autorisation est-il exigée pour la mise en œuvre de votre projet ? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="aggrement_exige" name="aggrement_exige" class="select-select2" onchange="afficherSiOui('aggrement_exige','type_aggrement');" data-placeholder="Une autorisation est-il exigée pour la mise en œuvre de votre projet" style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('aggrement_exige') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('aggrement_exige') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div>
+                        <div class="form-group type_aggrement" style="display: none;">
+                            <label class="control-label" for="precise_aggrement">Precisez l'aggrément exigé <pan class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="text"   id="precise_aggrement" name="precise_aggrement"  class="form-control" placeholder="Preciser l'aggrement ou l'autorisation exigé pour le projet"  autofocus required>
+                                </div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label" for="nbre_nouveau_produit">Nombre de nouveaux produits et/ou services a lancer  <pan class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -274,25 +303,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row">
-                    @foreach ($projet_innovations as $nouveaute_projet )
-                    <div class="col-md-4">
-                    <fieldset>
-                        <legend>{{ $nouveaute_projet->libelle }} </legend>
-                        @foreach ($futur_annees as $futur_annee )
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="val_email">En {{ $futur_annee->libelle }}<span class="text-danger">*</span></label>
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <input type="number"   id="" name="{{ $nouveaute_projet->id }}{{$futur_annee->id }}" value="{{old('{!! $nouveaute_projet->id !!}{!! $futur_annee->id !!}')}}" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire.">
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </fieldset>
-                    </div>
-                    @endforeach
-                </div> --}}
+                
                 <div class="row">
                     <div class="col-md-6">
                     <fieldset>

@@ -142,9 +142,9 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label class=" control-label" for="val_username">Mobile (WhatsApp)</label>
+                                <label class=" control-label" for="val_username">Mobile (WhatsApp)<span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <input type="text" id="mobile_promoteur" name="mobile_promoteur" value="{{old('mobile_promoteur')}}" class="form-control masked_phone" placeholder="Votre numéro de télephone WhatsApp" onchange="controler_de_doublon_promotrice('mobile_promoteur')" required >
+                                        <input type="text" id="mobile_promoteur" name="mobile_promoteur" value="{{old('mobile_promoteur')}}" class="form-control" placeholder="Votre numéro de télephone WhatsApp" onchange="controler_de_doublon_promotrice('mobile_promoteur')" required >
                                     </div>
                             </div>
                             

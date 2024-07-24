@@ -123,7 +123,7 @@ h6 {
 #topbar {
   background: #19a73f;
   height: 40px;
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.5s;
   color: #fff;
   padding: 0;
@@ -597,7 +597,7 @@ h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 40px 0;
   overflow: hidden;
   font-family: "Nunito", sans-serif !important;
 }
@@ -863,7 +863,7 @@ section {
   width: 100%;
   position: relative;
   text-align: center;
-  background: #f1f6fe;
+  background: #19a73f2e;
 }
 
 .counts .count-box i {
@@ -885,9 +885,9 @@ section {
 }
 
 .counts .count-box span {
-  font-size: 36px;
+  font-size: 26px;
   display: block;
-  font-weight: 600;
+  /* font-weight: 600; */
   color: #062b5b;
 }
 
@@ -1655,8 +1655,9 @@ section {
 #footer {
   background: #fff;
   padding: 0 0 30px 0;
-  color: #444444;
-  font-size: 14px;
+  color: #fff;
+  font-size: 17px;
+  font-family: "Nunito", sans-serif !important;
   background: #f1f6fe;
 }
 

@@ -95,7 +95,8 @@
       <h3>Comment s'inscrire ?</h3>
       </div>
         <div class="row">
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <img src="{{ asset('/img/steps_subscribe.jpeg') }}" alt="">
+          {{-- <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
               <div class="icon"><i class="bx bxl-dribbble"></i></div>
               <h4 class="title"><a href="">Etape 1</a></h4>
@@ -125,7 +126,7 @@
               <h4 class="title"><a href="">Etape 4</a></h4>
               <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
             </div>
-          </div>
+          </div> --}}
 
         </div>
 
@@ -160,7 +161,7 @@
           <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
             <div class="count-box">
               <i class="bi bi-headset"></i>
-              <span data-purecounter-start="0" data-purecounter-end="" data-purecounter-duration="1" class="purecounter">8 Milliars FrCFA</span>
+              <span  >8 Milliars FrCFA</span>
               <p> De co-investissements privés mobilisé par le Fonds de partenariat </p>
             </div>
           </div>
@@ -169,7 +170,7 @@
             <div class="count-box">
               <i class="bi bi-people"></i>
               <span data-purecounter-start="0" data-purecounter-end="800" data-purecounter-duration="1" class="purecounter"></span>
-              <p>Entreprises ayant bénéficiés d’un nouveau prêt d’une Institution Financière Participante</p>
+              <p>Entreprises bénéficiaires d’un nouveau prêt d’une Institution Financière Participante</p>
             </div>
           </div>
 
@@ -220,7 +221,7 @@
     <!-- ======= Testimonials Section ======= -->
     <div class="section-title">
           <!-- <h2>Services</h2> -->
-          <h3>PARTENAIRES</h3>
+          <h3>NOS PARTENAIRES</h3>
           <!-- <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p> -->
     </div>
     <section id="testimonials" class="testimonial">

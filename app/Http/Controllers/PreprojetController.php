@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Preprojet;
+use App\Models\PreprojetPE;
 use App\Models\Piecejointe;
 use App\Models\Infoentreprise;
 use App\Models\Infoeffectifentreprise;
@@ -15,16 +16,18 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Valeur;
 use App\Models\Entreprise;
 use App\Models\Critere;
+use App\Models\PreprojetParametre;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
+
 use Illuminate\Support\Facades\Storage;
 class PreprojetController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth')->except(["store_preprojet"]);
+        $this->middleware('auth')->except(["store_preprojet",'store_preprojet_pe']);
     }
     function createEvaluation($idprojet,$indicateur,$note ){
      $evaluation=Evaluation::where('preprojet_id',$idprojet)->where('critere_id',$indicateur)->get();
@@ -86,6 +89,112 @@ class PreprojetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     function store_preprojet_pe(Request $request){
+        $type_entreprise=$request->type_entreprise;
+        $programme=$request->programme;
+        $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
+        $source_appros=Valeur::where('parametre_id',12 )->get();
+        $promoteur= Promoteur::where('code_promoteur',$request->code_promoteur)->first();
+        $lastOne = DB::table('preprojet_pes')->latest('id')->first();
+        if($lastOne){
+            $num_projet = $promoteur->code_promoteur.'PE'.'_00'.$lastOne->id;
+        }
+        else{
+            $num_projet = $promoteur->code_promoteur.'PE'.'_00'.'0';
+        }
+        $entreprise_nn_traite= Entreprise::where('promoteur_id', $promoteur->id)->get();
+        $preprojet_controle_doublon= PreprojetPE::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
+            if(count($preprojet_controle_doublon)==0){
+            $preprojet=PreprojetPE::create([
+                "titre_projet"=> $request->titre_projet,
+                "secteur_dactivite"=>  $request->secteur_activite,
+                "maillon_dactivite"=>  $request->maillon_activite,
+                "region"=>  $request->region,
+                "province"=>  $request->province,
+                "commune"=>  $request->commune,
+                //"guichet"=>  $request->guichet,
+                'forme_juridique_envisage'=>$request->forme_juridique_envisage,
+                'aggrement_exige'=>$request->aggrement_exige,
+                'precise_aggrement'=>$request->precise_aggrement,
+                "secteur_village"=>  $request->arrondissement,
+                 "autre_besoin_en_formation"=>  $request->autre_besoin_en_formation,
+                "existence_dexprerience_du_promoteur"=> $request->connaissance_sur_lactivite,
+                "mode_dacquisition_dexprerience_du_promoteur"=> $request->mode_dacquisition_dexprerience_du_promoteur,
+                "etude_technique_de_faisabilite"=> $request->etude_technique_de_faisabilite,
+                "etude_de_marche"=> $request->etude_de_marche_realise,
+                "prototype_existe"=> $request->existence_de_prototype,
+                 "recherche_de_financement_envisage"=> $request->recherche_de_financement,
+                "origine_clientele"=> $request->provenance_clientele,
+                "type_clientele"=>  $request->provenance_clientele,
+                "site_disponible"=>$request->site_disponible,
+                "type_site"=>$request->type_site,
+                "description"=>  $request->description_idee_de_projet,
+                "objectifs"=>  $request->objectifs_projet,
+                "num_projet"=>  $num_projet,
+                "entreprise_id"=>  $request->entreprise_id,
+                "promoteur_id"=> $promoteur->id
+            ]);
+            
+            $promoteur->update([
+                "suscription_etape"=>3,
+            ]);
+            $formations_souhaites=$request->formations_souhaites;
+            
+            if($formations_souhaites){
+                foreach($formations_souhaites as $formation){
+                    $parametre_id=Valeur::find($formation)->parametre->id;
+                        PreprojetParametre::create([
+                                'preprojet_pe_id'=>$preprojet->id,
+                                'parametre_id'=>$parametre_id,
+                                'valeur_id'=>$formation,
+                        ]);
+                }
+                }
+            $formations_effectuees=$request->formations_effectuees;
+                if($formations_effectuees){
+                    foreach($formations_effectuees as $formation){
+                        $parametre_id=Valeur::find($formation)->parametre->id;
+                            PreprojetParametre::create([
+                                    'preprojet_pe_id'=>$preprojet->id,
+                                    'parametre_id'=>$parametre_id,
+                                    'valeur_id'=>$formation,
+                            ]);
+                    }
+                    }
+                    $sources_dappros=$request->sources_dappros;
+                    if($sources_dappros){
+                        foreach($sources_dappros as $sources_dappro){
+                            $parametre_id=Valeur::find($sources_dappro)->parametre->id;
+                                PreprojetParametre::create([
+                                        'preprojet_pe_id'=>$preprojet->id,
+                                        'parametre_id'=>$parametre_id,
+                                        'valeur_id'=>$sources_dappro,
+                                ]);
+                        }
+                        }
+                        $innovations=$request->innovations;
+                        if($innovations){
+                            foreach($innovations as $innovation){
+                                $parametre_id=Valeur::find($innovation)->parametre->id;
+                                    PreprojetParametre::create([
+                                            'preprojet_pe_id'=>$preprojet->id,
+                                            'parametre_id'=>$parametre_id,
+                                            'valeur_id'=>$innovation,
+                                    ]);
+                            }
+                            }
+            
+            $data["email"] = $promoteur->email_promoteur;
+            $this->email= $promoteur->email_promoteur;
+            Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'PE'));
+            
+        }
+            $nbre_ent_nn_traite = count($entreprise_nn_traite);
+            return view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
+
+
+     }
     public function show($id)
     {
         $preprojet=Preprojet::where('id',$id)->first();
@@ -136,7 +245,6 @@ class PreprojetController extends Controller
         $criteres= $criteres->except($id_criteres);
         foreach($criteres as $critere){
             $note= $critere->id;
-        //S'assurer de l'unicité de l'evaluation par projet et par critere
         $nombre_devaluation_du_projet = Evaluation::where(['preprojet_id'=>$request->projet,'critere_id'=> $critere->id,])->count();
         if($nombre_devaluation_du_projet==0){
             Evaluation::create([
@@ -167,16 +275,15 @@ class PreprojetController extends Controller
         $nouveaute_projets=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
         $lastOne = DB::table('preprojets')->latest('id')->first();
         if($lastOne){
-            $num_projet = $promoteur->code_promoteur.'_00'.$lastOne->id;
+            $num_projet = $promoteur->code_promoteur.'FP'.'_00'.$lastOne->id;
         }
         else{
-            $num_projet = $promoteur->code_promoteur.'_00'.'0';
+            $num_projet = $promoteur->code_promoteur.'FP'.'_00'.'0';
         }
         $entreprise_nn_traite= Entreprise::where('promoteur_id', $promoteur->id)->get();
         $preprojet_controle_doublon= Preprojet::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
-        //dd(count($preprojet_controle_doublon));
-        //dd($request->all());
-            if(count($preprojet_controle_doublon)==0){
+       
+             if(count($preprojet_controle_doublon)==0){
             $preprojet=Preprojet::create([
                 "titre_projet"=> $request->titre_projet,
                 "secteur_dactivite"=>  $request->secteur_activite,
@@ -186,16 +293,16 @@ class PreprojetController extends Controller
                 "commune"=>  $request->commune,
                 "guichet"=>  $request->guichet,
                 "secteur_village"=>  $request->arrondissement,
-                
-
-            'nbre_innovation'=>$request->nbre_innovation,
-            'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
-            'nbre_nouveau_produit'=>$request->nbre_nouveau_produit,
-            'effectif_permanent_homme'=>$request->effectif_permanent_homme,
-            'effectif_permanent_femme'=>$request->effectif_permanent_femme,
-            'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
-            'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
-
+                'forme_juridique_envisage'=>$request->forme_juridique_envisage,
+                'aggrement_exige'=>$request->aggrement_exige,
+                'precise_aggrement'=>$request->precise_aggrement,
+                'nbre_innovation'=>$request->nbre_innovation,
+                'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
+                'nbre_nouveau_produit'=>$request->nbre_nouveau_produit,
+                'effectif_permanent_homme'=>$request->effectif_permanent_homme,
+                'effectif_permanent_femme'=>$request->effectif_permanent_femme,
+                'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
+                'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
                 "origine_clientele"=> $request->provenance_clientele,
                 "type_clientele"=>  $request->nature_client,
                 "site_disponible"=>$request->site_disponible,
@@ -222,75 +329,29 @@ class PreprojetController extends Controller
             $promoteur->update([
                 "suscription_etape"=>3,
             ]);
-            if ($request->hasFile('docsite')) {
-                $file = $request->file('docsite');
-                $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->num_projet.'.'.$extension;
-                $emplacement='public/docsite';
-                $urldocsite= $request['docsite']->storeAs($emplacement, $fileName);
-                Piecejointe::create([
-                    'type_piece'=>env("VALEUR_ID_DOCUMENT_SITE"),
-                      'projet_id'=>$preprojet->id,
-                      'url'=>$urldocsite,
-                  ]);
-            }
-            else{
-                $urldocsite=null;
-            }
-        // foreach($indicateur_previsionel_du_projets as $indicateur_previsionel_du_projet){
-        //     foreach($futur_annees as $futur_annee){
-        //         $variable=$indicateur_previsionel_du_projet->id.$futur_annee->id;
-        //         Infoentreprise::create([
-        //             "indicateur"=>$indicateur_previsionel_du_projet->id,
-        //             "annee"=>$futur_annee->id,
-        //             "quantite"=>$request->$variable,
-        //             "preprojet_id"=>$preprojet->id,
-        //             "code_promoteur"=>$request->code_promoteur
-        //         ]);
-        //     }
-        // }
-        // foreach($nouveaute_projets as $nouveaute_projet){
-        //     foreach($futur_annees as $futur_annee){
-        //         $variable=$nouveaute_projet->id.$futur_annee->id;
-        //         Infoentreprise::create([
-        //             "indicateur"=>$nouveaute_projet->id,
-        //             "annee"=>$futur_annee->id,
-        //             "quantite"=>$request->$variable,
-        //             "preprojet_id"=>$preprojet->id,
-        //             "code_promoteur"=>$request->code_promoteur,
-        //         ]);
-        //     }
-        // }
-        // foreach($effectifs as $effectif){
-        //     foreach($futur_annees as $futur_annee){
-        //         $homme=$effectif->id.$futur_annee->id."homme";
-        //         $femme=$effectif->id.$futur_annee->id."femme";
-        //         Infoeffectifentreprise::create([
-        //             "effectif"=>$effectif->id,
-        //             "annee"=>$futur_annee->id,
-        //             "homme"=>$request->$homme,
-        //             "femme"=>$request->$femme,
-        //             "preprojet_id"=>$preprojet->id,
-        //             "code_promoteur"=>$request->code_promoteur
-        //         ]);
-        //     }
-        // }
+            
+        
         $innovations=$request->innovation_du_projets;
         if($innovations){
             foreach($innovations as $innovation){
-                    InnovationProjet::create([
-                            'projet_id'=>$preprojet->id,
-                            'innovation_id'=>$innovation,
+                $parametre_id=Valeur::find($innovation)->parametre->id;
+                    PreprojetParametre::create([
+                            'preprojet_fp_id'=>$preprojet->id,
+                            'parametre_id'=>$parametre_id,
+                            'valeur_id'=>$innovation,
                     ]);
             }
             }
         
             $sources_dapprovisionnements=$request->source_appros;
+           
             if($sources_dapprovisionnements){
                 foreach($sources_dapprovisionnements as $sources_dapprovisionnement){
-                    SourceDapprovisionnement::create([
-                                'projet_id'=>$preprojet->id,
-                                'source_id'=>$sources_dapprovisionnement,
+                    $parametre_id=Valeur::find($sources_dapprovisionnement)->parametre->id;
+                        PreprojetParametre::create([
+                                'preprojet_fp_id'=>$preprojet->id,
+                                'parametre_id'=>$parametre_id,
+                                'valeur_id'=>$sources_dapprovisionnement,
                         ]);
                 }
                 }
@@ -336,7 +397,6 @@ $this->createEvaluation($preprojet->id,16, $note_creation_emplois);
 
 // Startup
 
-
 if($preprojet->entreprise_id==null){
 
 }
@@ -348,13 +408,16 @@ elseif($preprojet->entreprise_id==null){
         $data["email"] = $promoteur->email_promoteur;
         $this->email= $promoteur->email_promoteur;
        // Mail::to($this->email)->queue(new resumeMail($entreprise->promotrice->id));
-        Mail::to($this->email)->queue(new recepisseMail($promoteur->id));
+        Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'FP'));
         //$entreprise=$entreprise->id;
         
-    }
+     }
         $nbre_ent_nn_traite = count($entreprise_nn_traite);
         return view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
   }
+
+
+
     /**
      * Show the form for editing the specified resource.
      *

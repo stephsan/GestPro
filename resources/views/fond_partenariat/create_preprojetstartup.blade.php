@@ -227,7 +227,7 @@
                             </div>
                             <div class="form-group docsite" style="display: none">
                                 <label class=" control-label" for="example-chosen">Type de propriété <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
-                                    <select id="type_site" name="type_site" class="select-select2" onchange="afficherSiOui('type_site','docsite');" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
+                                    <select id="type_site" name="type_site" class="select-select2" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
                                         <option></option>
                                         <option value="1" {{ old('type_site') == 1 ? 'selected' : '' }}>Domaine personnel</option>
                                         <option value="2" {{ old('type_site') == 2 ? 'selected' : '' }}>En location</option>

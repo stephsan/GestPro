@@ -31,8 +31,6 @@
             <input type="hidden" name="promoteur_code" value="{{ $promoteur->code_promoteur }}">
              <input type="hidden" name="type_entreprise" value={{ $type_entreprise }}>
              <input type="hidden" name="programme" value={{ $programme }}>
-
-            
                 @if($promoteur->suscription_etape != 3)
                 @if($promoteur->suscription_etape == 2)
                     <input type="hidden" name="entreprise" value="{{ $entreprise }}">
@@ -52,7 +50,12 @@
                 @if($promoteur->suscription_etape == 3)
                 {{-- @if($nbre_ent_nn_traite >1 || $nbre_ent_nn_traite == 1 ) --}}
                     <p>Le Recépissé sera envoyé dans votre boite email.</p>
-                        <a href="{{ route("generer.recepisse", $promoteur) }}" class="btn btn-success">Generer le recépissé</a>
+                    @if($programme=='FP')
+                        <a href="{{ route("generer.recepisse", $promoteur) }}?programme=FP" class="btn btn-success">Generer le recépissé</a>
+                    @elseif ($programme=='PE')
+                        <a href="{{ route("generer.recepisse", $promoteur) }}?programme=PE" class="btn btn-success">Generer le recépissé</a>
+                    @endif
+                    
                     <hr>
                 {{-- @endif --}}
                     {{-- @if($nbre_ent_nn_traite < 2 )

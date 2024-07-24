@@ -55,9 +55,12 @@ Route::resource("promoteur", PromoteurController::class);
 Route::resource("entreprise", EntrepriseController::class);
 Route::post("creation",[EntrepriseController::class, 'creation'])->name("entreprise.creation");
 Route::post("page/souscription/PF/preprojet/creation",[PreprojetController::class, 'store_preprojet'])->name("preprojet.creation");
+Route::post("page/souscription/PE/preprojet/creation",[PreprojetController::class, 'store_preprojet_pe'])->name("preprojet_pe.creation");
+
+
 Route::get("recepisse/print/{promoteur}",[EntrepriseController::class,'genereRecpisse'])->name("generer.recepisse");
 Route::get("store/second/entreprise/{promoteur}", [EntrepriseController::class, 'create2'])->name("secondEntreprise.store");
-Route::post("/souscription/poursuivre/",[PromoteurController::class, 'searchfp'])->name("fp.search");
+Route::post("/souscription/poursuivre/",[PromoteurController::class, 'search_promoteur'])->name("search.promoteur");
 Route::get("/rechercher/promoteur/parcode_promoteur",[PromoteurController::class, 'search_promoteur_parcode_promoteur'])->name("promoteur.search");
 Route::get("/souscription/control_doublon", [PromoteurController::class, 'control_doublon_souscription'])->name("souscription.control_doublon");
 Route::resource("souscription",PreprojetController::class);

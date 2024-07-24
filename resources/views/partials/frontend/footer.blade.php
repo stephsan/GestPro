@@ -9,7 +9,7 @@
     <div class="row">
 
       <div class="col-lg-5 col-md-6 footer-contact">
-        <h3>ECOTEC<span>.</span></h3>
+        <h3>Projet ECOTEC<span>.</span></h3>
         <p>
         132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso <br>
           <strong>Phone:</strong> +226 25 39 80 60<br>
@@ -114,9 +114,9 @@
           Le récépissé généré vous sera présenté sur la plateforme et il sera également envoyé par email.
          </p>
            </div>
-           <div class="row">
+           {{-- <div class="row">
               <iframe width="674" height="379" src="https://www.youtube.com/embed/QV2ua08jARE" title="spot" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-           </div>
+           </div> --}}
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
@@ -141,7 +141,7 @@
             <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire</a>
             <a href="" data-toggle="modal" onclick="cacher('forme_search')" class="btn btn-success" >Poursuivre ma souscription</a>
           </div>
-          <form action="{{ route('fp.search') }}" method="post" id='forme_search' style="display: none">
+          <form action="{{ route('search.promoteur') }}" method="post" id='forme_search' style="display: none">
             @csrf
           <div class="row">
               <div class="form-group">
@@ -166,15 +166,15 @@
       </div>
   </div>
 
-<div id="modal-programme-entreprendre-startup"class="modal fade" role="dialog">
+<div id="modal-souscription-noOk"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="padding:15px;">
       <div class="modal-content">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au Programme Entreprendre  - Guichet Startup</h3>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription </h3>
           </div>
           <center><img src="{{ asset('img/oups.jpg') }}" width="300" alt=""></center>
-          <center><p style="color:brown; font-size:18px; font-weight:600;">La Souscription au programme entreprendre n'est pas encore ouverte</p></center>
+          <center><p style="color:brown; font-size:18px; font-weight:600;">La Souscription a ce programme n'est pas encore ouverte</p></center>
 
          {{-- <div class="modal-body" >
             <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire</a>
@@ -212,18 +212,18 @@
               <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au fond de partenariat - Guichet Startup </h3>
           </div>
           <div class="modal-body" >
-            <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire</a>
+            {{-- <a href="{{ route('fp.create.personne') }}?type_entreprise=startup"  class="btn btn-success" >Souscrire</a> --}}
             <a href="" data-toggle="modal" onclick="cacher('forme_search')" class="btn btn-success" >Poursuivre ma souscription</a>
           </div>
-          <form action="{{ route('fp.search') }}" method="post" id='forme_search' style="display: none">
+          <form action="{{ route('search.promoteur') }}" method="post" id='forme_search' style="display: none">
             @csrf
           <div class="row">
               <div class="form-group">
                 <div class="offset-md-1 col-md-10">
                 <input class="form-control" type="hidden" name="type_FP" value="startup">
-                <input class="form-control" type="hidden" name="type_FP" value="startup">
+                <input class="form-control" id="programme_fp_startup" type="hidden" name="programme" value="startup">
                  <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
-                  <input id="code_promoteur_type_FP" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_type_FP','poursuivre')">
+                  <input id="code_promoteur_type_FP" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_type_FP')">
                   <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
                   <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
                 </div>
@@ -243,23 +243,55 @@
       <div class="modal-content" style="padding:15px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription au fond de partenariat - Guichet MPME Existante</h3>
+              <h3 class="modal-title"><i class="gi gi-pen"></i>Souscription au fond de partenariat - MPME Existante</h3>
           </div>
           <div class="modal-body" >
-            <a href="{{ route('fp.create.personne') }}?type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire</a>
-            <a href="" data-toggle="modal" onclick="cacher('forme_search_mpmeexistante')" class="btn btn-success" >Poursuivre ma souscription</a>
+            {{-- <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire</a> --}}
+            {{-- <a href="" data-toggle="modal" onclick="cacher('forme_search_mpmeexistante')" class="btn btn-success" >Poursuivre ma souscription</a> --}}
           </div>
-          <form action="{{ route('fp.search') }}" method="post" id='forme_search_mpmeexistante' style="display: none">
+          <form action="{{ route('search.promoteur') }}" method="post">
             @csrf
           <div class="row">
               <div class="form-group">
                 <div class="offset-md-1 col-md-10">
                 <input class="form-control" type="hidden" name="type_FP" value="MPMEExistant">
-                
+                <input class="form-control" id="programme_fp_mpmexistant" type="hidden" name="programme" value="FP">
                  <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
-                  <input id="code_promoteur_MPME_existe" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_MPME_existe','poursuivre')">
-                  <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
-                  <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
+                 <input id="code_promoteur_FP_MPME_existe" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_FP_MPME_existe','programme_fp_mpmexistant')">
+                 <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
+                 <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
+                </div>
+          </div>
+        </div>
+          <div class="modal-footer">
+            <button type="button"class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+        </form>
+          
+      </div>
+  </div>
+</div>
+<div id="modal-PE-startup"class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content" style="padding:15px;">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+              <h3 class="modal-title"><i class="gi gi-pen"></i>Souscription au programme entreprendre - Startup</h3>
+          </div>
+          <div class="modal-body" >
+            
+          </div>
+          <form action="{{ route('search.promoteur') }}" method="post">
+            @csrf
+          <div class="row">
+              <div class="form-group">
+                 <div class="offset-md-1 col-md-10">
+                 <input class="form-control" type="hidden" name="type_FP" value="startup">
+                 <input class="form-control" id="programme_PE_startup" type="hidden" name="programme" value="PE">
+                 <label class=" control-label" for="code_promoteur" >Renseigner le code promoteur  <span class="text-danger">*</span></label>
+                 <input id="code_promoteur_pe_startup" class="form-control" type="text" name="code_promoteur" onchange="chercher_code('code_promoteur_pe_startup','programme_PE_startup')">
+                 <p style="display: none; color:brown;" class="message_code_invalide">Code promoteur invalide</p>
+                 <button style="display: none;" type="submit" class="btn btn-success col-md-2 poursuivre">Poursuivre</button>
                 </div>
           </div>
         </div>
@@ -292,7 +324,9 @@
                      les pratiques de gestion et l’accès au marché, en mettant l’accent sur les certifications environnementales et de qualité,
                      y compris les pratiques commerciales écologiques et durables : mise en œuvre de stratégies d’économie circulaire et adoption de mesures de continuité des activités (résilience). </p>
                      <div class="text-center" style="margin-top:10px">
-                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
+                     
+                      <a  data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a> 
+                      {{-- <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>  --}}
                       <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
                   </div>
               </ol>
@@ -306,7 +340,7 @@
 
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Fermer</button>
+              <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
           </div>
       </div>
   </div>
@@ -324,20 +358,11 @@
                Une partie du Fonds soutiendra des solutions vertes associées au passage à des sources d’énergie renouvelables, plus résistantes et à des solutions d’économie circulaire (EC).
                Les subventions seront attribuées sur une base concurrentielle selon les trois guichets suivants :
               <ol>
-                  <li style="color: red">	Les petits sous-projets (jusqu’à 10 000 000 FCFA)</li>
-                  <p> Les petits sous-projets (jusqu’à 10 000 000 FCFA) auront un ratio de subventions de 65 % et environ 550 sous-projets seront attribués avec une taille moyenne estimée à 4 000 000 FCFA). 
-                    Les petits sous projets concernent les Entrepreneurs émergents (startup), micros et petites entreprises avec un CA ≤ à 50 millions F CFA et un coût du projet ≤ 15 millions F CFA ;</p>
-                  <li style="color: red">	Les sous-projets standard (jusqu’à 50 000 000 FCFA) </li>
-                  <p>Les sous-projets standard (jusqu’à 50 000 000 FCFA) auront un ratio de subvention de 50 %, en fonction des rendements sociaux et économiques attendus du sous-projets.
-                     On estime que 150 sous-projets seront attribués avec un montant moyen de subvention estimé à 37 500 000 FCFA. 
-                     Les sous-projets standard regroupent les MPME établies depuis au moins 2 ans avec un CA ≤ à 1 milliard F CFA et un coût du projet > à 15 millions et ≤ à 100 millions F CFA ;</p>
-                  <li style="color: red">	Les sous-projets de transformation verte (jusqu’à 100 000 000 FCFA)</li>
-                  <p>Les sous-projets de transformation verte (jusqu’à 100 000 000 FCFA) auront un ratio de subventions de 40 à 50 % des biens d’équipement et de 60 à 80 % pour l’assistance technique et la formation.
-                     Les sous-projets se concentreront sur des solutions permettant d’intégrer les concepts d’énergie renouvelable et d’Economie Circulaire dans les chaînes de valeur et les réseaux de production locaux. On estime que 50 sous-projets seront attribués avec une subvention moyenne estimée à 75 000 000 FCFA.
-                     Les sous-projets de transformation verte regroupent les MPME établies depuis au moins 3 ans avec un CA ≤ à 1 milliard F CFA. </p>
+                  <img src="{{ asset('img/Resume_FP_en Image.png') }}" alt="" width="100%">
                      <div class="text-center" style="margin-top:10px">
-                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>
-                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existante</a>
+                      <a data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en Startup</a>
+                      {{-- <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a> --}}
                   </div>
               </ol>
          </p>
@@ -425,6 +450,40 @@
   {{-- <script src="{{ asset("js/js-brave/vendor/bootstrap.min.js") }}"></script> --}}
   
   <script>$(function(){ FormsWizard.init(); });</script>
+
+  <script type="text/javascript"> 
+    function refresh(){
+        var t = 1000; // rafraîchissement en millisecondes
+        setTimeout('showDate()',t)
+    }
+    function showDate(){
+        var date1 = new Date("08/12/2024");
+        var date2 = new Date();
+      diff = dateDiff(date2,date1);
+        var time= 'Clôture des souscriptions dans: '+diff.day+' Jours'+ ' ' +diff.hour +' Heures'+ ' '+diff.min+' minutes'+' '+diff.sec +' '+ 'secondes';
+        document.getElementById('horloge').innerHTML = time; 
+        refresh();
+}; 
+showDate();
+function dateDiff(date1, date2){
+var diff = {}                           // Initialisation du retour
+var tmp = date2 - date1;
+
+tmp = Math.floor(tmp/1000);             // Nombre de secondes entre les 2 dates
+diff.sec = tmp % 60;                    // Extraction du nombre de secondes
+
+tmp = Math.floor((tmp-diff.sec)/60);    // Nombre de minutes (partie entière)
+diff.min = tmp % 60;                    // Extraction du nombre de minutes
+
+tmp = Math.floor((tmp-diff.min)/60);    // Nombre d'heures (entières)
+diff.hour = tmp % 24;                   // Extraction du nombre d'heures
+ 
+tmp = Math.floor((tmp-diff.hour)/24);   // Nombre de jours restants
+diff.day = tmp;
+return diff;
+}
+</script>
+
   <script>
      $('.masked_phone').mask('99-99-99-99');
      $('.masked_cnib').mask('99999999999999999');
@@ -491,13 +550,14 @@
                     }
             });  
        }
-       function chercher_code(code_promoteur){
+       function chercher_code(code_promoteur,programme){
             var code_promoteur= $("#"+code_promoteur).val();
+            var programme= $("#"+programme).val();
             var url= "{{ route('promoteur.search') }}"
             $.ajax({
                     url: url,
                     type: 'GET',
-                    data: {code_promoteur: code_promoteur},
+                    data: {code_promoteur: code_promoteur, programme:programme},
                     error:function(data){alert("Erreur");},
                     success: function (data) {
                         console.log(data);

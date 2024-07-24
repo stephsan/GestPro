@@ -6,6 +6,7 @@ use App\Models\Entreprise;
 use App\Models\Infoentreprise;
 use App\Models\Infoeffectifentreprise;
 use App\Models\Preprojet;
+use App\Models\PreprojetPe;
 use App\Models\Piecejointe;
 use App\Models\Valeur;
 use App\Models\EntrepriseDifficulte;
@@ -57,6 +58,9 @@ class EntrepriseController extends Controller
         $provenance_clients=Valeur::where('parametre_id',9 )->get();
         $maillon_activites=Valeur::where('parametre_id',7 )->get();
         $source_appros=Valeur::where('parametre_id',12 )->get();
+        $formations_souhaites=Valeur::where('parametre_id',50 )->get();
+        $formations_effectuees=Valeur::where('parametre_id',51 )->get();
+        
         $nb_annee_existences=Valeur::where("parametre_id", env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT'))->get();
         $sys_suivi_activites=Valeur::where('parametre_id',13 )->get();
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
@@ -82,17 +86,17 @@ class EntrepriseController extends Controller
             return view("fond_partenariat.create_entreprise", compact('programme','difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","innovation_du_projets","ouinon_reponses","niveau_resiliences"));
         }
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme == 'FP' &&$type_entreprise!='MPMEExistant')){
-            return view("fond_partenariat.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+            return view("fond_partenariat.create_preprojetstartup", compact('programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme=='PE' && $type_entreprise=='startup')){
-            return view("programme_entreprendre.create_preprojetstartup", compact('projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+            return view("programme_entreprendre.create_preprojetstartup", compact('formations_souhaites','formations_effectuees','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         elseif($promoteur->suscription_etape==2 && ($programme=='FP' && $type_entreprise=='MPMEExistant')){
-            //dd($projet_innovations);
-            return view("fond_partenariat.projet_souscription", compact("projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+           
+            return view("fond_partenariat.projet_souscription", compact('programme',"projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         else{
-            return view("fond_partenariat.validateStep1", compact("promoteur"))->with('success','Item created successfully!');
+            return view("fond_partenariat.validateStep1", compact('programme',"promoteur"))->with('success','Item created successfully!');
         }
 }
 
@@ -212,21 +216,25 @@ return view("fond_partenariat.validateStep1", compact("programme","type_entrepri
 }
 public function genereRecpisse(Request $request)
 {
-    //return route()->back();
+    $programme=$request->programme;
     $promoteur= Promoteur::where("slug", $request->promoteur)->first();
-    $preprojet= Preprojet::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
+    if($request->programme=='FP'){
+        $preprojet= Preprojet::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
+    }
+    else{
+        $preprojet= PreprojetPe::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
+    }
     $contact_chef_de_zone= env("NUMERO_SUPPORT");
     $data["email"] = $promoteur->email_promoteur;
     $this->email= $promoteur->email_promoteur;
     $qrcode =  base64_encode(QrCode::format('svg')->size(100)->errorCorrection('H')->generate("Ceci est un recepissé généré par la plateforme de gestion des bénéficiaires du projet ECOTEC"."Code didentification:"." ".$promoteur->code_promoteur."_".$promoteur->id."ECOTEC"));
-    $pdf = PDF::loadView('pdf.recepisse', compact('promoteur','preprojet','contact_chef_de_zone','qrcode'));
+    $pdf = PDF::loadView('pdf.recepisse', compact('promoteur','programme','preprojet','contact_chef_de_zone','qrcode'));
     return  $pdf->download('récépissé_plateforme_ECOTEC.pdf');
 }
 
 public function create2(Promoteur $promoteur, Request $request)
 {
-$entreprise_nn_traite= Entreprise::where('code_promoteur', $request->promoteur_code)->where("conforme",null)->get();
-
+    $entreprise_nn_traite= Entreprise::where('code_promoteur', $request->promoteur_code)->where("conforme",null)->get();
     if(count($entreprise_nn_traite )<2 ){
     $entreprise= Entreprise::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
     $promoteur_code=$promoteur->code_promoteur;

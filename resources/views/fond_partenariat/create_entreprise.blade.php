@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 @section('content')
         <div class="section-title">
-            <h3>Information sur l'activité</h3>
+            <h3>Informations sur l'entreprise</h3>
         </div>
       <div class="block">
         <p style="background-color: rgb(231, 179, 179); color">Les champs marqué d'étoile en <span style="color:red; font-size:15px;">*</span> rouge sont obligatoires</p>
@@ -110,7 +110,7 @@
                 <div class="row">
                             <div class="col-md-5">
                                 <fieldset>
-                                    <legend>Information sur l'activité</legend>
+                                    <legend>Information sur l'entreprise</legend>
                                 <div class="form-group">
                                     <label class=" control-label" for="compte_dispo">L’entreprise dispose-t-elle d’un compte bancaire?<span class="text-danger">*</span><span data-toggle="tooltip" title="L’entreprise dispose-t-elle d’un compte dans une institution financière (Banques ou structures de microfinance?"><i class="fa fa-info-circle"></i></span></label>
                                         <select id="compte_dispo" name="compte_dispo" class="select-select2" data-placeholder="L'entreprise dispose t-elle d’un compte dans une banque ou une institution?" style="width: 100%;"  autofocus required title="Ce champ est obligatoire" onchange="afficherSiOui('compte_dispo', 'nom_structure')">

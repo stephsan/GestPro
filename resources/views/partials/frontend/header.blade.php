@@ -76,20 +76,25 @@
         <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com"> infoecotec@me.bf</a></i>
         <i class="bi bi-phone d-flex align-items-center ms-4"><span>+226 70000000</span></i>
       </div>
+      
       {{-- <div class="social-links d-none d-md-flex align-items-center">
         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
         <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
       </div> --}}
+      <div class="" style="text-align: right">
+        <p id="horloge" style="color: #a60e1f; font-size: 18px; font-weight:600; text-align: right;"></p>
     </div>
+    </div>
+    
   </section>
 
   <!-- ======= Header ======= -->
   <header id="header" class="d-flex align-items-center">
     <div class=" container position-relative d-flex align-items-center justify-content-between">
 
-    <a href="index.html" class="logo"><img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt="" width="150"></a>
+    <a href="index.html" class="logo"><img src="{{asset('img/logo-ecotec.jpeg')}}" alt="" width="180" ></a>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -112,20 +117,29 @@
                   <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription au programme entreprendre">Formulaire type</a></li>
                 </ul>
               </li>
+              <li class="dropdown"><a href="#"><span>Sauvegarde environnementale</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Doc1</a></li>
+                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription fonds de partenariat">Doc2</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
          <li class="dropdown"><a href="#"><span>Poursuivre</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
-                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Startup</a></li>
+                  <li><a data-toggle="modal" data-target="#modal-souscription-noOk" href="#">Startup</a></li>
                   <li><a  data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">MPME Existante</a></li>
+
+                  {{-- <li><a  data-toggle="modal" data-target="#modal-fond-partenariat-MPMEExistant" href="#">MPME Existante</a></li> --}}
                 </ul>
               </li>
               <li class="dropdown"><a href="#"><span>Programme Entreprendre</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
-                  <li><a data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">Startup</a></li>
-                  <li><a  data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistant" href="#">MPME Existante</a></li>
+                  <li><a data-toggle="modal" data-target="#modal-PE-startup" href="#">Startup</a></li>
+                  <li><a  data-toggle="modal" data-target="#modal-souscription-noOk" href="#">MPME Existante</a></li> 
+                  {{-- <li><a  data-toggle="modal" data-target="#modal-programme-entreprendre-MPMEExistant" href="#">MPME Existante</a></li> --}}
                 </ul>
               </li>
             </ul>

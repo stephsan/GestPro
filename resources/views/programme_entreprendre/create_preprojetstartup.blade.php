@@ -16,24 +16,15 @@
                 </div>
                 
                 <div class="step-app">
-                <form id="progress-wizard" action="{{ route("preprojet.creation") }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <form id="progress-wizard" action="{{ route("preprojet_pe.creation") }}" method="post" enctype="multipart/form-data" class="form-horizontal">
                     @csrf
                     <div id="progress-first" class="step">
                         <input type="hidden" id="code_promoteur" name="code_promoteur" value="{{ $promoteur_code }}">
+                        <input type="hidden" id="programme" name="programme" value="{{ $programme }}">
                         {{-- <input type="hidden" id="entreprise_id" name="entreprise_id" value="{{ $entreprise }}"> --}}
                         <div class="row">
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label class=" control-label" for="example-select2">Choisir le Guichet <span class="text-danger">*</span> <span data-toggle="tooltip" title="Selectionner le guichet"><i class="fa fa-info-circle"></i></span></label>
-                                        <select id="guichet" name="guichet" class="select-select2" data-placeholder="Selectionner le guichet" style="width:100%;" autofocus required title="Ce champ est obligatoire" >
-                                            <option></option>
-                                            @foreach ($guichets as $guichet )
-                                                <option value="{{$guichet->id  }}" {{ old('guichet') == $guichet->id ? 'selected' : '' }} value="{{ $guichet->id }}">{{ $guichet->libelle }}</option>
-                                            @endforeach
-                                        </select>
-                                </div>
-                            </div>
-                            <div class="offset-md-1 col-md-5">
+                           
+                            <div class="offset-md-1 col-md-8">
                                 <div class="form-group">
                                     <label class="control-label" for="val_denomination">Titre de votre projet<span class="text-danger">*</span></label>
                                     <input type="text" id="titre_projet" name="titre_projet" class="form-control" placeholder="Entrez votre la dénomination" value="{{old("denomination")}}" required >
@@ -130,14 +121,159 @@
                             </div>
                         </fieldset>
                         </div>
-                            
-                      
                     </div>
             <div id="progress-second" class="step">
+                <div class="row">
+                    <fieldset>
+                        <legend>Niveau de maturation du projet </legend>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class=" control-label" for="example-chosen">Etude technique de faisabilité de votre projet realisée?<span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="etude_technique_de_faisabilite" name="etude_technique_de_faisabilite" class="select-select2"  data-placeholder="Avez-vous déjà réalisé une étude technique de faisabilité de votre projet" style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('etude_technique_de_faisabilite') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('etude_technique_de_faisabilite') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label class=" control-label" for="example-chosen">Avez déjà réalisé une étude de marché de votre projet?<span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez déjà réalisé une étude de marché de votre projet ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="etude_de_marche_realise" name="etude_de_marche_realise" class="select-select2"  data-placeholder="Avez déjà réalisé une étude de marché de votre projet" style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('etude_de_marche_realise') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('etude_de_marche_realise') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div> 
+                        
+                    </div>
+                    <div class="col-md-offset-1 col-md-5">
+                        <div class="form-group">
+                            <label class=" control-label" for="example-chosen">Prototype du produit ou du service disponible ?<span class="text-danger">*</span> <span data-toggle="tooltip" title="Disposez vous d’un prototype ou preuve de conception de votre produit ou service  ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="existence_de_prototype" name="existence_de_prototype" class="select-select2"  data-placeholder="Disposez vous d’un prototype ou preuve de conception de votre produit ou service " style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('existence_de_prototype') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('existence_de_prototype') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div> 
+                        <div class="form-group">
+                            <label class=" control-label" for="example-chosen">Démarches pour les recherches de financement effectuées?<span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà engagé des démarches pour les recherches de financement ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="recherche_de_financement" name="recherche_de_financement" class="select-select2"  data-placeholder="Avez-vous déjà engagé des démarches pour les recherches de financement" style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('recherche_de_financement') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('recherche_de_financement') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div> 
+                            {{-- <div class="form-group">
+                                <label class="col-md-8 control-label">Avez-vous déjà engagé des démarches pour les recherches de financement</label>
+                                <div class="col-md-4">
+                                    <label class="radio-inline" for="example-inline-radio1">
+                                        <input type="radio" id="example-inline-radio1" name="recherche_de_financement" value="1"> Oui
+                                    </label>
+                                    <label class="radio-inline" for="example-inline-radio2">
+                                        <input type="radio" id="example-inline-radio2" name="recherche_de_financement" value="2"> Non
+                                    </label>
+                                </div>
+                            </div> --}}
+                           
+                    
+                        </div>
+                    </fieldset>
+                </div>
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
                             <label class=" control-label" for="">Quels sont vos besoins en renforcement des capacités<span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                @foreach ($formations_souhaites as $formations_souhaite)
+                                <div class="col-lg-8 checkbox">
+                                    <label><input type="checkbox" name='formations_souhaites[]' value="{{ $formations_souhaite->id }}"> {{ $formations_souhaite->libelle }}</label>
+                                </div>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class=" control-label" for="">Avez-vous déjà suivi une formation en entreprenariat?<span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                @foreach ($formations_effectuees as $formations_effectuee)
+                                <div class="col-lg-8 checkbox">
+                                    <label><input type="checkbox" name='formations_effectuees[]' value="{{ $formations_effectuee->id }}"> {{ $formations_effectuee->libelle }}</label>
+                                </div>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                    </div>
+                <div class="offset-md-1 col-md-5">
+                    <div class="form-group">
+                        <label class=" control-label" for="">Avez-vous déjà suivi une formation en entreprenariat ? <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                            @foreach ($formations_effectuees as $formations_effectuee)
+                            <div class="col-lg-8 checkbox">
+                                <label><input type="checkbox" name='formations_effectuees[]' value="{{ $formations_effectuee->id }}"> {{ $formations_effectuee->libelle }}</label>
+                            </div>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label" for="example-chosen">Avez-vous une expérience dans le domaine d’activité de votre projet? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous une expérience / connaissance dans le domaine d’activité de votre projet?  ?"><i class="fa fa-info-circle"></i></span></label>
+                            <select id="connaissance_sur_lactivite" name="connaissance_sur_lactivite" class="select-select2" onchange="afficherSiOui('connaissance_sur_lactivite','acquisition_des_connaissances');" data-placeholder="Avez-vous une expérience / connaissance dans le domaine d’activité de votre projet? " style="width: 100%;" required>
+                                <option></option>
+                                <option value="1" {{ old('connaissance_sur_lactivite') == 1 ? 'selected' : '' }}>Oui</option>
+                                <option value="2" {{ old('connaissance_sur_lactivite') == 2 ? 'selected' : '' }}>Non</option>
+                            </select>
+                    </div>
+                    <div class="form-group acquisition_des_connaissances">
+                        <label class=" control-label" for="example-chosen">Comment avez-vous acquis ces expériences<span class="text-danger">*</span><span data-toggle="tooltip" title="Comment avez-vous acquis ces expériences / connaissances "><i class="fa fa-info-circle"></i></span></label>
+                            <select id="mode_dacquisition_des_connaissances" name="mode_dacquisition_des_connaissances" class="select-select2" data-placeholder="Comment avez-vous acquis ces expériences / connaissances" style="width: 100%;" required >
+                                <option></option>
+                                <option value="1" {{ old('mode_dacquisition_des_connaissances') == 1 ? 'selected' : '' }}>Apprentissage sur le tas</option>
+                                <option value="2" {{ old('mode_dacquisition_des_connaissances') == 2 ? 'selected' : '' }}>Formation Technique</option>
+                                <option value="3" {{ old('mode_dacquisition_des_connaissances') == 3 ? 'selected' : '' }}>Stage</option> 
+                            </select>
+                    </div>
+                </div>
+            </div>
+                   
+              
+            </div>
+            <div id="progress-third" class="step">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group" >
+                            <label class=" control-label" for="example-chosen">Une autorisation est-il exigée pour la mise en œuvre de votre projet ? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="aggrement_exige" name="aggrement_exige" class="select-select2" onchange="afficherSiOui('aggrement_exige','type_aggrement');" data-placeholder="Une autorisation est-il exigée pour la mise en œuvre de votre projet" style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('aggrement_exige') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('aggrement_exige') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
+                        </div>
+                        <div class="form-group type_aggrement" style="display: none;">
+                            <label class="control-label" for="precise_aggrement">Precisez l'aggrément exigé <pan class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input type="text"   id="precise_aggrement" name="precise_aggrement"  class="form-control" placeholder="Preciser l'aggrement ou l'autorisation exigé pour le projet"  autofocus required>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                            <select id="forme_juridique_envisage" name="forme_juridique_envisage" class="select-select2" data-placeholder="La nature de la clientèle" style="width: 100%;"  required >
+                                <option></option>
+                                @foreach ($forme_juridiques as $forme_juridique )
+                                <option value="{{$forme_juridique->id  }}" {{ old('nature_client') == $forme_juridique->id ? 'selected' : '' }} value="{{ $forme_juridique->id }}">{{ $forme_juridique->libelle }}</option>
+                                @endforeach
+                            </select>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class=" control-label" for="example-chosen">Origine de la clientèle de votre projet <span class="text-danger">*</span></label>
+                                <select id="provenance_clientele" name="provenance_clientele" class="select-select2" data-placeholder="Choisir la provenance de votre clientèle" style="width: 100%;" required onchange="afficherautre('provenance_clientele',  {{ env('VALEUR_ID_AUTRE_PROVENANCE_CLIENTELE') }} ,'autre_provenance_clientele');">
+                                    <option></option>
+                                    @foreach ($provenance_clients as $provenance_client )
+                                    <option value="{{$provenance_client->id  }}" {{ old('provenance_clientele') == $provenance_client->id ? 'selected' : '' }} value="{{ $provenance_client->id }}">{{ $provenance_client->libelle }}</option>
+                                    @endforeach <!-- Required for data-placeholder attribute to work with Chosen plugin -->
+                                </select>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-offset-1 col-md-5">
+                        <div class="form-group">
+                            <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                                 @foreach ($source_appros as $source_appro)
                                 <div class="col-lg-8 checkbox">
                                     <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
@@ -145,87 +281,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class=" control-label" for="example-chosen">Avez-vous une expérience / connaissance dans le domaine d’activité de votre projet? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
-                                <select id="connaissance_sur_lactivite" name="connaissance_sur_lactivite" class="select-select2" onchange="afficherSiOui('connaissance_sur_lactivite','acquisition_des_connaissances');" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
-                                    <option></option>
-                                    <option value="1" {{ old('connaissance_sur_lactivite') == 1 ? 'selected' : '' }}>Oui</option>
-                                    <option value="2" {{ old('connaissance_sur_lactivite') == 2 ? 'selected' : '' }}>Non</option>
-                                </select>
-                        </div>
-                        <div class="form-group acquisition_des_connaissances">
-                            <label class=" control-label" for="example-chosen">Formation (s) en rapport avec l’activité<span class="text-danger">*</span><span data-toggle="tooltip" title="Comment vous vous êtes formé sur l'activité que vous menez comme activité de l'entreprise "><i class="fa fa-info-circle"></i></span></label>
-                                <select id="mode_dacquisition_des_connaissances" name="mode_dacquisition_des_connaissances" class="select-select2" data-placeholder="mode_dacquisition_des_connaissances" style="width: 100%;" required >
-                                    <option></option>
-                                    <option value="1" {{ old('mode_dacquisition_des_connaissances') == 1 ? 'selected' : '' }}>Apprentissage sur le tas</option>
-                                    <option value="2" {{ old('mode_dacquisition_des_connaissances') == 2 ? 'selected' : '' }}>Formation Technique</option>
-                                    <option value="3" {{ old('mode_dacquisition_des_connaissances') == 3 ? 'selected' : '' }}>Stage</option> 
-                                </select>
-                        </div>
-                    </div>
-                <div class="offset-md-1 col-md-5">
-                    <div class="form-group">
-                        <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
-                            @foreach ($source_appros as $source_appro)
-                            <div class="col-lg-8 checkbox">
-                                <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
-                            </div>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class=" control-label" for="">Avez-vous déjà suivi une formation en entreprenariat ? <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
-                            @foreach ($source_appros as $source_appro)
-                            <div class="col-lg-8 checkbox">
-                                <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
-                            </div>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                 
-            </div>
-                <div class="row">
-                    <fieldset>
-                        <legend>CADRE GENERAL DU PROJET</legend>
-                        <div class="col-md-5">
-                           
-                            <div class="form-group">
-                                <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
-                                    @foreach ($source_appros as $source_appro)
-                                    <div class="col-lg-8 checkbox">
-                                        <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
-                                    </div>
-                                    @endforeach
-                                </select>
-                            </div>
-                            
-                                <div class="form-group">
-                                    <label class=" control-label" for="example-chosen">Origine de la clientèle du projet <span class="text-danger">*</span></label>
-                                        <select id="provenance_clientele" name="provenance_clientele" class="select-select2" data-placeholder="Choisir la provenance de votre clientèle" style="width: 100%;" required onchange="afficherautre('provenance_clientele',  {{ env('VALEUR_ID_AUTRE_PROVENANCE_CLIENTELE') }} ,'autre_provenance_clientele');">
-                                            <option></option>
-                                            @foreach ($provenance_clients as $provenance_client )
-                                            <option value="{{$provenance_client->id  }}" {{ old('provenance_clientele') == $provenance_client->id ? 'selected' : '' }} value="{{ $provenance_client->id }}">{{ $provenance_client->libelle }}</option>
-                                            @endforeach <!-- Required for data-placeholder attribute to work with Chosen plugin -->
-                                        </select>
-                                </div>
-                        </div>
-                        <div class="offset-md-1 col-lg-5">
-                            <div class="form-group">
-                                <label class=" control-label" for="example-chosen">Type de clientèle envisagée <span class="text-danger">*</span></label>
-                                    <select id="nature_client" name="nature_client" class="select-select2" data-placeholder="La nature de la clientèle" style="width: 100%;" onchange="afficherautre('nature_client',  {{ env('VALEUR_ID_AUTRE_NATURE_CLIENTELE') }} ,'autre_nature_clientele');" required >
-                                        <option></option>
-                                        @foreach ($nature_clienteles as $nature_clientele )
-                                        <option value="{{$nature_clientele->id  }}" {{ old('nature_client') == $nature_clientele->id ? 'selected' : '' }} value="{{ $nature_clientele->id }}">{{ $nature_clientele->libelle }}</option>
-                                        @endforeach
-                                    </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="chiffre_daffaire_previsionnel">Chiffre d'affaire previsionnel<span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <input type="text"   id="chiffre_daffaire_previsionnel" name="chiffre_daffaire_previsionnel"  class="form-control" placeholder=" Chiffre d'affaire previsionnel"  autofocus required>
-                                    </div>
-                            </div>
+                        
                             <div class="form-group">
                                 <label class=" control-label" for="example-chosen">Disposer vous d’un site de mise en œuvre de votre projet? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
                                     <select id="site_disponible" name="site_disponible" class="select-select2" onchange="afficherSiOui('site_disponible','docsite');" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
@@ -236,139 +292,18 @@
                             </div>
                             <div class="form-group docsite" style="display: none">
                                 <label class=" control-label" for="example-chosen">Type de propriété <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà obtenu une promesse de financement de votre projet auprès des institutions financières (banques, institutions de microfinance ?"><i class="fa fa-info-circle"></i></span></label>
-                                    <select id="type_site" name="type_site" class="select-select2" onchange="afficherSiOui('type_site','docsite');" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
+                                    <select id="type_site" name="type_site" class="select-select2" data-placeholder="Disposer vous d’un site de mise en œuvre de votre projet" style="width: 100%;" required>
                                         <option></option>
                                         <option value="1" {{ old('type_site') == 1 ? 'selected' : '' }}>Domaine personnel</option>
                                         <option value="2" {{ old('type_site') == 2 ? 'selected' : '' }}>En location</option>
                                     </select>
                             </div>
-                            {{-- <div class="docsite form-group{{ $errors->has('docsite') ? ' has-error' : '' }}" style="display: none">
-                                <label class=" control-label" for="docidentite">Joindre le document du site</label>
-                                    <input class="form-control" type="file" id="docsite" accept=".pdf, .jpeg, .png" name="docsite"  placeholder="Charger une copie du document du site" onchange="VerifyUploadSizeIsOK('docsite');"  required>
-                                    <span class="help-block" style="text-align: center; color:red;">
-                                        Taille maximale autorirée :2MB
-                                    </span>
-                                @if ($errors->has('docsite'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('docsite') }}</strong>
-                                    </span>
-                                    @endif
-                            </div> --}}
-                        </div>
-                    </fieldset>   
-                    </div>
-            </div>
-            <div id="progress-third" class="step">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="control-label" for="nbre_innovation">Nombre d'innovations introduites dans l'activités <pan class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input type="text"   id="nbre_innovation" name="nbre_innovation"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
-                                </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="nbre_nouveau_marche">Nombre de nouveaux marchés a accéder  <pan class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input type="text"   id="nbre_nouveau_marche" name="nbre_nouveau_marche"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
-                                </div>
-                         </div>
-                    </div>
-                    <div class="col-md-offset-1 col-md-5">
-                        <div class="form-group">
-                            <label class="control-label" for="nbre_nouveau_produit">Nombre de nouveaux produits et/ou services a lancer  <pan class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input type="text"   id="nbre_nouveau_produit" name="nbre_nouveau_produits"  class="form-control" placeholder="Combien de nouveaux produits et/ou services pensez-vous lancer chaque année ?"  autofocus required>
-                                </div>
-                        </div>
                     </div>
                 </div>
-                {{-- <div class="row">
-                    @foreach ($projet_innovations as $nouveaute_projet )
-                    <div class="col-md-4">
-                    <fieldset>
-                        <legend>{{ $nouveaute_projet->libelle }} </legend>
-                        @foreach ($futur_annees as $futur_annee )
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="val_email">En {{ $futur_annee->libelle }}<span class="text-danger">*</span></label>
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <input type="number"   id="" name="{{ $nouveaute_projet->id }}{{$futur_annee->id }}" value="{{old('{!! $nouveaute_projet->id !!}{!! $futur_annee->id !!}')}}" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire.">
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </fieldset>
-                    </div>
-                    @endforeach
-                </div> --}}
-                <div class="row">
-                    <fieldset>
-                        <legend>Effectif permanent prévisionnel </legend>
-                    <div class="col-md-6">
-              
-                        <div class="form-group">
-                            <label class="col-md-8 control-label">Etude technique de faisabilité de votre projet réalisée?</label>
-                            <div class="col-md-4">
-                                <label class="radio-inline" for="example-inline-radio1">
-                                    <input type="radio" id="etude_technique_de_faisabilite" name="etude_technique_de_faisabilite" value="1"> Oui
-                                </label>
-                                <label class="radio-inline" for="example-inline-radio2">
-                                    <input type="radio" id="etude_technique_de_faisabilite" name="etude_technique_de_faisabilite" value="2"> Non
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-8 control-label">Avez déjà réalisé une étude de marché de votre projet?</label>
-                            <div class="col-md-4">
-                                <label class="radio-inline" for="example-inline-radio1">
-                                    <input type="radio" id="example-inline-radio1" name="etude_de_marche_realise" value="1"> Oui
-                                </label>
-                                <label class="radio-inline" for="example-inline-radio2">
-                                    <input type="radio" id="example-inline-radio2" name="etude_de_marche_realise" value="2"> Non
-                                </label>
-                            </div>
-                        </div>
-                       
-                  
-                    </div>
-                    <div class="col-md-6">
-                        
-                        <div class="form-group">
-                            <label class="col-md-8 control-label">Disposez vous d’un prototype ou preuve de conception de votre produit ou service</label>
-                            <div class="col-md-4">
-                                <label class="radio-inline" for="example-inline-radio1">
-                                    <input type="radio" id="example-inline-radio1" name="existence_de_prototype" value="1"> Oui
-                                </label>
-                                <label class="radio-inline" for="example-inline-radio2">
-                                    <input type="radio" id="example-inline-radio2" name="existence_de_prototype" value="2"> Non
-                                </label>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-8 control-label">Avez-vous déjà engagé des démarches pour les recherches de financement</label>
-                                <div class="col-md-4">
-                                    <label class="radio-inline" for="example-inline-radio1">
-                                        <input type="radio" id="example-inline-radio1" name="recherche_de_financement" value="1"> Oui
-                                    </label>
-                                    <label class="radio-inline" for="example-inline-radio2">
-                                        <input type="radio" id="example-inline-radio2" name="recherche_de_financement" value="2"> Non
-                                    </label>
-                                </div>
-                            </div>
-                           
-                    
-                        </div>
-                    </fieldset>
-                </div>
                 
-            <div class="row">
                 
-
-            </div>
             <div class="row">
                <p style="color: red; margin-bottom:20px;"> NB: Une fois validé les informations soumises ne seront plus modifiables. Merci de reparcourir le formulaire avant de le valider.</p>
-
             </div>
     </div>
                     <div class="form-group form-actions">

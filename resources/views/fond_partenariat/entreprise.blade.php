@@ -73,7 +73,7 @@
                                  <div class="offset-md-1 col-lg-5">
                                     </fieldset>
                                             <fieldset>
-                                                <legend>Informations sur l'activite</legend>
+                                                <legend>Informations sur l'entreprise</legend>
                                                 <div class="form-group">
                                                     <label class="control-label" for="val_email">Secteur d'activité <span class="text-danger">*</span></label>
                                                         <div class="input-group">

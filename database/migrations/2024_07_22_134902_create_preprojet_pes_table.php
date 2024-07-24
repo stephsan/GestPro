@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('preprojets', function (Blueprint $table) {
+        Schema::create('preprojet_pes', function (Blueprint $table) {
             $table->id();
             $table->string("titre_projet");
             $table->integer("secteur_dactivite");
@@ -23,30 +23,26 @@ return new class extends Migration
             $table->integer("commune");
             $table->integer("secteur_village");
             $table->integer("type_site")->nullable();
-            $table->integer("guichet");
+            // $table->integer("guichet");
             $table->integer("origine_clientele");
             $table->integer("type_clientele");
             $table->integer("site_disponible");
-            $table->integer("aggrement_exige");
-            $table->string("precise_aggrement")->nullable();
             $table->text("description");
             $table->text("objectifs");
             $table->string("num_projet",100);
-            $table->integer("nbre_innovation");
-            $table->integer("nbre_nouveau_marche");
-            $table->integer("nbre_nouveau_produit");
-            $table->integer("effectif_permanent_homme");
-            $table->integer("effectif_permanent_femme");
-            $table->integer("effectif_temporaire_homme");
-            $table->integer("effectif_temporaire_femme");
-            $table->integer("chiffre_daffaire_previsionnel");
             $table->integer("forme_juridique_envisage");
+            $table->integer("aggrement_exige");
+            $table->string("precise_aggrement")->nullable();
+            $table->string("autre_besoin_en_formation")->nullable();
+            $table->integer("existence_dexprerience_du_promoteur");
+            $table->integer("mode_dacquisition_dexprerience_du_promoteur")->nullable();
+            $table->integer("etude_technique_de_faisabilite");
+            $table->integer("etude_de_marche");
+            $table->integer("prototype_existe");
+            $table->integer("recherche_de_financement_envisage");
             $table->string("slug",100);
             $table->integer("promoteur_id")->nullable();
-            $table->bigInteger("cout_total");
-            $table->bigInteger("apport_personnel");
-            $table->bigInteger("subvention_souhaite");
-            $table->bigInteger("autre_financement");
+   
             $table->integer("entreprise_id")->nullable();
             $table->timestamps();
         });
@@ -59,6 +55,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('preprojets');
+        Schema::dropIfExists('preprojet_pes');
     }
 };

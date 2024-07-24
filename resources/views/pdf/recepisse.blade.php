@@ -64,8 +64,13 @@
         <p class="contenu"> <strong>Numero d'identité : </strong></p> <p class="contenu" > {{ $promoteur->numero_identite }} du {{ $promoteur->date_etabli_identite }}</p> <br>
         <p class="contenu"><strong> Télephone du promoteur : </strong></p> <p class="contenu"> {{ $promoteur->telephone_promoteur }} / {{ $promoteur->mobile_promoteur }}</p> <br>
         <p class="contenu"> <strong>Email: </strong></p> <p class="contenu">{{ $promoteur->email_promoteur  }} </p> <br>
+        @if($programme=='FP')
         <p class="contenu"><strong> Programme : </strong></p> <p class="contenu" > Fonds de Partenariat </p> <br>
         <p class="contenu"><strong> Guichet : </strong></p> <p class="contenu" > {{ getlibelle($preprojet->guichet) }}</p> <br>
+
+        @elseif ($programme=='PE')
+        <p class="contenu"><strong> Programme : </strong></p> <p class="contenu" > Programme Entreprendre </p> <br>
+        @endif
         <p class="contenu"> <strong>Catégorie : </strong></p> <p class="contenu">
             @if($preprojet->entreprise_id ==null)
               Startup 
