@@ -75,6 +75,18 @@ if (!function_exists('getlibelle')) {
                             return $now->diff($dob)->y;
                         }
                     }
+                    if (!function_exists('entreprise_isFormalise')) {
+                        function entreprise_isFormalise($entreprise_id)
+                            {
+                                $entreprise=Entreprise::find($entreprise_id);
+                                if($entreprise->formalise==1){
+                                    return true;
+                                }
+                                else{
+                                    return false;
+                                }
+                            }
+                        }
 
             if(!function_exists('monthletter')){
                 function monthletter($num)

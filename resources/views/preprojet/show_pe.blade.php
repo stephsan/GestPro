@@ -8,7 +8,7 @@
         <h1 class="text-success">Souscription</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item text-dark">Fonds de partenariats</li>
+                <li class="breadcrumb-item text-dark">Souscription</li>
                 <li class="breadcrumb-item active text-dark">Visuliser</li>
             </ol>
         </nav>
@@ -31,9 +31,9 @@
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Informations sur le projet</a>
                                   </li>
-                                  {{-- <li class="nav-item">
+                                  <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-chiffre-tab" data-toggle="pill" href="#custom-tabs-one-chiffre" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Previsions chiffrées</a>
-                                  </li> --}}
+                                  </li>
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Les Piece jointes</a>
                                   </li>
@@ -200,7 +200,7 @@
                                      </div>
                                      <div class="row">
                                         <center><p class="titre-show">Contacts</p></center>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div  class="form-group ">
                                                 <span class="col-md-5 control-label labdetail"> <span class="labdetail">Email: </span> </span>
                                                 <span class="col-md-6" >
@@ -213,7 +213,7 @@
                                             </span>
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <div  class="form-group ">
                                                 <span class="col-md-5 control-label labdetail"> <span class="labdetail">Telephone promoteur: </span> </span>
                                                 <span class="col-md-6" >
@@ -222,19 +222,6 @@
                                                         Informations non disponible
                                                     @endempty
                                                         {{ $preprojet->promoteur->telephone_promoteur}} / {{ $preprojet->promoteur->mobile_promoteur}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Contact du proche: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->promoteur->numero_du_proche)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->promoteur->numero_du_proche}} 
                                                 </span>
                                             </span>
                                             </div>
@@ -251,17 +238,6 @@
                                                         Informations non disponible
                                                     @endempty
                                                         {{ getlibelle($preprojet->promoteur->niveau_instruction)}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Domaine d'étude: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->promoteur->domaine_detude)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ getlibelle($preprojet->promoteur->domaine_detude)}}
                                                 </span>
                                             </span>
                                             </div>
@@ -283,17 +259,6 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Occupation professionnelle: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->promoteur->occupation_professionnelle_actuelle)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ getlibelle($preprojet->promoteur->occupation_professionnelle_actuelle)}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
                                                 <span class="col-md-5 control-label labdetail"> <span class="labdetail">Formation en rapport avec l'activité: </span> </span>
                                                 <span class="col-md-6" >
                                                 <span class="valdetail">
@@ -307,7 +272,6 @@
                                                 </span>
                                             </span>
                                             </div>
-                                            
                                         </div>
                                      </div>
                                   </div>
@@ -468,25 +432,6 @@
                                                             @endif
                                                     </span></span>
                                                 </div>
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Disponibilite du site :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                        @empty($preprojet->site_disponible)
-                                                                Informations non disponible
-                                                            @endempty
-                                                            @if($preprojet->site_disponible==1)
-                                                                Oui le site disponible. 
-                                                                @if($preprojet->type_site==1)
-                                                                    c'est un domaine personnel
-                                                                @else
-                                                                    Je suis en location
-                                                                @endif
-                                                            @else
-                                                                Non je dispose pas de site 
-                                                            @endif
-                                                    </span></span>
-                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -515,20 +460,7 @@
                                                         <span class="valdetail" style="text-justify: auto;">
                                                        @if(count($projet_innovations)!=0)
                                                        @foreach ($projet_innovations as $projet_innovation )
-                                                            {{ getlibelle($projet_innovation->valeur_id) }},
-                                                       @endforeach
-                                                        @else
-                                                           Aucune Innovation mentionnée
-                                                        @endif
-                                                    </span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Les sources d'approvisionnement en intrant  :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                       @if(count($sources_dapprovisionnements)!=0)
-                                                       @foreach ($sources_dapprovisionnements as $sources_dapprovisionnement )
-                                                            {{ getlibelle($sources_dapprovisionnement->valeur_id) }},
+                                                            {{ getlibelle($projet_innovation->innovation_id) }}
                                                        @endforeach
                                                         @else
                                                            Aucune Innovation mentionnée
@@ -589,104 +521,6 @@
                                             </span>
                                             </div>
                                         </div>
-
-                                     </div>
-                                     <div class="row">
-                                        <center><p class="titre-show">Chiffres previsionnels </p></center>
-                                        <div class="col-md-6">
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Nombre de nouveau marché: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->nbre_nouveau_marche)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->nbre_nouveau_marche}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Nombre de nouveaux produits: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->nbre_nouveau_produit)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->nbre_nouveau_produit}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Chiffre d'affaire: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->chiffre_daffaire_previsionnel)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ format_prix($preprojet->chiffre_daffaire_previsionnel)}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Nombre d'innovations: </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->nbre_innovation)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->nbre_innovation}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                           
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Efectif permanent homme : </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->effectif_permanent_homme)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->effectif_permanent_homme}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Efectif permanent femme : </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->effectif_permanent_femme)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->effectif_permanent_femme}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Efectif temporaire homme : </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->effectif_temporaire_homme)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->effectif_temporaire_homme}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                            <div  class="form-group ">
-                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Efectif temporaire femme : </span> </span>
-                                                <span class="col-md-6" >
-                                                <span class="valdetail">
-                                                    @empty($preprojet->effectif_temporaire_femme)
-                                                        Informations non disponible
-                                                    @endempty
-                                                        {{ $preprojet->effectif_temporaire_femme}}
-                                                </span>
-                                            </span>
-                                            </div>
-                                        </div>
-                                        
                                      </div>
                                      
                                   </div>
@@ -719,7 +553,7 @@
                              </tbody>
                             </table>
                                   </div>
-                                  {{-- <div class="tab-pane fade" id="custom-tabs-one-chiffre" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                  <div class="tab-pane fade" id="custom-tabs-one-chiffre" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                     <div class="row">
                                         <div class="col-md-6 ">
                                             <center><p class="titre-show">Chiffre d'affaire previsionnel </p></center>
@@ -839,7 +673,7 @@
                                 </div>
                             </div> 
                                 
-                                  </div> --}}
+                                  </div>
                                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                         <div class="row">
                                             <div class="col-md-6">

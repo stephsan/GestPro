@@ -129,6 +129,12 @@ h6 {
   padding: 0;
 }
 
+@media (max-width: 768px) {
+  .horloge-block {
+    display: none;
+  }
+}
+
 #topbar .contact-info i {
   font-style: normal;
   color: #fff;
@@ -589,7 +595,7 @@ h6 {
 
 @media (max-height: 500px) {
   #hero {
-    height: 120vh;
+    height: 60vh;
   }
 }
 

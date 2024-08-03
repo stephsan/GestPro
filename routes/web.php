@@ -56,15 +56,19 @@ Route::resource("entreprise", EntrepriseController::class);
 Route::post("creation",[EntrepriseController::class, 'creation'])->name("entreprise.creation");
 Route::post("page/souscription/PF/preprojet/creation",[PreprojetController::class, 'store_preprojet'])->name("preprojet.creation");
 Route::post("page/souscription/PE/preprojet/creation",[PreprojetController::class, 'store_preprojet_pe'])->name("preprojet_pe.creation");
-
-
 Route::get("recepisse/print/{promoteur}",[EntrepriseController::class,'genereRecpisse'])->name("generer.recepisse");
 Route::get("store/second/entreprise/{promoteur}", [EntrepriseController::class, 'create2'])->name("secondEntreprise.store");
 Route::post("/souscription/poursuivre/",[PromoteurController::class, 'search_promoteur'])->name("search.promoteur");
 Route::get("/rechercher/promoteur/parcode_promoteur",[PromoteurController::class, 'search_promoteur_parcode_promoteur'])->name("promoteur.search");
 Route::get("/souscription/control_doublon", [PromoteurController::class, 'control_doublon_souscription'])->name("souscription.control_doublon");
 Route::resource("souscription",PreprojetController::class);
-Route::get("/lister/souscription", [PreprojetController::class, 'lister'])->name("preprojet.lister");
+Route::get('afficher_details/preprojet/FP/{preprojet}', [PreprojetController::class, 'afficher_details_fp'])->name("preprojet.details");
+Route::get('afficher_details/preprojet/PE/{preprojet}', [PreprojetController::class, 'afficher_details_pe'])->name("preprojet_pe.details");
+
+
+Route::get("/lister/souscription/FP", [PreprojetController::class, 'lister_fp'])->name("preprojet.lister_fp");
+Route::get("/lister/souscription/PE", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
+
 Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
 Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');

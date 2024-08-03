@@ -32,16 +32,31 @@
 
       </div>
     </section> --}}
+    <section id="featured-services" class="featured-services">
+      <div class="container" data-aos="fade-up">
+      <div class="section-title">
+      <h3>Comment s'inscrire ?</h3>
+      </div>
+        <div class="row">
+          <img src="{{ asset('/img/steps_subscribe.jpeg') }}" alt="">
+          
+        </div>
+
+      </div>
+
+    </section>
     <section id="pricing" class="pricing">
       <div class="container" data-aos="fade-up">
-
+        <div class="section-title">
+          <h3>Choisir le programme</h3>
+          </div>
         <div class="row">
           <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
 
           </div>
         </div>
           <div class="col-lg-6 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
-            <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
+            <div class="box" style=" box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 20px;">
               {{-- <span class="advanced">MPME Existant</span> --}}
               <h3>Programme entreprendre</h3>
               <p style="font-size: 18px;   text-align: justify;">
@@ -56,7 +71,7 @@
           </div>
 
           <div class="col-lg-6 col-md-6 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="300">
-            <div class="box" style=" box-shadow: 6px 6px 18px 0px rgba(0,0,0,0.3);">
+            <div class="box" style=" box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 20px;">
               {{-- <span class="advanced">Startup</span> --}}
               <h3>Fonds de partenariat</h3>
               {{-- <h4><sup>$</sup>29<span> / month</span></h4> --}}
@@ -89,53 +104,10 @@
 
       </div>
     </section>
-    <section id="featured-services" class="featured-services">
-      <div class="container" data-aos="fade-up">
-      <div class="section-title">
-      <h3>Comment s'inscrire ?</h3>
-      </div>
-        <div class="row">
-          <img src="{{ asset('/img/steps_subscribe.jpeg') }}" alt="">
-          {{-- <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4 class="title"><a href="">Etape 1</a></h4>
-              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
-              <div class="icon"><i class="bx bx-file"></i></div>
-              <h4 class="title"><a href="">Etape 2</a></h4>
-              <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
-              <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4 class="title"><a href="">Etape 3</a></h4>
-              <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
-              <div class="icon"><i class="bx bx-world"></i></div>
-              <h4 class="title"><a href="">Etape 4</a></h4>
-              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-            </div>
-          </div> --}}
-
-        </div>
-
-      </div>
-
-    </section><!-- End Featured Services Section -->
+    <!-- End Featured Services Section -->
 
     <div class="section-title">
-      <h3>QUELQUES RESULTATS ATTENDUS</h3>
+      <h3>Quelques resultats attendus</h3>
       </div>
     <section id="counts" class="counts">
       <div class="container" data-aos="fade-up">
@@ -221,7 +193,7 @@
     <!-- ======= Testimonials Section ======= -->
     <div class="section-title">
           <!-- <h2>Services</h2> -->
-          <h3>NOS PARTENAIRES</h3>
+          <h3>Nos partenaires</h3>
           <!-- <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p> -->
     </div>
     <section id="testimonials" class="testimonial">
@@ -297,7 +269,7 @@
             <div class="info-box  mb-4">
               <i class="bx bx-phone-call"></i>
               <h3>Contactez Nous</h3>
-              <p>+226 25 39 80 60</p>
+              <p>+226 25-41-03-09 / 10</p>
             </div>
           </div>
 

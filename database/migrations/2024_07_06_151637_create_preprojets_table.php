@@ -40,7 +40,7 @@ return new class extends Migration
             $table->integer("effectif_temporaire_homme");
             $table->integer("effectif_temporaire_femme");
             $table->integer("chiffre_daffaire_previsionnel");
-            $table->integer("forme_juridique_envisage");
+            $table->integer("forme_juridique_envisage")->nullable();
             $table->string("slug",100);
             $table->integer("promoteur_id")->nullable();
             $table->bigInteger("cout_total");

@@ -48,8 +48,8 @@
   <link href="{{asset('frontend/css/style.css')}}" rel="stylesheet">
 
 <link href="{{asset('css/css-brave/plugins.css')}}" rel="stylesheet">
-
   <link rel="stylesheet" href="{{asset('frontend/themes.css')}}">
+  <link rel="stylesheet" href="{{asset('css/css-brave/themes.css')}}">
   <script src="{{ asset("css/css-brave/modernizr.min.js") }}"></script>
  
 
@@ -74,7 +74,7 @@
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com"> infoecotec@me.bf</a></i>
-        <i class="bi bi-phone d-flex align-items-center ms-4"><span>+226 70000000</span></i>
+        <i class="bi bi-phone d-flex align-items-center ms-4"><span>+226 25-41-03-09 / 10</span></i>
       </div>
       
       {{-- <div class="social-links d-none d-md-flex align-items-center">
@@ -83,7 +83,7 @@
         <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
       </div> --}}
-      <div class="" style="text-align: right">
+      <div class="horloge-block" style="text-align: right">
         <p id="horloge" style="color: #a60e1f; font-size: 18px; font-weight:600; text-align: right;"></p>
     </div>
     </div>

@@ -72,7 +72,7 @@
           </div>
           <div class="modal-body" >
               <div class="row">
-                  <span> <p style="color: red;"> NB: Vous devez completer cette souscription dans un delais de 72 soit trois jours. Sinon code promoteur sera invalide. </p></span>
+                  <span> <p style="color: red;"> NB: Vous devez completer cette souscription dans un delais de 72 Heures soit trois jours. Sinon code promoteur sera invalide. </p></span>
               </div>
           </div>
           <div class="modal-footer">
@@ -429,6 +429,9 @@
 <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
 <script src="{{asset('frontend/js/main.js')}}"></script>
 <script src="{{asset('js/js-brave/pages/formsWizard.js')}}"></script>
+<script src="{{asset('js/js-brave/pages/formsValidation.js')}}"></script>
+
+<script>$(function(){ FormsValidation.init(); });</script>
 {{-- <script src="{{ asset("js/js-brave/vendor/bootstrap.min.js") }}"></script> --}}
   {{-- <script src="{{asset('js/js-brave/app.js')}}"></script> --}}
 {{-- 
@@ -450,7 +453,11 @@
   {{-- <script src="{{ asset("js/js-brave/vendor/bootstrap.min.js") }}"></script> --}}
   
   <script>$(function(){ FormsWizard.init(); });</script>
-
+<script>
+  $(document).ready(function() {
+    $('.montant').prop('required',false);;
+  })
+</script>
   <script type="text/javascript"> 
     function refresh(){
         var t = 1000; // rafraîchissement en millisecondes

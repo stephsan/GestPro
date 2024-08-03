@@ -146,18 +146,39 @@
        @endcan
 
        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#sa" data-bs-toggle="collapse" href="#">
-            <i class="bi-currency-exchange"></i><span>Souscriptions</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#pe" data-bs-toggle="collapse" href="#">
+            <i class="bi-currency-exchange"></i><span>Programme Entreprendre</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="sa" class="nav-content collapse"
+        <ul id="pe" class="nav-content collapse"
             data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('preprojet.lister') }}?type_entreprise=startup" class="nav-link">
+                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link">
                     <i class="bi bi-circle"></i><span>Startups</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('preprojet.lister') }}?type_entreprise=entreprise_existante" class="nav-link">
+                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=entreprise_existante" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Entreprise existante</span>
+                </a>
+            </li>
+           
+           
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#fp" data-bs-toggle="collapse" href="#">
+            <i class="bi-currency-exchange"></i><span>Fonds de partenariat</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="fp" class="nav-content collapse"
+            data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link">
+                    <i class="bi bi-circle"></i><span>Startups</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link">
                     <i class="bi bi-circle"></i><span>Entreprise existante</span>
                 </a>
             </li>

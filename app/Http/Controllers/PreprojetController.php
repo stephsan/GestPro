@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Preprojet;
-use App\Models\PreprojetPE;
+use App\Models\PreprojetPe;
 use App\Models\Piecejointe;
 use App\Models\Infoentreprise;
 use App\Models\Infoeffectifentreprise;
@@ -20,7 +20,6 @@ use App\Models\PreprojetParametre;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
-
 use Illuminate\Support\Facades\Storage;
 class PreprojetController extends Controller
 {
@@ -51,15 +50,29 @@ class PreprojetController extends Controller
     {
        
     }
-    public function lister(Request $request){
+    public function lister_fp(Request $request){
         $type_entreprise= $request->type_entreprise;
         if($type_entreprise=='startup'){
             $preprojets=Preprojet::where('entreprise_id', null)->orderBy('created_at','desc')->get();
+            $type='Startup';
         }
         else if($type_entreprise=='entreprise_existante'){
             $preprojets=Preprojet::where('entreprise_id','!=', null)->orderBy('created_at','desc')->get();
+            $type='Entreprise existante';
         }
-        return view('preprojet.index',compact('preprojets'));
+        return view('preprojet.index',compact('preprojets','type'));
+    }
+    public function lister_pe(Request $request){
+        $type_entreprise= $request->type_entreprise;
+        if($type_entreprise=='startup'){
+            $preprojets=PreprojetPe::where('entreprise_id', null)->orderBy('created_at','desc')->get();
+            $type='Startup';
+        }
+        else if($type_entreprise=='entreprise_existante'){
+            $preprojets=PreprojetPe::where('entreprise_id','!=', null)->orderBy('created_at','desc')->get();
+            $type='Entreprise existante';
+        }
+        return view('preprojet.index_pe',compact('preprojets','type'));
     }
 
     /**
@@ -104,7 +117,7 @@ class PreprojetController extends Controller
             $num_projet = $promoteur->code_promoteur.'PE'.'_00'.'0';
         }
         $entreprise_nn_traite= Entreprise::where('promoteur_id', $promoteur->id)->get();
-        $preprojet_controle_doublon= PreprojetPE::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
+        $preprojet_controle_doublon= PreprojetPe::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
             if(count($preprojet_controle_doublon)==0){
             $preprojet=PreprojetPE::create([
                 "titre_projet"=> $request->titre_projet,
@@ -113,7 +126,7 @@ class PreprojetController extends Controller
                 "region"=>  $request->region,
                 "province"=>  $request->province,
                 "commune"=>  $request->commune,
-                //"guichet"=>  $request->guichet,
+                "domaine_detude"=>  $request->domaine_detude,
                 'forme_juridique_envisage'=>$request->forme_juridique_envisage,
                 'aggrement_exige'=>$request->aggrement_exige,
                 'precise_aggrement'=>$request->precise_aggrement,
@@ -195,9 +208,65 @@ class PreprojetController extends Controller
 
 
      }
-    public function show($id)
+
+     public function afficher_details_fp(Preprojet $preprojet){
+        $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
+        $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
+        $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
+        $nombre_de_client_envisages=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
+        $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
+        $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
+        $projet_innovations= PreprojetParametre::where("parametre_id",44)->where("preprojet_fp_id",$preprojet->id)->get();
+        $sources_dapprovisionnements= PreprojetParametre::where("parametre_id",12)->where("preprojet_fp_id",$preprojet->id)->get();
+
+        $evaluations=Evaluation::where('preprojet_id',$preprojet->id)->get();
+        $id_criteres=[];
+        $i=0;
+        foreach($evaluations as $evaluation)
+                {
+                    $id_criteres[$i]= $evaluation->critere_id;
+                    $i++;
+                }
+        $criteres= Critere::where('categorie','FP_preprojet')->get();
+        $criteres= $criteres->except($id_criteres);
+        if($entreprise)
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+        else
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+            
+        return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
+           // dd($preprojet);
+    }
+    public function afficher_details_pe(PreprojetPe $preprojet){
+        $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
+        $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
+        $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
+        $nombre_de_client_envisages=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
+        $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
+        $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
+        $projet_innovations= InnovationProjet::where("projet_id",$preprojet->id)->get();
+        $evaluations=Evaluation::where('preprojet_id',$preprojet->id)->get();
+        $id_criteres=[];
+        $i=0;
+        foreach($evaluations as $evaluation)
+                {
+                    $id_criteres[$i]= $evaluation->critere_id;
+                    $i++;
+                }
+        $criteres= Critere::where('categorie','FP_preprojet')->get();
+        $criteres= $criteres->except($id_criteres);
+        if($entreprise)
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+        else
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+            
+        return view('preprojet.show_pe',compact('evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
+           // dd($preprojet);
+    }
+    public function show(Preprojet $preprojet)
     {
-        $preprojet=Preprojet::where('id',$id)->first();
+       
+        //$preprojet=Preprojet::where('id',$id)->first();
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
         $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
         $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
@@ -299,10 +368,10 @@ class PreprojetController extends Controller
                 'nbre_innovation'=>$request->nbre_innovation,
                 'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
                 'nbre_nouveau_produit'=>$request->nbre_nouveau_produit,
-                'effectif_permanent_homme'=>$request->effectif_permanent_homme,
-                'effectif_permanent_femme'=>$request->effectif_permanent_femme,
-                'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
-                'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
+                // 'effectif_permanent_homme'=>$request->effectif_permanent_homme,
+                // 'effectif_permanent_femme'=>$request->effectif_permanent_femme,
+                // 'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
+                // 'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
                 "origine_clientele"=> $request->provenance_clientele,
                 "type_clientele"=>  $request->nature_client,
                 "site_disponible"=>$request->site_disponible,
@@ -408,7 +477,7 @@ elseif($preprojet->entreprise_id==null){
         $data["email"] = $promoteur->email_promoteur;
         $this->email= $promoteur->email_promoteur;
        // Mail::to($this->email)->queue(new resumeMail($entreprise->promotrice->id));
-        Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'FP'));
+       // Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'FP'));
         //$entreprise=$entreprise->id;
         
      }

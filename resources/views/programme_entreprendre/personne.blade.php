@@ -36,7 +36,7 @@
                                <div class="form-group">
                                    <label class="control-label" for="val_username">Date de naissance<span class="text-danger">*</span></label>
                                        <div class="input-group">
-                                           <input type="text" id="datenais_promoteur" name="datenais_promoteur" value="{{old('datenais_promoteur')}}" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="Entrer votre date de naissance.." required="Ce champ est obligatoire">
+                                           <input type="text" id="datenais_promoteur" name="datenais_promoteur" value="{{old('datenais_promoteur')}}" class="form-control datepicker_nais" data-date-format="dd-mm-yyyy" placeholder="Entrer votre date de naissance.." required="Ce champ est obligatoire">
                                        </div>
                                </div>
                                <div class="form-group">

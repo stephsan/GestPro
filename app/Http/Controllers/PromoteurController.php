@@ -156,7 +156,7 @@ class PromoteurController extends Controller
                   'url'=>$urldocidentite,
               ]);
         }
-        $dest=dispatch(new SendEmailJob($details));
+        //$dest=dispatch(new SendEmailJob($details));
         return  view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
     }
 

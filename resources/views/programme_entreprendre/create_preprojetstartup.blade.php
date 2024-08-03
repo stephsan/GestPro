@@ -74,11 +74,11 @@
                                 </div>
                                 <div class="offset-md-1 col-lg-5">
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i></span> </label>
+                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i></span><span class="text-danger">*</span> </label>
                                             <textarea id="description_idee_de_projet" name="description_idee_de_projet" rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i></span></label>
+                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i></span><span class="text-danger">*</span></label>
                                          <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
                                     </div>
                                 </div>
@@ -88,7 +88,6 @@
                             <fieldset>
                                 <legend>Zone d’installation du projet</legend>
                             <div class="col-md-5">
-                                    
                                 <div class="form-group">
                                     <label class="control-label" for="region">Region<span class="text-danger">*</span></label>
                                         <select id="region_residence" name="region" class="select-select2" data-placeholder="Choisir votre residence .." value="{{old("region")}}" onchange="changeValue('region_residence', 'province_residence', {{ env('PARAMETRE_ID_PROVINCE') }});"   style="width:100%;" required>
@@ -202,7 +201,7 @@
                         
                     </div>
                 <div class="offset-md-1 col-md-5">
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label class=" control-label" for="">Avez-vous déjà suivi une formation en entreprenariat ? <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                             @foreach ($formations_effectuees as $formations_effectuee)
                             <div class="col-lg-8 checkbox">
@@ -210,7 +209,7 @@
                             </div>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label class=" control-label" for="example-chosen">Avez-vous une expérience dans le domaine d’activité de votre projet? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous une expérience / connaissance dans le domaine d’activité de votre projet?  ?"><i class="fa fa-info-circle"></i></span></label>
                             <select id="connaissance_sur_lactivite" name="connaissance_sur_lactivite" class="select-select2" onchange="afficherSiOui('connaissance_sur_lactivite','acquisition_des_connaissances');" data-placeholder="Avez-vous une expérience / connaissance dans le domaine d’activité de votre projet? " style="width: 100%;" required>

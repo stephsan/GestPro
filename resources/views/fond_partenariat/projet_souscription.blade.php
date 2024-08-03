@@ -37,7 +37,7 @@
                             <div class="offset-md-1 col-md-5">
                                 <div class="form-group">
                                     <label class="control-label" for="val_denomination">Titre de votre projet<span class="text-danger">*</span></label>
-                                    <input type="text" id="titre_projet" name="titre_projet" class="form-control" placeholder="Entrez votre la dénomination" value="{{old("denomination")}}" required >
+                                    <input type="text" id="titre_projet" name="titre_projet" class="form-control" placeholder="Reseigner le titre de votre projet" value="{{old("denomination")}}" required >
                                     <p id="error" style="background-color: rgb(231, 179, 179); color">Une entreprise est déja enregistrée sous cette dénomination.Merci de changer le nom de l'entreprise pour pouvoir remplir les autres champs</p>
                                     @if ($errors->has('denomination'))
                                             <span class="help-block text-danger">
@@ -54,7 +54,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="val_email">Secteur d'activité <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <select id="secteur_activite" name="secteur_activite" class="select-select2" data-placeholder="Renseigner le secteur d'activite de votre entreprise" value="{{old("region")}}"   style="width:100%;" required>
+                                                <select id="secteur_activite" name="secteur_activite" class="select-select2" data-placeholder="Renseigner le secteur d'activite " value="{{old("region")}}"   style="width:100%;" required>
                                                     <option></option>
                                                     @foreach ($secteur_activites as $secteur_activite )
                                                             <option value="{{ $secteur_activite->id  }}" {{ old('secteur_activite') == $secteur_activite->id ? 'selected' : '' }}>{{ $secteur_activite->libelle }}</option>
@@ -75,7 +75,7 @@
                                         <label class=" control-label" for="">Cocher les innovations de votre projet  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                                             @foreach ($innovation_du_projets as $innovation_du_projet)
                                             <div class="col-lg-8 checkbox">
-                                                <label><input type="checkbox" name='innovation_du_projets[]' value="{{ $innovation_du_projet->id }}"> {{ $innovation_du_projet->libelle }}</label>
+                                                <label><input type="checkbox" name='innovation_du_projets[]' value="{{ $innovation_du_projet->id }}" required> {{ $innovation_du_projet->libelle }}</label>
                                             </div>
                                             @endforeach
                                         </select>
@@ -84,12 +84,12 @@
                                 </div>
                                 <div class="offset-md-1 col-lg-5">
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i></span> </label>
-                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
+                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i> </span><span class="text-danger">*</span> </label>
+                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" maxlength="600"  rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i></span></label>
-                                         <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
+                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span></label>
+                                         <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" maxlength="500"  placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
                                     </div>
                                 </div>
                         </div>
@@ -101,7 +101,7 @@
                                     
                                 <div class="form-group">
                                     <label class="control-label" for="region">Region<span class="text-danger">*</span></label>
-                                        <select id="region_residence" name="region" class="select-select2" data-placeholder="Choisir votre residence .." value="{{old("region")}}" onchange="changeValue('region_residence', 'province_residence', {{ env('PARAMETRE_ID_PROVINCE') }});"   style="width:100%;" required>
+                                        <select id="region_residence" name="region" class="select-select2" data-placeholder="Choisir la region d'implatation .." value="{{old("region")}}" onchange="changeValue('region_residence', 'province_residence', {{ env('PARAMETRE_ID_PROVINCE') }});"   style="width:100%;" required>
                                             <option></option>
                                             @foreach ($regions as $region )
                                                     <option value="{{ $region->id  }}" {{ old('region') == $region->id ? 'selected' : '' }}>{{ $region->libelle }}</option>
@@ -139,46 +139,43 @@
                     <div class="col-md-12">
                         <fieldset>Présentation du coût total de votre projet</fieldset>
                     </div>
-                    <div class="col-md-12">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label" for="val_email">Coût total du Projet <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <input type="text"   id="cout_total" name="cout_total"  class="form-control" placeholder=" Cout total du projet" required title="Ce champ est obligatoire.">
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label" for="val_email">Apport personnel  <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <input type="text"   id="apport_personnel" name="apport_personnel"  class="form-control" placeholder=" Apport personnel" required>
-                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label" for="subvention_sollicite">Subvention sollicitée<span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                     {{-- <input type="number"   id="num_rccm" name="te" value="" class="form-control" placeholder=" Saisir la quantité" autofocus required title="Ce champ est obligatoire."> --}}
-                                     {{-- <input type="text" id="denomination" name="denomination" class="form-control" placeholder="Entrez votre la dénomination" value="{{old("denomination")}}" required > --}}
-                                        <input type="text"   id="subvention_sollicite" name="subvention_sollicite"  class="form-control" placeholder=" subvention sollicitée" autofocus required onchange="controle_subvention('subvention_sollicite','guichet')">
-                                    </div>
-                                    
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="control-label" for="val_email">Autres sources de financement  <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <input type="text"   id="autre_source" name="autre_source"  class="form-control" placeholder="Autres sources de financement" required title="Ce champ est obligatoire." onchange="cout_preprojet('cout_total','apport_personnel','subvention_sollicite','autre_source')">
-                                    </div>
-                            </div>
-                           
-                        </div>
-                        <p class="message_subvention" style="color:red; display:none">Attention ! Vous ne pouvez pas bénéficier de cette subvention au regard du guichet sélectionné.</p>
-                    </div>  
+                    
                  
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="val_email">Coût total du Projet <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="text"   id="cout_total" name="cout_total"  class="form-control" placeholder=" Cout total du projet" required title="Ce champ est obligatoire.">
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="subvention_sollicite">Subvention souhaitée<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="text"   id="subvention_sollicite" name="subvention_sollicite"  title="Ce champ est obligatoire." class="form-control" placeholder="Montant de la subvention souhaitée"  autofocus required onchange="controle_subvention('subvention_sollicite','guichet')">
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="apport_personnel">Apport personnel<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="text"   id="apport_personnel" name="apport_personnel" title="Ce champ est obligatoire." class="form-control" placeholder="Montant apport personnel"  autofocus required>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label" for="autre_source">Autre source de financement<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input type="text"   id="autre_source" name="autre_source"  class="form-control" title="Ce champ est obligatoire. Inserez 0 s'il n'ya pas autre source" placeholder="Autre financement" onchange="cout_preprojet('cout_total','apport_personnel','subvention_sollicite','autre_source')"  autofocus required>
+                            </div>
+                    </div>
+                </div>
+                <p class="message_subvention" style="color:red; display:none">Attention ! Vous ne pouvez pas bénéficier de cette subvention au regard du guichet sélectionné.</p>
             </div>
                 <div class="row">
                     <fieldset>
@@ -186,10 +183,10 @@
                         <div class="col-md-5">
                            
                             <div class="form-group">
-                                <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les sources d'approvisionnnement en intrant"><i class="fa fa-info-circle"></i></span> </label>
                                     @foreach ($source_appros as $source_appro)
                                     <div class="col-lg-8 checkbox">
-                                        <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
+                                        <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}" required> {{ $source_appro->libelle }}</label>
                                     </div>
                                     @endforeach
                                 </select>
@@ -218,7 +215,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="chiffre_daffaire_previsionnel">Chiffre d'affaire previsionnel<span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <input type="text"   id="chiffre_daffaire_previsionnel" name="chiffre_daffaire_previsionnel"  class="form-control" placeholder=" Chiffre d'affaire previsionnel"  autofocus required>
+                                        <input type="number"   id="chiffre_daffaire_previsionnel" name="chiffre_daffaire_previsionnel"  class="form-control" placeholder=" Chiffre d'affaire previsionnel"  autofocus required>
                                     </div>
                             </div>
                             <div class="form-group">
@@ -256,8 +253,9 @@
             <div id="progress-third" class="step">
                 <div class="row">
                     <div class="col-md-5">
+              @if (!entreprise_isFormalise($entreprise)) 
                         <div class="form-group">
-                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelle est la forme juridique que vous envisager pour votre entreprise"><i class="fa fa-info-circle"></i></span> </label>
                             <select id="forme_juridique_envisage" name="forme_juridique_envisage" class="select-select2" data-placeholder="La nature de la clientèle" style="width: 100%;"  required >
                                 <option></option>
                                 @foreach ($forme_juridiques as $forme_juridique )
@@ -266,17 +264,17 @@
                             </select>
                             </select>
                         </div>
-                        
+                    @endif 
                         <div class="form-group">
                             <label class="control-label" for="nbre_innovation">Nombre d'innovations introduites dans l'activités <pan class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text"   id="nbre_innovation" name="nbre_innovation"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
+                                    <input type="number"   id="nbre_innovation" name="nbre_innovation"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
                                 </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="nbre_nouveau_marche">Nombre de nouveaux marchés a accéder  <pan class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text"   id="nbre_nouveau_marche" name="nbre_nouveau_marche"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
+                                    <input type="number"   id="nbre_nouveau_marche" name="nbre_nouveau_marche"  class="form-control" placeholder=" nombre de nouvelles innovations pensez-vous introduire dans votre activité"  autofocus required>
                                 </div>
                          </div>
                     </div>
@@ -298,7 +296,7 @@
                         <div class="form-group">
                             <label class="control-label" for="nbre_nouveau_produit">Nombre de nouveaux produits et/ou services a lancer  <pan class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text"   id="nbre_nouveau_produit" name="nbre_nouveau_produits"  class="form-control" placeholder="Combien de nouveaux produits et/ou services pensez-vous lancer chaque année ?"  autofocus required>
+                                    <input type="number"   id="nbre_nouveau_produit" name="nbre_nouveau_produits"  class="form-control" placeholder="Combien de nouveaux produits et/ou services pensez-vous lancer chaque année ?"  autofocus required>
                                 </div>
                         </div>
                     </div>
@@ -312,7 +310,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="effectif_permanent_homme">Homme  <pan class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="text"   id="effectif_permanent_homme" name="effectif_permanent_homme"  class="form-control" placeholder="Effectif permanent homme previsionnel"  autofocus required>
+                                            <input type="number"   id="effectif_permanent_homme" name="effectif_permanent_homme"  class="form-control" placeholder="Effectif permanent homme previsionnel"  autofocus required>
                                         </div>
                                 </div>
                             </div>
@@ -320,7 +318,7 @@
                                 <div class="form-group">
                                     <label class="control-label" for="effectif_permanent_femme">Femme  <pan class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input type="text"   id="effectif_permanent_femme" name="effectif_permanent_femme"  class="form-control" placeholder="Effectif permanent femme previsionnel"  autofocus required>
+                                            <input type="number"   id="effectif_permanent_femme" name="effectif_permanent_femme"  class="form-control" placeholder="Effectif permanent femme previsionnel"  autofocus required>
                                         </div>
                                 </div>
                             </div>
@@ -334,7 +332,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="effectif_temporaire_homme">Homme <pan class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="text"   id="effectif_temporaire_homme" name="effectif_temporaire_homme"  class="form-control" placeholder="Effectif temporaire homme previsionnel "  autofocus required>
+                                                <input type="number"   id="effectif_temporaire_homme" name="effectif_temporaire_homme"  class="form-control" placeholder="Effectif temporaire homme previsionnel "  autofocus required>
                                             </div>
                                     </div>
                                 </div>
@@ -342,7 +340,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="effectif_temporaire_femme">Femme  <pan class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="text"   id="effectif_temporaire_femme" name="effectif_temporaire_femme"  class="form-control" placeholder="Effectif temporaire femme previsionnel"  autofocus required>
+                                                <input type="number"   id="effectif_temporaire_femme" name="effectif_temporaire_femme"  class="form-control" placeholder="Effectif temporaire femme previsionnel"  autofocus required>
                                             </div>
                                     </div>
                                 </div>

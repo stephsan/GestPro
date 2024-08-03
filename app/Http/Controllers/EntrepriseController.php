@@ -136,6 +136,7 @@ class EntrepriseController extends Controller
             'formalise'=>$request->formalise,
             'date_de_formalisation'=>$date_de_formalisation,
             'num_rccm'=>$request->num_rccm,
+            'forme_juridique'=>$request->forme_juridique,
             'structure_financiere'=>$request->structure_financiere_entreprise,
             //'banque_entreprise'=>$request->structure_financiere_entreprise,
             'compte_dispo'=>$request->compte_dispo,

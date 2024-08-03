@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-sm-12">
             <div class="step-app">
-                <form action="{{ route("entreprise.store") }}" method="post" enctype="multipart/form-data">
+                <form id="form-validation" action="{{ route("entreprise.store") }}" method="post" enctype="multipart/form-data">
                     @csrf
                         <input type="hidden" id="code_promoteur" name="code_promoteur" value="{{ $promoteur_code }}">
                         <input type="hidden" id="type_entreprise" name="type_entreprise" value="{{ $type_entreprise }}">
@@ -23,10 +23,10 @@
                                 </div>
                                 <p id="error" style="background-color: rgb(231, 179, 179); color">Une entreprise est déja enregistrée sous cette dénomination.Merci de changer le nom de l'entreprise pour pouvoir remplir les autres champs</p>
                                 @if ($errors->has('denomination'))
-                                                    <span class="help-block text-danger">
-                                                         <strong>Une entreprise a déja été enregistrée avec ce nom. </strong>
-                                                    </span>
-                                            @endif
+                                            <span class="help-block text-danger">
+                                                    <strong>Une entreprise a déja été enregistrée avec ce nom. </strong>
+                                            </span>
+                                        @endif
                             </div>
                         </div>
                         
@@ -133,22 +133,32 @@
                                             <option value="2" {{ old('formalise') == 2 ? 'selected' : '' }}>Non</option><!-- Required for data-placeholder attribute to work with Chosen plugin -->
                                         </select>
                                 </div>
+                                    <div class="form-group entreformalise">
+                                        <label class=" control-label" for="">La forme juridique de votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                        <select id="forme_juridique" name="forme_juridique" class="select-select2" data-placeholder="Renseigner la forme juridique" style="width: 100%;"  required >
+                                            <option></option>
+                                            @foreach ($forme_juridiques as $forme_juridique )
+                                            <option value="{{$forme_juridique->id  }}" {{ old('forme_juridique') == $forme_juridique->id ? 'selected' : '' }} value="{{ $forme_juridique->id }}">{{ $forme_juridique->libelle }}</option>
+                                            @endforeach
+                                        </select>
+                                        </select>
+                                    </div>
                                 <div class="form-group entreformalise">
                                     <label class=" control-label" for="val_username">Date de formalisation</label>
                                         <div class="input-group">
-                                            <input type="text" id="" name="date_de_formalisation" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="Date de formalisation de l'entreprise .." value="{{old('date_de_formalisation')}}" >
+                                            <input type="text" id="" name="date_de_formalisation" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="Date de formalisation de l'entreprise .." value="{{old('date_de_formalisation')}}" required>
                                         </div>
                                 </div>
                                 <div class="form-group entreformalise">
                                     <label class=" control-label" for="val_email">Numéro RCCM</label>
                                         <div class="input-group">
-                                            <input type="text" id="num_rccm" name="num_rccm" class="form-control" placeholder="numéro RCCM" value="{{old('num_rccm')}}" >
+                                            <input type="text" id="num_rccm" name="num_rccm" class="form-control" placeholder="numéro RCCM" value="{{old('num_rccm')}}" required >
 
                                         </div>
                                 </div>
                                 <div class="entreformalise form-group{{ $errors->has('docrccm') ? ' has-error' : '' }}">
                                     <label class=" control-label" for="docidentite">Joindre une copie du RCCM</label>
-                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" onchange="VerifyUploadSizeIsOK('docrccm');">
+                                        <input class="form-control" type="file" id="docrccm" accept=".pdf, .jpeg, .png" name="docrccm"  placeholder="Charger une copie du RCCM" onchange="VerifyUploadSizeIsOK('docrccm');" required>
                                         <span class="help-block" style="text-align: center; color:red;">
                                             Taille maximale autorirée :2MB
                                            </span>

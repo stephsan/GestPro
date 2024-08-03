@@ -105,10 +105,10 @@ function cout_preprojet(inputcout,input_apport_perso,input_subvention,input_autr
     if(parseInt(subvention) +parseInt(apport_perso)+parseInt(autre) != parseInt(cout)){
       $("#tester").prop('disabled', true);
       alert("Verifier les montants saisis. La somme de l'apport personnel, de la subvention et autre financement doit égal au montant du projet!!!");
-      $("#"+inputcout).val(' ');
-      $("#"+input_apport_perso).val(' ');
-      $("#"+input_subvention).val(' ');
-      $("#"+input_autre).val(' ');
+      $("#"+inputcout).val("");
+      $("#"+input_apport_perso).val("");
+      $("#"+input_subvention).val("");
+      $("#"+input_autre).val("");
     }
     else{
           format_montant(inputcout);

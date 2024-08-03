@@ -746,5 +746,26 @@ $( function() {
       
     });
   } );
+  $(document).ready(function() {
+    var lejour= new Date();
+    var year= lejour.getFullYear();
+    var jour= lejour.getDate();
+    var mois= lejour.getMonth()+1;
+    var newyear= year - 18;
+    var chaine= newyear+'-'+mois+'-'+jour
+    var endD=new Date(chaine)
+    $(".datepicker_nais").datepicker({
+     endDate: endD,
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd-mm-yy',
+      monthNames: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre'],
+      monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      
+    });
+  } );
 /* Initialize app when page loads */
 $(function(){ App.init(); });
