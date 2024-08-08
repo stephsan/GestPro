@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('entreprises', function (Blueprint $table) {
-            $table->integer("forme_juridique")->nullable();
+        Schema::table('promoteurs', function (Blueprint $table) {
+            $table->integer("suscription_etape_pe");
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('entreprises', function (Blueprint $table) {
-            $table->dropColumn('forme_juridique');
+        Schema::table('promoteurs', function (Blueprint $table) {
+            $table->dropColumn('suscription_etape_pe');
         });
     }
 };

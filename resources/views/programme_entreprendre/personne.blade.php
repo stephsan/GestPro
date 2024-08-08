@@ -83,7 +83,7 @@
                                            <div class="form-group" id='champ_cnib' style="display: none;">
                                                <label class=" control-label" for="">Numéro de la cnib (Le NIP) <span class="text-danger">*</span> <span data-toggle="tooltip" title="Renseigner le long numero de la CNIB. Pas le numéro de la carte"><i class="fa fa-info-circle"></i></span></label>
                                                <div class="input-group">
-                                                   <input type="text" id="numero_identite_cnib" name="numero_identite_cnib" value="{{old('numero_identite')}}" class="form-control masked_cnib" placeholder="ex:090102001150029567" onchange="controler_de_doublon_promotrice('numero_identite')">
+                                                   <input type="text" id="numero_identite_cnib" name="numero_identite_cnib" value="{{old('numero_identite')}}" class="form-control masked_cnib" placeholder="ex:090102001150029567" onchange="controler_de_doublon_promotrice('numero_identite_cnib')">
                                                </div>
                                                @if ($errors->has('numero_identite'))
                                                    <span class="help-block text-danger">
@@ -94,7 +94,7 @@
                                          <div class="form-group" id='champ_passport' style="display: none">
                                             <label class=" control-label" for="">Numéro de passeport <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="text" id="numero_identite_passport" name="numero_identite_passport" value="{{old('numero_identite')}}" class="form-control" placeholder="numéro.." onchange="controler_de_doublon_promotrice('numero_identite')">
+                                                <input type="text" id="numero_identite_passport" name="numero_identite_passport" value="{{old('numero_identite')}}" class="form-control" placeholder="numéro.." onchange="controler_de_doublon_promotrice('numero_identite_passport')">
                                             </div>
                                             @if ($errors->has('numero_identite'))
                                                 <span class="help-block text-danger">

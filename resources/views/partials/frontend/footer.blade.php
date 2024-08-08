@@ -526,7 +526,14 @@ return diff;
   </script>
   <script>
     function controler_de_doublon_promotrice(champ_controle){
-            var numero_identite= $("#numero_identite").val();
+            var numero_identite_cnib= $("#numero_identite_cnib").val();
+            var numero_identite_passeport= $("#numero_identite_passport").val();
+            if(numero_identite_cnib){
+                numero_identite=numero_identite_cnib
+            }
+            else{
+              numero_identite=numero_identite_passeport
+            }
             var telephone_promoteur= $("#telephone_promoteur").val();
             var mobile_promoteur= $("#mobile_promoteur").val();
             var email_promoteur= $("#email_promoteur").val();
@@ -535,7 +542,7 @@ return diff;
                     url: url,
                     type: 'GET',
                     data: {numero_identite: numero_identite, 
-                        telephone_promoteur:telephone_promoteur,
+                          telephone_promoteur:telephone_promoteur,
                          mobile_promoteur:mobile_promoteur, 
                          email_promoteur:email_promoteur
                         },
@@ -544,7 +551,6 @@ return diff;
                     success: function (data) {
                         console.log(data);
                          if(data){
-                            
                             $(".message_doublon").show();
                             $(".code_promoteur").text(data.code_promoteur)
                             $("#"+champ_controle).val("")

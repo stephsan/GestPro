@@ -29,11 +29,11 @@
                                     <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Informations sur le Promoteur</a>
                                   </li>
                                   <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-chiffre-tab" data-toggle="pill" href="#custom-tabs-one-entreprise" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Informations sur l'entreprise</a>
+                                  </li> 
+                                  <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Informations sur le projet</a>
                                   </li>
-                                  {{-- <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-one-chiffre-tab" data-toggle="pill" href="#custom-tabs-one-chiffre" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Previsions chiffrées</a>
-                                  </li> --}}
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Les Piece jointes</a>
                                   </li>
@@ -591,6 +591,7 @@
                                         </div>
 
                                      </div>
+
                                      <div class="row">
                                         <center><p class="titre-show">Chiffres previsionnels </p></center>
                                         <div class="col-md-6">
@@ -719,10 +720,160 @@
                              </tbody>
                             </table>
                                   </div>
-                                  {{-- <div class="tab-pane fade" id="custom-tabs-one-chiffre" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                   <div class="tab-pane fade" id="custom-tabs-one-entreprise" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Dénomination: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->denomination)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ $preprojet->entreprise->denomination}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <center><p class="titre-show">Localisation de l'entreprise</p></center>
+                                        <div class="col-md-6">
+                                                <div  class="form-group ">
+                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Region: </span> </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                        @empty($preprojet->entreprise->region)
+                                                            Informations non disponible
+                                                        @endempty
+                                                            {{ getlibelle($preprojet->entreprise->region)}}
+                                                    </span>
+                                                </span>
+                                                </div>
+                                                <div  class="form-group ">
+                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Province: </span> </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                        @empty($preprojet->entreprise->province)
+                                                            Informations non disponible
+                                                        @endempty
+                                                            {{ getlibelle($preprojet->entreprise->province)}}
+                                                    </span>
+                                                </span>
+                                                </div>
+                                           
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Commune: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->commune)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ getlibelle($preprojet->entreprise->commune)}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Secteur/village: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->arrondissement)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ getlibelle($preprojet->entreprise->arrondissement)}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                     </div>
+                                     <div class="row">
+                                        <center><p class="titre-show">Details sur l'entreprise</p></center>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Secteur d'activité: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->secteur_activite)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ getlibelle($preprojet->entreprise->secteur_activite)}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Type de document d'identité : </span> </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                        @empty($preprojet->entreprise->formalise)
+                                                            Informations non disponible
+                                                        @endempty
+                                                        @if($preprojet->entreprise->formalise=1)
+                                                            Oui
+                                                        @else
+                                                            Non
+                                                        @endif
+                                                    </span>
+                                                </span>
+                                                </div>
+                                                @if($preprojet->entreprise->formalise=1)
+                                                <div  class="form-group ">
+                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Numero RCCM: </span> </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                        @empty($preprojet->entreprise->num_rccm)
+                                                            Informations non disponible
+                                                        @endempty
+                                                       {{ $preprojet->entreprise->num_rccm }}
+                                                    </span>
+                                                </span>
+                                                </div>
+                                                <div  class="form-group ">
+                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Forme juridique : </span> </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                        @empty($preprojet->entreprise->forme_juridique)
+                                                            Informations non disponible
+                                                        @endempty
+                                                       {{ getlibelle($preprojet->entreprise->forme_juridique) }}
+                                                    </span>
+                                                </span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Maillon d'activité: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->maillon_activite)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ getlibelle($preprojet->entreprise->maillon_activite)}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Compte bancaire de l'entreprise disponible: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->entreprise->compte_dispo)
+                                                            Informations non disponible
+                                                        @endempty
+                                                        @if($preprojet->entreprise->compte_dispo=1)
+                                                            Oui a {{ $preprojet->entreprise->structure_financiere }}
+                                                        @else
+                                                            Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 ">
-                                            <center><p class="titre-show">Chiffre d'affaire previsionnel </p></center>
+                                            <center><p class="titre-show">Chiffre d'affaire </p></center>
                                             <table class="table table-condensed table-bordered" style="text-align: center">
                                             <thead style="text-align: center !important">
                                                     <tr>
@@ -744,33 +895,11 @@
                                         </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-6 ">
-                                        <center><p class="titre-show">Nombre de client envisagés </p></center>
-                                        <table class="table table-condensed table-bordered" style="text-align: center">
-                                        <thead style="text-align: center !important">
-                                                <tr>
-                                                    <th style="text-align: center; width:5%">Annee</th>
-                                                    <th style="text-align: center; width:5%">Montant</th>
-                                                </tr>
-                                        </thead>
-                                        <tbody id="tbadys">
-                                    @foreach($chiffre_daffaires as $key => $chiffre_daffaire)
-                                    <tr>
-                                                <td>
-                                                    {{getlibelle($chiffre_daffaire->annee)}}
-                                                </td>
-                                                <td>
-                                                    {{format_prix($chiffre_daffaire->quantite)}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    </table>
-                                </div>
+                                    
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <center><p class="titre-show">Effectifs Permanent previsionel</p></center>
+                                    <center><p class="titre-show">Effectifs Permanent</p></center>
                                     <table class="table table-condensed table-bordered" style="text-align: center">
                                     <thead style="text-align: center !important">
                                             <tr>
@@ -782,20 +911,20 @@
                                             </tr>
                                       </thead>
                                       <tbody id="tbadys">
-                                @foreach($effectif_permanent_previsionels as $key => $effectif_permanent_previsionel)
+                                @foreach($effectif_permanent as $key => $effectif_permanent)
                                 <tr>
                 
                                              <td>
-                                                {{getlibelle($effectif_permanent_previsionel->annee)}}
+                                                {{getlibelle($effectif_permanent->annee)}}
                                             </td>
                                             <td>
-                                                {{$effectif_permanent_previsionel->homme}}
+                                                {{$effectif_permanent->homme}}
                                             </td>
                                             <td>
-                                                {{$effectif_permanent_previsionel->femme}}
+                                                {{$effectif_permanent->femme}}
                                             </td>
                                             <td>
-                                                {{$effectif_permanent_previsionel->femme + $effectif_permanent_previsionel->homme }}
+                                                {{$effectif_permanent->femme + $effectif_permanent->homme }}
                                             </td>
                 
                                         </tr>
@@ -804,7 +933,7 @@
                                     </table>
                                 </div>
                                 <div class="col-md-6">
-                                    <center><p class="titre-show">Effectifs Temporaire previsionnel </p></center>
+                                    <center><p class="titre-show">Effectifs Temporaire</p></center>
                                     <table class="table table-condensed table-bordered" style="text-align: center">
                                     <thead style="text-align: center !important">
                                             <tr>
@@ -816,20 +945,20 @@
                                             </tr>
                                       </thead>
                                       <tbody id="tbadys">
-                                @foreach($effectif_temporaire_previsionels as $key => $effectif_temporaire_previsionel)
+                                @foreach($effectif_temporaire as $key => $effectif_temporaire)
                                 <tr>
                 
                                              <td>
-                                                {{getlibelle($effectif_temporaire_previsionel->annee)}}
+                                                {{getlibelle($effectif_temporaire->annee)}}
                                             </td>
                                             <td>
-                                                {{$effectif_temporaire_previsionel->homme}}
+                                                {{$effectif_temporaire->homme}}
                                             </td>
                                             <td>
-                                                {{$effectif_temporaire_previsionel->femme}}
+                                                {{$effectif_temporaire->femme}}
                                             </td>
                                             <td>
-                                                {{$effectif_temporaire_previsionel->femme + $effectif_temporaire_previsionel->homme }}
+                                                {{$effectif_temporaire->femme + $effectif_temporaire->homme }}
                                             </td>
                 
                                         </tr>
@@ -839,7 +968,7 @@
                                 </div>
                             </div> 
                                 
-                                  </div> --}}
+                                  </div>
                                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                         <div class="row">
                                             <div class="col-md-6">

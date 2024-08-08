@@ -70,6 +70,10 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label class=" control-label" for="example-textarea-input">En quoi consiste l’innovation dans votre projet ? <span data-toggle="tooltip" title="En quoi consiste l’innovation dans votre projet ?"><i class="fa fa-info-circle"></i></span><span class="text-danger">*</span> </label>
+                                            <textarea id="innovation_details" name="innovation_details" rows="6" class="form-control" placeholder="En quoi consiste l’innovation dans votre projet ?" autofocus required title="Ce champ est obligatoire">{{old('innovation_details') }}</textarea>
+                                    </div>
                                 </fieldset>
                                 </div>
                                 <div class="offset-md-1 col-lg-5">
@@ -180,16 +184,14 @@
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label class=" control-label" for="">Quels sont vos besoins en renforcement des capacités<span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
-                                @foreach ($formations_souhaites as $formations_souhaite)
-                                <div class="col-lg-8 checkbox">
-                                    <label><input type="checkbox" name='formations_souhaites[]' value="{{ $formations_souhaite->id }}"> {{ $formations_souhaite->libelle }}</label>
-                                </div>
-                                @endforeach
-                            </select>
+                            <label class=" control-label" for="example-chosen">Avez-vous déjà suivi une formation en entreprenariat? <span class="text-danger">*</span> <span data-toggle="tooltip" title="Avez-vous déjà suivi une formation en entreprenariat ?"><i class="fa fa-info-circle"></i></span></label>
+                                <select id="deja_suivi_une_formation" name="deja_suivi_une_formation" class="select-select2" onchange="afficherSiOui('deja_suivi_une_formation','liste_besoins');" data-placeholder="Avez-vous déjà suivi une formation en entreprenariat ? " style="width: 100%;" required>
+                                    <option></option>
+                                    <option value="1" {{ old('deja_suivi_une_formation') == 1 ? 'selected' : '' }}>Oui</option>
+                                    <option value="2" {{ old('deja_suivi_une_formation') == 2 ? 'selected' : '' }}>Non</option>
+                                </select>
                         </div>
-                        
-                        <div class="form-group">
+                        <div class="form-group liste_besoins">
                             <label class=" control-label" for="">Avez-vous déjà suivi une formation en entreprenariat?<span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                                 @foreach ($formations_effectuees as $formations_effectuee)
                                 <div class="col-lg-8 checkbox">
@@ -198,7 +200,21 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+                        <div class="form-group">
+                            <label class=" control-label" for="">Quels sont vos besoins en renforcement des capacités<span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                @foreach ($formations_souhaites as $formations_souhaite)
+                                <div class="col-lg-8 checkbox">
+                                    <label><input type="checkbox" name='formations_souhaites[]' value="{{ $formations_souhaite->id }}" required> {{ $formations_souhaite->libelle }}</label>
+                                </div>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group" >
+                            <label class="control-label" for="autre_besoin_en_formation">Avez-vous d’autres besoins en formation (Précisez) <pan class="text-success">*</span></label>
+                                <div class="input-group">
+                                    <input type="text"   id="autre_besoin_en_formation" name="autre_besoin_en_formation"  class="form-control" placeholder="Avez-vous d’autres besoins en formation (Précisez)" >
+                                </div>
+                        </div>
                     </div>
                 <div class="offset-md-1 col-md-5">
                     {{-- <div class="form-group">
@@ -250,8 +266,8 @@
                                 </div>
                         </div>
                         <div class="form-group">
-                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
-                            <select id="forme_juridique_envisage" name="forme_juridique_envisage" class="select-select2" data-placeholder="La nature de la clientèle" style="width: 100%;"  required >
+                            <label class=" control-label" for="">La forme juridique que vous envisagez pour votre entreprise <span data-toggle="tooltip" title="La forme juridique que vous envisagez pour votre entreprise"><i class="fa fa-info-circle"></i></span> </label>
+                            <select id="forme_juridique_envisage" name="forme_juridique_envisage" class="select-select2" data-placeholder="La forme juridique que vous envisagez" style="width: 100%;"  required >
                                 <option></option>
                                 @foreach ($forme_juridiques as $forme_juridique )
                                 <option value="{{$forme_juridique->id  }}" {{ old('nature_client') == $forme_juridique->id ? 'selected' : '' }} value="{{ $forme_juridique->id }}">{{ $forme_juridique->libelle }}</option>
@@ -275,7 +291,7 @@
                             <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                                 @foreach ($source_appros as $source_appro)
                                 <div class="col-lg-8 checkbox">
-                                    <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>
+                                    <label><input type="checkbox" name='sources_dappros[]' value="{{ $source_appro->id }}" required> {{ $source_appro->libelle }}</label>
                                 </div>
                                 @endforeach
                             </select>
@@ -299,7 +315,32 @@
                             </div>
                     </div>
                 </div>
-                
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class=" control-label" for="">Environ combien d’emplois prévisionnels votre projet pourra-t-il créer? <span data-toggle="tooltip" title="Environ combien d’emplois prévisionnels votre projet pourra-t-il créer "><i class="fa fa-info-circle"></i></span> </label>
+                            <select id="emploi_previsionnel" name="emploi_previsionnel" class="select-select2" data-placeholder="Environ combien d’emplois prévisionnels votre projet pourra-t-il créer" value="{{old("emploi_previsionnel")}}"   style="width:100%;" required>
+                                <option></option>
+                                @foreach ($emplois_tranches as $emplois_tranche )
+                                        <option value="{{ $emplois_tranche->id  }}" {{ old('secteur_activite') == $emplois_tranche->id ? 'selected' : '' }}>{{ $emplois_tranche->libelle }}</option>
+                                @endforeach
+                            </select>
+                        
+                        </div>
+                    </div>
+                    <div class=" col-md-offset-1 col-md-5">
+                        <div class="form-group">
+                            <label class=" control-label" for="">A combien est estimé votre chiffre d’affaires ?  <span data-toggle="tooltip" title="A combien est estimé votre chiffre d’affaires ?  "><i class="fa fa-info-circle"></i></span> </label>
+                            <select id="chiffre_daffaire_previsionnel" name="chiffre_daffaire_previsionnel" class="select-select2" data-placeholder="A combien est estimé votre chiffre d’affaires" value="{{old("region")}}"   style="width:100%;" required>
+                                <option></option>
+                                @foreach ($chiffre_daffaire_previsionels_tranches as $chiffre_daffaire_previsionels_tranche )
+                                        <option value="{{ $chiffre_daffaire_previsionels_tranche->id  }}" {{ old('secteur_activite') == $chiffre_daffaire_previsionels_tranche->id ? 'selected' : '' }}>{{ $chiffre_daffaire_previsionels_tranche->libelle }}</option>
+                                @endforeach
+                            </select>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 
             <div class="row">
                <p style="color: red; margin-bottom:20px;"> NB: Une fois validé les informations soumises ne seront plus modifiables. Merci de reparcourir le formulaire avant de le valider.</p>

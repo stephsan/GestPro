@@ -43,6 +43,7 @@ class EntrepriseController extends Controller
     public function create(Request $request)
     {
     }
+
     public function creation(Request $request)
     {
         $type_entreprise=$request->type_entreprise;
@@ -88,9 +89,6 @@ class EntrepriseController extends Controller
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme == 'FP' &&$type_entreprise!='MPMEExistant')){
             return view("fond_partenariat.create_preprojetstartup", compact('programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
-        elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme=='PE' && $type_entreprise=='startup')){
-            return view("programme_entreprendre.create_preprojetstartup", compact('formations_souhaites','formations_effectuees','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
-        }
         elseif($promoteur->suscription_etape==2 && ($programme=='FP' && $type_entreprise=='MPMEExistant')){
            
             return view("fond_partenariat.projet_souscription", compact('programme',"projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
@@ -100,6 +98,53 @@ class EntrepriseController extends Controller
         }
 }
 
+
+public function creation_pe(Request $request)
+{
+    $type_entreprise=$request->type_entreprise;
+    $programme=$request->programme;
+    $promoteur_code= $request->promoteur_code;
+    $promoteur=Promoteur::where('code_promoteur',$promoteur_code )->first();
+    if(!empty($request->entreprise)){
+        $entreprise=Entreprise::where("id",$request->entreprise )->first();
+    }
+    $regions=Valeur::where('parametre_id',1 )->get();
+    $forme_juridiques=Valeur::where('parametre_id',8 )->get();
+    $nature_clienteles=Valeur::where('parametre_id',10 )->get();
+    $provenance_clients=Valeur::where('parametre_id',9 )->get();
+    $maillon_activites=Valeur::where('parametre_id',7 )->get();
+    $source_appros=Valeur::where('parametre_id',12 )->get();
+    $formations_souhaites=Valeur::where('parametre_id',50 )->get();
+    $formations_effectuees=Valeur::where('parametre_id',51 )->get();
+    $chiffre_daffaire_previsionels_tranches=Valeur::where('parametre_id',52)->get();
+    $emplois_tranches = Valeur::where('parametre_id',53 )->get();
+    $nb_annee_existences=Valeur::where("parametre_id", env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT'))->get();
+    $sys_suivi_activites=Valeur::where('parametre_id',13 )->get();
+    $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
+    $futur_annees=Valeur::where('parametre_id',17 )->get();
+    $rentabilite_criteres=Valeur::where('parametre_id',14)->whereIn('id',[env("VALEUR_ID_CHIFFRE_DAFFAIRE")])->get();
+    $effectifs=Valeur::where('parametre_id',15 )->get();
+    $secteur_activites= Valeur::where('parametre_id', env('PARAMETRE_SECTEUR_ACTIVITE_ID') )->get();
+    $nb_annee_activites= Valeur::where('parametre_id', env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT') )->get();
+    $techno_utilisees= Valeur::where('parametre_id', env('PARAMETRE_TECHNO_UTILISE_ENTREPRISE_ID') )->get();
+    $projet_innovations=Valeur::where('parametre_id',env("PARAMETRE_INOVATION_ENTREPRISE_ID") )->get();
+ 
+    $ouinon_reponses=Valeur::where('parametre_id',env("PARAMETRE_REPONSES_OUINON_ID") )->get();
+    $niveau_resiliences=Valeur::where('parametre_id',env("PARAMETRE_NIVEAUDE_RESILIENCE_ID") )->get();
+    $guichets=Valeur::where('parametre_id',49 )->get();
+    $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
+    $difficultes=Valeur::where('parametre_id',47 )->get();
+
+    $indicateur_previsionel_du_projets=Valeur::where('parametre_id',46 )->whereIn('id',[7155])->get();
+    $futur_annees=Valeur::where('parametre_id',17 )->get();
+    $entreprise=$request->entreprise;
+    if(($promoteur->suscription_etape_pe==1 || $promoteur->suscription_etape_pe==null)&& ($programme=='PE' && $type_entreprise=='startup')){
+        return view("programme_entreprendre.create_preprojetstartup", compact('chiffre_daffaire_previsionels_tranches','emplois_tranches','formations_souhaites','formations_effectuees','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+    }
+    else{
+        return view("programme_entreprendre.validateStep1", compact('type_entreprise','programme',"promoteur"))->with('success','Item created successfully!');
+    }
+}
 
     /**
      * Store a newly created resource in storage.

@@ -31,9 +31,9 @@
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Informations sur le projet</a>
                                   </li>
-                                  <li class="nav-item">
+                                  {{-- <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-chiffre-tab" data-toggle="pill" href="#custom-tabs-one-chiffre" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Previsions chiffrées</a>
-                                  </li>
+                                  </li> --}}
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Les Piece jointes</a>
                                   </li>
@@ -226,6 +226,19 @@
                                             </span>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Telephone d'un proche du promoteur: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->promoteur->numero_du_proche)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ $preprojet->promoteur->numero_du_proche}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
                                      </div>
                                      <div class="row">
                                         <center><p class="titre-show">Compétences du promoteur</p></center>
@@ -238,6 +251,9 @@
                                                         Informations non disponible
                                                     @endempty
                                                         {{ getlibelle($preprojet->promoteur->niveau_instruction)}}
+                                                        @if($preprojet->promoteur->domaine_detude)
+                                                            en {{ $preprojet->promoteur->domaine_detude }}
+                                                        @endif
                                                 </span>
                                             </span>
                                             </div>
@@ -272,13 +288,23 @@
                                                 </span>
                                             </span>
                                             </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Situation profession actuelle: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->promoteur->occupation_professionnelle_actuelle)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ getlibelle($preprojet->promoteur->occupation_professionnelle_actuelle)}}
+                                                </span>
+                                            </span>
+                                            </div>
                                         </div>
                                      </div>
                                   </div>
                                   <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                    <center><p class="titre-show">Identification du projet</p></center>
                                     <div class="row">
-                                        <center><p class="titre-show">Identification du projet</p></center>
-                                        
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <span class="col-md-5 control-label labdetail">Numero du dossier :  </span>
@@ -323,62 +349,29 @@
                                                 </span>
                                             </span>
                                             </div>
-                                            
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Les innovations de votre projet:  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail">
+                                                    @foreach ($projet_innovations as $preprojet->projet_innovation)
+                                                        {{ getlibelle($preprojet->projet_innovation->valeur_id) }},
+                                                    @endforeach
+                                                       
+                                                </span></span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Forme juridique envisagée : </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->forme_juridique_envisage)
+                                                        Informations non disponible
+                                                    @endempty
+                                                    {{ getlibelle($preprojet->forme_juridique_envisage)}}
+                                                </span>
+                                            </span>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
-                                           
-                                                <div  class="form-group ">
-                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Cout total du projet : </span> </span>
-                                                    <span class="col-md-6" >
-                                                    <span class="valdetail">
-                                                        @empty($preprojet->cout_total)
-                                                            Informations non disponible
-                                                        @endempty
-                                                       {{ format_prix($preprojet->cout_total)}}
-                                                    </span>
-                                                </span>
-                                                </div>
-                                                <div  class="form-group ">
-                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Apport personnel : </span> </span>
-                                                    <span class="col-md-6" >
-                                                    <span class="valdetail">
-                                                        @empty($preprojet->apport_personnel)
-                                                            Informations non disponible
-                                                        @endempty
-                                                        {{ format_prix($preprojet->apport_personnel) }}
-                                                    </span>
-                                                </span>
-                                                </div>
-                                           
-                                        
-                                                <div  class="form-group ">
-                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Subvention souhaitée : </span> </span>
-                                                    <span class="col-md-6" >
-                                                    <span class="valdetail">
-                                                        @empty($preprojet->subvention_souhaite)
-                                                            Informations non disponible
-                                                        @endempty
-                                                            {{ format_prix($preprojet->subvention_souhaite)}}
-                                                    </span>
-                                                </span>
-                                                </div>
-                                                <div  class="form-group ">
-                                                    <span class="col-md-5 control-label labdetail"> <span class="labdetail">Autre financement : </span> </span>
-                                                    <span class="col-md-6" >
-                                                    <span class="valdetail">
-                                                        @empty($preprojet->autre_ninancement)
-                                                            Informations non disponible
-                                                        @endempty
-                                                            {{ format_prix($preprojet->autre_ninancement)}}
-                                                    </span>
-                                                </span>
-                                                </div>
-                                           
-                                        </div>
-                                     </div>
-                                     <div class="row">
-                                        <div class="col-md-6">
-                                            
                                             <div class="form-group">
                                                 <span class="col-md-5 control-label labdetail">Description du projet :  </span>
                                                     <span class="col-md-6" >
@@ -389,8 +382,6 @@
                                                       {{ $preprojet->description }}
                                                 </span></span>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <span class="col-md-5 control-label labdetail">Objectifs du projet :  </span>
                                                     <span class="col-md-6" >
@@ -401,75 +392,137 @@
                                                     {{ $preprojet->objectifs }}
                                                 </span></span>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Agrement ou autorisation exigé pour la mise en place du projet  :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                            @empty($preprojet->aggrement_exige)
-                                                                Informations non disponible
-                                                             @endempty
-                                                            @if($preprojet->aggrement_exige==1)
-                                                                    Oui 
-                                                            @else
-                                                                 Non
-                                                            @endif
-                                                    </span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Existance d'une promesse de financement  :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                            @empty($preprojet->promesse_de_financement)
-                                                                Informations non disponible
-                                                             @endempty
-                                                            @if($preprojet->promesse_de_financement==1)
-                                                                    Oui 
-                                                            @else
-                                                                 Non
-                                                            @endif
-                                                    </span></span>
-                                                </div>
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Description de l'innovation du projet :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->innovation_details)
+                                                            Informations non disponible
+                                                        @endempty
+                                                        {{ $preprojet->innovation_details }}
+                                                </span></span>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Type de client :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                        @empty($preprojet->type_clientele)
-                                                                Informations non disponible
-                                                            @endempty
-                                                        {{ getlibelle($preprojet->type_clientele) }}
-                                                    </span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Origine de la clientele :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                        @empty($preprojet->origine_clientele)
-                                                                Informations non disponible
-                                                            @endempty
-                                                        {{ getlibelle($preprojet->origine_clientele) }}
-                                                    </span></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <span class="col-md-5 control-label labdetail">Les innovations du projet :  </span>
-                                                        <span class="col-md-6" >
-                                                        <span class="valdetail" style="text-justify: auto;">
-                                                       @if(count($projet_innovations)!=0)
-                                                       @foreach ($projet_innovations as $projet_innovation )
-                                                            {{ getlibelle($projet_innovation->innovation_id) }}
-                                                       @endforeach
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Disponibilite du site :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->site_disponible)
+                                                            Informations non disponible
+                                                        @endempty
+                                                        @if($preprojet->site_disponible==1)
+                                                            Oui le site disponible. 
+                                                            @if($preprojet->type_site==1)
+                                                                c'est un domaine personnel
+                                                            @else
+                                                                Je suis en location
+                                                            @endif
                                                         @else
-                                                           Aucune Innovation mentionnée
+                                                            Non je dispose pas de site 
                                                         @endif
-                                                    </span></span>
-                                                </div>
+                                                </span></span>
                                             </div>
                                         </div>
+                                     </div>
 
+                                     <div class="row">
+                                        <div class="col-md-6">
+                                            
+                                            
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Nombre d’emplois prévisionnels qui sera créé :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->description)
+                                                            Informations non disponible
+                                                        @endempty
+                                                      {{ getlibelle($preprojet->emploi_previsionnel) }}
+                                                </span></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Les sources d'approvisionnement en intrant  :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                   @foreach ($source_appros as $sources_dapprovisionnement )
+                                                        {{ getlibelle($sources_dapprovisionnement->valeur_id) }},
+                                                   @endforeach
+                                                </span></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Origine de la clientèle visée du projet :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->origine_clientele)
+                                                            Informations non disponible
+                                                        @endempty
+                                                      {{ getlibelle($preprojet->origine_clientele) }}
+                                                </span></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Chiffre d'affaire estimatif  :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->chiffre_daffaire_previsionnel)
+                                                            Informations non disponible
+                                                        @endempty
+                                                      {{ getlibelle($preprojet->chiffre_daffaire_previsionnel) }}
+                                                </span></span>
+                                            </div>
+                                        </div>
+                                     </div>
+                                     <div class="row">
+                                        <center><p class="titre-show">Les besoins en formations </p></center>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Déja Participer a une formation e entrepreneuriat?: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->deja_suivi_une_formation)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->deja_suivi_une_formation==1)
+                                                            Oui
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                            @if($preprojet->deja_suivi_une_formation==1)
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Les formations en entreprenariat deja effectuées :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                   @foreach ($formations_effectuees as $formations_effectuee )
+                                                        {{ getlibelle($formations_effectuee->valeur_id) }},
+                                                   @endforeach
+                                                </span></span>
+                                            </div>
+                                        @endif
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Les besoins en renforcement des capacités souhaités :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                   @foreach ($formations_souhaites as $formations_souhaite )
+                                                        {{ getlibelle($formations_souhaite->valeur_id) }},
+                                                   @endforeach
+                                                </span></span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Autres besoins en formation souhaitée: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->autre_besoin_en_formation)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        {{ $preprojet->autre_besoin_en_formation}}
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
                                      </div>
                                      <div class="row">
                                         <center><p class="titre-show">Zone d’installation du projet </p></center>
@@ -522,7 +575,88 @@
                                             </div>
                                         </div>
                                      </div>
-                                     
+                                     <div class="row">
+                                        <center><p class="titre-show">Niveau de maturité du projet </p></center>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Etude de faisabilité réalisée: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->etude_technique_de_faisabilite)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->etude_technique_de_faisabilite==1)
+                                                            Oui
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Prototype ou d’une preuve de conception disponible: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->prototype_existe)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->prototype_existe==1)
+                                                            Oui
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Etude de faisabilité réalisée: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->etude_de_marche)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->etude_de_marche==1)
+                                                            Oui
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Démarches pour les recherches de financement réalisé : </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->prototype_existe)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->prototype_existe==1)
+                                                            Oui
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Un agrément ou une autorisation est-il exigé  : </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->aggrement_exige)
+                                                        Informations non disponible
+                                                    @endempty
+                                                        @if($preprojet->aggrement_exige==1)
+                                                            Oui {{ $preprojet->precise_aggrement }}
+                                                        @else
+                                                             Non
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                     </div>
                                   </div>
                                   <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
                                     <h1 class="labdetail">Pièces jointes</h1>

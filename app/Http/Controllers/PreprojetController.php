@@ -104,6 +104,7 @@ class PreprojetController extends Controller
      */
 
      function store_preprojet_pe(Request $request){
+       //dd($request->sources_dappros);
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
@@ -126,8 +127,11 @@ class PreprojetController extends Controller
                 "region"=>  $request->region,
                 "province"=>  $request->province,
                 "commune"=>  $request->commune,
-                "domaine_detude"=>  $request->domaine_detude,
+                "innovation_details"=>  $request->innovation_details,
+                "deja_suivi_une_formation"=>  $request->deja_suivi_une_formation,
                 'forme_juridique_envisage'=>$request->forme_juridique_envisage,
+                'emploi_previsionnel' =>$request->emploi_previsionnel,
+                'chiffre_daffaire_previsionnel'=>$request->chiffre_daffaire_previsionnel,
                 'aggrement_exige'=>$request->aggrement_exige,
                 'precise_aggrement'=>$request->precise_aggrement,
                 "secteur_village"=>  $request->arrondissement,
@@ -137,7 +141,7 @@ class PreprojetController extends Controller
                 "etude_technique_de_faisabilite"=> $request->etude_technique_de_faisabilite,
                 "etude_de_marche"=> $request->etude_de_marche_realise,
                 "prototype_existe"=> $request->existence_de_prototype,
-                 "recherche_de_financement_envisage"=> $request->recherche_de_financement,
+                "recherche_de_financement_envisage"=> $request->recherche_de_financement,
                 "origine_clientele"=> $request->provenance_clientele,
                 "type_clientele"=>  $request->provenance_clientele,
                 "site_disponible"=>$request->site_disponible,
@@ -150,7 +154,7 @@ class PreprojetController extends Controller
             ]);
             
             $promoteur->update([
-                "suscription_etape"=>3,
+                "suscription_etape_pe"=>3,
             ]);
             $formations_souhaites=$request->formations_souhaites;
             
@@ -186,7 +190,7 @@ class PreprojetController extends Controller
                                 ]);
                         }
                         }
-                        $innovations=$request->innovations;
+                        $innovations=$request->innovation_du_projets;
                         if($innovations){
                             foreach($innovations as $innovation){
                                 $parametre_id=Valeur::find($innovation)->parametre->id;
@@ -204,7 +208,7 @@ class PreprojetController extends Controller
             
         }
             $nbre_ent_nn_traite = count($entreprise_nn_traite);
-            return view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
+            return view("programme_entreprendre.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
 
 
      }
@@ -213,9 +217,13 @@ class PreprojetController extends Controller
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
         $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
         $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
+        $chiffre_daffaires=Infoentreprise::where('entreprise_id',$entreprise->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE'))->get();
+        $effectif_permanent= Infoeffectifentreprise::where('entreprise_id',$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
+        $effectif_temporaire= Infoeffectifentreprise::where('entreprise_id',$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
+
         $nombre_de_client_envisages=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
-        $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
-        $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
+        // $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
+        // $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
         $projet_innovations= PreprojetParametre::where("parametre_id",44)->where("preprojet_fp_id",$preprojet->id)->get();
         $sources_dapprovisionnements= PreprojetParametre::where("parametre_id",12)->where("preprojet_fp_id",$preprojet->id)->get();
 
@@ -234,7 +242,7 @@ class PreprojetController extends Controller
         else
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
             
-        return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
+        return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
            // dd($preprojet);
     }
     public function afficher_details_pe(PreprojetPe $preprojet){
@@ -244,7 +252,11 @@ class PreprojetController extends Controller
         $nombre_de_client_envisages=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
         $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
         $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
-        $projet_innovations= InnovationProjet::where("projet_id",$preprojet->id)->get();
+        $projet_innovations= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',44)->get();
+        $source_appros= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',12)->get();
+        $formations_effectuees= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',51)->get();
+        $formations_souhaites= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',50)->get();
+ 
         $evaluations=Evaluation::where('preprojet_id',$preprojet->id)->get();
         $id_criteres=[];
         $i=0;
@@ -260,13 +272,11 @@ class PreprojetController extends Controller
         else
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
             
-        return view('preprojet.show_pe',compact('evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
-           // dd($preprojet);
+        return view('preprojet.show_pe',compact('formations_effectuees','formations_souhaites','source_appros','projet_innovations','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
+          
     }
     public function show(Preprojet $preprojet)
     {
-       
-        //$preprojet=Preprojet::where('id',$id)->first();
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
         $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
         $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
@@ -368,10 +378,6 @@ class PreprojetController extends Controller
                 'nbre_innovation'=>$request->nbre_innovation,
                 'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
                 'nbre_nouveau_produit'=>$request->nbre_nouveau_produit,
-                // 'effectif_permanent_homme'=>$request->effectif_permanent_homme,
-                // 'effectif_permanent_femme'=>$request->effectif_permanent_femme,
-                // 'effectif_temporaire_homme'=>$request->effectif_temporaire_homme,
-                // 'effectif_temporaire_femme'=>$request->effectif_temporaire_femme,
                 "origine_clientele"=> $request->provenance_clientele,
                 "type_clientele"=>  $request->nature_client,
                 "site_disponible"=>$request->site_disponible,

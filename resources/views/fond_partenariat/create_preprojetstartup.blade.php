@@ -74,7 +74,7 @@
                                         <label class=" control-label" for="">Cocher les innovations de votre projet  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
                                             @foreach ($innovation_du_projets as $innovation_du_projet)
                                             <div class="col-lg-8 checkbox">
-                                                <label><input type="checkbox" name='innovation_du_projets[]' value="{{ $innovation_du_projet->id }}"> {{ $innovation_du_projet->libelle }}</label>
+                                                <label><input type="checkbox" name='innovation_du_projets[]' value="{{ $innovation_du_projet->id }}" required> {{ $innovation_du_projet->libelle }}</label>
                                             </div>
                                             @endforeach
                                         </select>
@@ -182,7 +182,7 @@
                         <div class="col-md-5">
                            
                             <div class="form-group">
-                                <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont les innovations de votre projet"><i class="fa fa-info-circle"></i></span> </label>
+                                <label class=" control-label" for="">Sources d’approvisionnement prévisionnelles  <span data-toggle="tooltip" title="Quelles sont vos sources d'approvisionnements en intrants "><i class="fa fa-info-circle"></i></span> </label>
                                     @foreach ($source_appros as $source_appro)
                                     <div class="col-lg-8 checkbox">
                                         <label><input type="checkbox" name='source_appros[]' value="{{ $source_appro->id }}"> {{ $source_appro->libelle }}</label>

@@ -53,7 +53,9 @@ Route::get('page/souscription/PE/personne', [SouscriptionPEController::class,'cr
 Route::get('page/souscription/PF/entreprise', [SouscriptionPEController::class,'create_entreprise'])->name('fp.create.entreprise');
 Route::resource("promoteur", PromoteurController::class);
 Route::resource("entreprise", EntrepriseController::class);
-Route::post("creation",[EntrepriseController::class, 'creation'])->name("entreprise.creation");
+Route::post("souscription/manage/steps/fp",[EntrepriseController::class, 'creation'])->name("steps.manage.creation");
+Route::post("souscription/manage/steps/pe",[EntrepriseController::class, 'creation_pe'])->name("steps.manage.creation_pe");
+
 Route::post("page/souscription/PF/preprojet/creation",[PreprojetController::class, 'store_preprojet'])->name("preprojet.creation");
 Route::post("page/souscription/PE/preprojet/creation",[PreprojetController::class, 'store_preprojet_pe'])->name("preprojet_pe.creation");
 Route::get("recepisse/print/{promoteur}",[EntrepriseController::class,'genereRecpisse'])->name("generer.recepisse");

@@ -142,7 +142,8 @@ class PromoteurController extends Controller
             // 'compte_perso_existe' => $request->compte_perso_existe,
             // 'structure_financiere_personne'=> $request->structure_financiere_personne,
             'associations' => $request->associations,
-            'suscription_etape'=>1
+            'suscription_etape'=>1,
+            'suscription_etape_pe'=>1
         ]);
         if ($request->hasFile('docidentite')) {
             $file = $request->file('docidentite');
@@ -157,7 +158,13 @@ class PromoteurController extends Controller
               ]);
         }
         //$dest=dispatch(new SendEmailJob($details));
-        return  view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
+        if($programme=='FP'){
+             return  view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
+        }
+        else{
+            return  view("programme_entreprendre.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
+
+        }
     }
 
     public function afficherform(){
@@ -282,6 +289,7 @@ class PromoteurController extends Controller
         // Verifions s'il y'a une entreprise en son nom lors de la phase une
         // S'il n'ya pas d'entreprise traitée
         // if(!$entreprise_traite){
+        if($programme=='FP'){
             if($promoteur->suscription_etape==2){
                 $entreprise= Entreprise::where("promoteur_id",$promoteur->id)->first();
                 $entreprise=$entreprise->id;
@@ -294,6 +302,21 @@ class PromoteurController extends Controller
                
                 return view("fond_partenariat.validateStep1", compact('programme','type_entreprise',"promoteur","nbre_ent_nn_traite"));
             }
+        }
+        elseif($programme=='PE'){
+            if($promoteur->suscription_etape_pe==2){
+                $entreprise= Entreprise::where("promoteur_id",$promoteur->id)->first();
+                $entreprise=$entreprise->id;
+                return view("programme_entreprendre.validateStep1", compact('programme','type_entreprise',"promoteur","entreprise",'nbre_ent_nn_traite'));
+            }
+                elseif($promoteur->suscription_etape_pe==1 || $promoteur->suscription_etape==null ){
+                return view("programme_entreprendre.validateStep1", compact('programme','type_entreprise',"promoteur"));
+            }
+            else{
+                return view("programme_entreprendre.validateStep1", compact('programme','type_entreprise',"promoteur","nbre_ent_nn_traite"));
+            }
+
+        }
         // }
         //     //S'il a une entreprise 
         // else{
