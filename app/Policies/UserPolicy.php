@@ -15,6 +15,16 @@ class UserPolicy
      * @return void
      */
 
+
+
+     public function gerer_user(User $user){
+        return $this->getPermission($user,4);
+     }
+
+     public function gerer_critere(User $user){
+        return $this->getPermission($user,5);
+     }
+
     public function viewAny(User $user)
     {
         //

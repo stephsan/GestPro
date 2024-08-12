@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Critere;
+use App\Models\Valeur;
 use Illuminate\Http\Request;
 
 class CritereController extends Controller
@@ -15,7 +16,8 @@ class CritereController extends Controller
     public function index()
     {
         $criteres= Critere::all();
-        return view('critere.index', compact('criteres'));
+        $rubrique_criteres=Valeur::where('parametre_id',54 )->get();
+        return view('critere.index', compact('criteres','rubrique_criteres'));
     }
     
 
@@ -38,8 +40,10 @@ class CritereController extends Controller
     public function store(Request $request)
     {
         Critere::create([
+            'rubrique_id'=> $request->rubrique, 
             'categorie'=> $request->categorie, 
             'libelle'=> $request->libelle, 
+            'type_entreprise'=> $request->type_entreprise,
             'ponderation'=> $request->ponderation, 
         ]);
         return redirect()->route('critere.index');
@@ -94,7 +98,9 @@ class CritereController extends Controller
         $data = array(
             'id'=>$critere->id,
             'libelle'=>$critere->libelle,
+            'rubrique'=> $critere->rubrique_id, 
             'categorie'=> $critere->categorie, 
+            'type_entreprise'=> $critere->type_entreprise,
             'ponderation'=>$critere->ponderation,
         );
         return json_encode($data);
@@ -102,8 +108,10 @@ class CritereController extends Controller
         public function modifierstore(Request $request){
         $grille= Critere::find($request->grille_id);
         $grille->update([
+            'rubrique_id'=> $request->rubrique,
             'libelle'=> $request->libelle, 
             'categorie'=> $request->categorie, 
+            'type_entreprise'=> $request->type_entreprise, 
             'ponderation'=> $request->ponderation, 
             ]);
         return redirect()->route('critere.index');

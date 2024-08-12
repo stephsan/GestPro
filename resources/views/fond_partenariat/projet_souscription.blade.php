@@ -52,6 +52,16 @@
                                 <fieldset>
                                     <legend>Informations générales sur le projet</legend>
                                     <div class="form-group">
+                                        <label class=" control-label" for="example-chosen">Expérience du promoteur en lien avec le projet<span class="text-danger">*</span></label>
+                                            <select id="experience_promoteur" name="experience_promoteur" class="select-select2" data-placeholder="Choisir le maillon d'activite" style="width: 100%;" required onchange="afficherautre('maillon_activite',  {{ env('VALEUR_ID_AUTRE_MAILLON_ACTIVITE') }} ,'autre_maillon_activite');">
+                                                <option></option>
+                                                <option></option>
+                                                @foreach ($nb_annee_experiences as $nb_annee_experience )
+                                                    <option value="{{ $nb_annee_experience->id  }}" {{ old('maillon_activite') == $nb_annee_experience->id ? 'selected' : '' }} value="{{ $nb_annee_experience->id }}">{{ $nb_annee_experience->libelle }}</option>
+                                                @endforeach
+                                            </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label" for="val_email">Secteur d'activité <span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <select id="secteur_activite" name="secteur_activite" class="select-select2" data-placeholder="Renseigner le secteur d'activite " value="{{old("region")}}"   style="width:100%;" required>

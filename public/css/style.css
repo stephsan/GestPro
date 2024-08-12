@@ -215,18 +215,18 @@ div.dt-buttons>.dt-button, div.dt-buttons>div.dt-button-split .dt-button {
 }
 
 
-.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+ /* .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
     display: none !important;
 }
 
 .dataTables_wrapper .dataTables_paginate {
     display: none !important;
-}
+} 
 
 div.dt-buttons {
     float: left;
     display: none;
-}
+} */
 
 .active>.page-link, .page-link.active {
     z-index: 3;

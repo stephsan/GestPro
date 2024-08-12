@@ -1,6 +1,8 @@
 @extends('./layouts/base')
 @section('title')
 @endsection
+@section('administration', 'show')
+@section('role', 'active')
 @section('css')
 @endsection
 @section('content')

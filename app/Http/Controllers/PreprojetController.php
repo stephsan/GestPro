@@ -28,11 +28,11 @@ class PreprojetController extends Controller
     {
         $this->middleware('auth')->except(["store_preprojet",'store_preprojet_pe']);
     }
-    function createEvaluation($idprojet,$indicateur,$note ){
-     $evaluation=Evaluation::where('preprojet_id',$idprojet)->where('critere_id',$indicateur)->get();
+    function createEvaluation_fp($idprojet,$indicateur,$note ){
+     $evaluation=Evaluation::where('preprojet_fp_id',$idprojet)->where('critere_id',$indicateur)->get();
      if(count($evaluation)==0){
         Evaluation::create([
-            "preprojet_id"=>$idprojet,
+            "preprojet_fp_id"=>$idprojet,
             "type_evaluation"=>'automatique',
             "note"=>$note,
             "critere_id"=> $indicateur
@@ -40,6 +40,18 @@ class PreprojetController extends Controller
      }
         
     }
+    function createEvaluation_pe($idprojet,$indicateur,$note ){
+        $evaluation=Evaluation::where('preprojet_pe_id',$idprojet)->where('critere_id',$indicateur)->get();
+        if(count($evaluation)==0){
+           Evaluation::create([
+               "preprojet_pe_id"=>$idprojet,
+               "type_evaluation"=>'automatique',
+               "note"=>$note,
+               "critere_id"=> $indicateur
+           ]);
+        }
+           
+       }
     
     /**
      * Display a listing of the resource.
@@ -104,7 +116,6 @@ class PreprojetController extends Controller
      */
 
      function store_preprojet_pe(Request $request){
-       //dd($request->sources_dappros);
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
@@ -150,7 +161,8 @@ class PreprojetController extends Controller
                 "objectifs"=>  $request->objectifs_projet,
                 "num_projet"=>  $num_projet,
                 "entreprise_id"=>  $request->entreprise_id,
-                "promoteur_id"=> $promoteur->id
+                "promoteur_id"=> $promoteur->id,
+                'experience_du_promoteur'=>$request->experience_promoteur,
             ]);
             
             $promoteur->update([
@@ -201,6 +213,64 @@ class PreprojetController extends Controller
                                     ]);
                             }
                             }
+                            if($preprojet->promoteur->genre==1){
+                                $note_genre=5;
+                        }
+                        elseif($preprojet->promoteur->genre==2){
+                            if(calculer_age($preprojet->promoteur->datenais)>17 && calculer_age($preprojet->promoteur->datenais)<36){
+                                $note_genre=3;
+                            }
+                            else{
+                                $note_genre=0;
+                            }
+                        }
+                        /* handicap promoteur */
+                        ($preprojet->promoteur->situation_residence==2)?($note_situation_residence=5):($note_situation_residence=0);
+                        ($preprojet->promoteur->avec_handicape==1)?($note_handicap=5):($note_handicap=0);
+                        ($preprojet->etude_technique_de_faisabilite==1)?($note_etude_technique_de_faisabilite=5):($note_etude_technique_de_faisabilite=0);
+                        ($preprojet->prototype_existe==1)?($note_prototype_existe=5):($note_prototype_existe=0);
+                        ($preprojet->etude_de_marche==1)?($note_etude_de_marche=5):($note_etude_de_marche=0);
+                        ($preprojet->recherche_de_financement_envisage==1)?($note_recherche_de_financement_envisage=5):($note_recherche_de_financement_envisage=0);
+                        ($preprojet->site_disponible==1)?($note_site=5):($note_site=0);
+
+
+                        /* potentialite creation d'emploi */
+                            $creation_demploi=$preprojet->emploi_previsionnel  ;
+                            if($creation_demploi==7180){
+                                $note_creation_emplois=2;
+                            }
+                            elseif($creation_demploi==7181){
+                                $note_creation_emplois=3;
+                            }
+                            else{
+                                $note_creation_emplois=5;
+                            }
+                         
+                            if($preprojet->experience_du_promoteur==6686){
+                                $note_experience_promoteur=0;
+                            }
+                            if($preprojet->experience_du_promoteur==6687){
+                                $note_experience_promoteur=2;
+                            }
+                            if($preprojet->experience_du_promoteur==6688){
+                                $note_experience_promoteur=3;
+                            }
+                            if($preprojet->experience_du_promoteur==6689){
+                                $note_experience_promoteur=5;
+                            }
+                            
+                            $this->createEvaluation_pe($preprojet->id,1, $note_genre);
+                            $this->createEvaluation_pe($preprojet->id,2, $note_handicap);
+                            $this->createEvaluation_pe($preprojet->id,2, $note_experience_promoteur);
+                            $this->createEvaluation_pe($preprojet->id,14, $note_creation_emplois);
+                            $this->createEvaluation_pe($preprojet->id,19, $note_etude_technique_de_faisabilite);
+                            $this->createEvaluation_pe($preprojet->id,22, $note_site);
+                            $this->createEvaluation_pe($preprojet->id,21, $note_recherche_de_financement_envisage);
+                            $this->createEvaluation_pe($preprojet->id,20, $note_prototype_existe);
+
+
+
+
             
             $data["email"] = $promoteur->email_promoteur;
             $this->email= $promoteur->email_promoteur;
@@ -209,8 +279,6 @@ class PreprojetController extends Controller
         }
             $nbre_ent_nn_traite = count($entreprise_nn_traite);
             return view("programme_entreprendre.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
-
-
      }
 
      public function afficher_details_fp(Preprojet $preprojet){
@@ -220,14 +288,11 @@ class PreprojetController extends Controller
         $chiffre_daffaires=Infoentreprise::where('entreprise_id',$entreprise->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE'))->get();
         $effectif_permanent= Infoeffectifentreprise::where('entreprise_id',$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
         $effectif_temporaire= Infoeffectifentreprise::where('entreprise_id',$entreprise->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
-
         $nombre_de_client_envisages=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
-        // $effectif_permanent_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_PERMANENENT"))->get();
-        // $effectif_temporaire_previsionels= Infoeffectifentreprise::where("preprojet_id",$preprojet->id)->where("effectif",env("VALEUR_EFFECTIF_TEMPORAIRE"))->get();
         $projet_innovations= PreprojetParametre::where("parametre_id",44)->where("preprojet_fp_id",$preprojet->id)->get();
         $sources_dapprovisionnements= PreprojetParametre::where("parametre_id",12)->where("preprojet_fp_id",$preprojet->id)->get();
-
-        $evaluations=Evaluation::where('preprojet_id',$preprojet->id)->get();
+        $evaluations=Evaluation::where('preprojet_fp_id',$preprojet->id)->get();
+       // dd($evaluations);
         $id_criteres=[];
         $i=0;
         foreach($evaluations as $evaluation)
@@ -235,13 +300,16 @@ class PreprojetController extends Controller
                     $id_criteres[$i]= $evaluation->critere_id;
                     $i++;
                 }
-        $criteres= Critere::where('categorie','FP_preprojet')->get();
-        $criteres= $criteres->except($id_criteres);
+            
+           $criteres= Critere::where('categorie','FP_preprojet')->orWhere('categorie','Toute_categorie')->get();
+            //$criteres= Critere::where('categorie','FP_preprojet')->get();
+            $criteres= $criteres->except($id_criteres);
+            //dd($evaluations);
         if($entreprise)
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
-            
+            //dd($criteres);
         return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
            // dd($preprojet);
     }
@@ -257,7 +325,8 @@ class PreprojetController extends Controller
         $formations_effectuees= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',51)->get();
         $formations_souhaites= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',50)->get();
  
-        $evaluations=Evaluation::where('preprojet_id',$preprojet->id)->get();
+        $evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
+    
         $id_criteres=[];
         $i=0;
         foreach($evaluations as $evaluation)
@@ -265,13 +334,13 @@ class PreprojetController extends Controller
                     $id_criteres[$i]= $evaluation->critere_id;
                     $i++;
                 }
-        $criteres= Critere::where('categorie','FP_preprojet')->get();
+        $criteres= Critere::where('categorie','PE_preprojet')->orWhere('categorie','Toute_categorie')->get();
         $criteres= $criteres->except($id_criteres);
         if($entreprise)
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
-            
+            //dd($evaluations);
         return view('preprojet.show_pe',compact('formations_effectuees','formations_souhaites','source_appros','projet_innovations','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
           
     }
@@ -312,7 +381,7 @@ class PreprojetController extends Controller
 
     public function evaluer(Request $request){
         $preprojet = Preprojet::find($request->avant_projet);
-        $evaluations=Evaluation::where('preprojet_id',$request->avant_projet)->get();
+        $evaluations=Evaluation::where('preprojet_fp_id',$request->avant_projet)->get();
         $id_criteres=[];
         $i=0;
         foreach($evaluations as $evaluation)
@@ -320,14 +389,15 @@ class PreprojetController extends Controller
                     $id_criteres[$i]= $evaluation->critere_id;
                     $i++;
                 }
-        $criteres= Critere::where('categorie','FP_preprojet')->get();
+        $criteres= Critere::where('categorie','FP_preprojet')->orWhere('categorie','Toute_categorie')->get();
         $criteres= $criteres->except($id_criteres);
         foreach($criteres as $critere){
             $note= $critere->id;
-        $nombre_devaluation_du_projet = Evaluation::where(['preprojet_id'=>$request->projet,'critere_id'=> $critere->id,])->count();
-        if($nombre_devaluation_du_projet==0){
+        $evaluation_du_projet = Evaluation::where(['preprojet_fp_id'=>$preprojet->id,'critere_id'=> $critere->id,])->get();
+        //dd($evaluation_du_projet->count());
+        if($evaluation_du_projet->count()==0){
             Evaluation::create([
-                'preprojet_id'=> $request->avant_projet,
+                'preprojet_fp_id'=> $preprojet->id,
                 'critere_id'=> $critere->id,
                 'type_evaluation'=>'humain',
                 'note'=> $request->$note
@@ -335,7 +405,37 @@ class PreprojetController extends Controller
         }        
         }
         $preprojet->update([
-            'note_totale'=>$preprojet->evaluations->sum('note'),
+            'note_totale'=>$evaluation_du_projet->sum('note'),
+        ]);
+        return redirect()->back();
+    }
+    public function evaluer_pe(Request $request){
+        $preprojet = PreprojetPe::find($request->avant_projet);
+        $evaluations=Evaluation::where('preprojet_pe_id',$request->avant_projet)->get();
+        $id_criteres=[];
+        $i=0;
+        foreach($evaluations as $evaluation)
+                {
+                    $id_criteres[$i]= $evaluation->critere_id;
+                    $i++;
+                }
+        $criteres= Critere::where('categorie','PE_preprojet')->orWhere('categorie','Toute_categorie')->get();
+        $criteres= $criteres->except($id_criteres);
+        //dd($criteres);
+        foreach($criteres as $critere){
+            $note= $critere->id;
+        $evaluation_du_projet = Evaluation::where(['preprojet_pe_id'=>$preprojet->id,'critere_id'=> $critere->id,])->get();
+        if($evaluation_du_projet->count()==0){
+            Evaluation::create([
+                'preprojet_pe_id'=> $request->avant_projet,
+                'critere_id'=> $critere->id,
+                'type_evaluation'=>'humain',
+                'note'=> $request->$note
+        ]);
+        }        
+        }
+        $preprojet->update([
+            'note_totale'=>$evaluation_du_projet->sum('note'),
         ]);
         return redirect()->back();
     }
@@ -389,6 +489,7 @@ class PreprojetController extends Controller
                 "subvention_souhaite"=>  reformater_montant2($request->subvention_sollicite),
                 "autre_financement"=>  reformater_montant2($request->autre_source),
                 'nbre_innovation'=>$request->nbre_innovation,
+                // 'experience_du_promoteur'=>$request->experience_du_promoteur,
                 'nbre_nouveau_marche'=>$request->nbre_nouveau_marche,
                 'nbre_nouveau_produit'=>$request->nbre_nouveau_produits,
                 'effectif_permanent_homme'=>$request->effectif_permanent_homme,
@@ -398,7 +499,8 @@ class PreprojetController extends Controller
                 'chiffre_daffaire_previsionnel'=>$request->chiffre_daffaire_previsionnel,
                 "num_projet"=>  $num_projet,
                 "entreprise_id"=>  $request->entreprise_id,
-                "promoteur_id"=> $promoteur->id
+                "promoteur_id"=> $promoteur->id,
+                'experience_du_promoteur'=>$request->experience_promoteur,
             ]);
             
             $promoteur->update([
@@ -430,9 +532,6 @@ class PreprojetController extends Controller
                         ]);
                 }
                 }
-//Debut de l'evaluation du preprojet
-//critere transversal
-/* age et sexe du promoteur */
 
 if($preprojet->promoteur->genre==1){
         $note_genre=5;
@@ -446,11 +545,11 @@ elseif($preprojet->promoteur->genre==2){
     }
 }
 /* handicap promoteur */
-($preprojet->promoteur->avec_handicap==1)?($note_handicap=5):($note_handicap=0);
+($preprojet->promoteur->avec_handicape==1)?($note_handicap=5):($note_handicap=0);
 ($preprojet->promoteur->situation_residence==2)?($note_situation_residence=5):($note_situation_residence=0);
 
 /* potentialite creation d'emploi */
-$creation_demploi=$preprojet->effectif_previsionnels->sum('homme')+$preprojet->effectif_previsionnels->sum('femme');
+$creation_demploi=$preprojet->effectif_permanent_homme + $preprojet->effectif_permanent_femme + $preprojet->effectif_temporaire_homme + $preprojet->effectif_temporaire_femme  ;
 if($creation_demploi>5 || $creation_demploi==5){
     $note_creation_emplois=10;
 }
@@ -463,10 +562,32 @@ if($creation_demploi==2 || $creation_demploi==1){
 if($creation_demploi==0){
     $note_creation_emplois=0;
 }
-$this->createEvaluation($preprojet->id,1, $note_genre);
-$this->createEvaluation($preprojet->id,2, $note_handicap);
-$this->createEvaluation($preprojet->id,3, $note_situation_residence);
-$this->createEvaluation($preprojet->id,16, $note_creation_emplois);
+if($preprojet->experience_du_promoteur==6686){
+    $note_experience_promoteur=0;
+}
+if($preprojet->experience_du_promoteur==6687){
+    $note_experience_promoteur=2;
+}
+if($preprojet->experience_du_promoteur==6688){
+    $note_experience_promoteur=3;
+}
+if($preprojet->experience_du_promoteur==6689){
+    $note_experience_promoteur=5;
+}
+if($preprojet->entreprise->nombre_annee_existence==6702){
+    $note_existence_entreprise=2;
+}
+if($preprojet->entreprise->nombre_annee_existence==6703){
+    $note_existence_entreprise=3;
+}
+if($preprojet->entreprise->nombre_annee_existence==6704){
+    $note_existence_entreprise=5;
+}
+$this->createEvaluation_fp($preprojet->id,1, $note_genre);
+$this->createEvaluation_fp($preprojet->id,2, $note_handicap);
+$this->createEvaluation_fp($preprojet->id,2, $note_experience_promoteur);
+$this->createEvaluation_fp($preprojet->id,14, $note_creation_emplois);
+$this->createEvaluation_fp($preprojet->id,23, $note_existence_entreprise);
 
 
 
@@ -482,8 +603,8 @@ elseif($preprojet->entreprise_id==null){
 
         $data["email"] = $promoteur->email_promoteur;
         $this->email= $promoteur->email_promoteur;
-       // Mail::to($this->email)->queue(new resumeMail($entreprise->promotrice->id));
-       // Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'FP'));
+        //Mail::to($this->email)->queue(new resumeMail($entreprise->promotrice->id));
+        Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'FP'));
         //$entreprise=$entreprise->id;
         
      }

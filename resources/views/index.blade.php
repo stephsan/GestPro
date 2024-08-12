@@ -203,24 +203,24 @@
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
           <div class="swiper-wrapper">
               <div class="swiper-slide" >
-                  <div class="testimonial-item">
-                    <img src="{{ asset('/img/armoirie_bf.png') }}" width="150"   class="testimonial-img" alt="">
+                  <div class="testimonial-item" style="padding-bottom:20px">
+                    <img src="{{ asset('/img/armoirie_bf.png') }}"    class="testimonial-img" alt="">
                     <h3>L'Etat du Burkina Faso</h3>
-                    <h4>Partenaire</h4>
+                     <h4>Partenaire</h4> 
                   </div>
               </div>
             <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{{ asset('/img/MEBF.png') }}" width="150" class="testimonial-img" alt="">
+              <div class="testimonial-item" style="padding-bottom:20px">
+                <img src="{{ asset('/img/MEBF.png') }}"  class="testimonial-img" alt="">
                 <h3>MEBF</h3>
-                <h4>Chargé de l'exécution</h4>
+                <h4>Chargé de l'exécution</h4> 
               </div>
             </div>
             <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="{{ asset('img/bm_logo.png') }}" width="150" class="testimonial-img" alt="">
+              <div class="testimonial-item" style="padding-bottom:20px">
+                <img src="{{ asset('img/bm_logo.png') }}"  class="testimonial-img" alt="">
                 <h3>La Banque Mondiale</h3>
-                <h4>Partenaire techique et financier</h4>
+                 <h4>Partenaire techique et financier</h4>
               </div>
             </div>
           </div>
@@ -344,7 +344,7 @@
             <label for="name">Message</label>
             <textarea class="form-control" name="message" rows="10" required></textarea>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lfkm9MiAAAAAGeYLF8Ls17qhJAJpQ7R3Q0UAV_n"></div>
+          <div class="g-recaptcha" data-sitekey="6LfYRyUqAAAAAGQGooxdnAvjhuvBhTS3VfOdkWg1"></div>
           <div class="my-3">
             <div class="loading">Loading</div>
             <div class="error-message"></div>

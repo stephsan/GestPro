@@ -15,7 +15,7 @@
     <link href="{{asset('img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Vendor CSS Files -->
+ 
     <link href="{{asset('/theme/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('/theme/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
     <link href="{{asset('/theme/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
@@ -27,12 +27,12 @@
 
     <link href="{{asset('css/css-brave/plugins.css')}}" rel="stylesheet">
 
-    <!-- Template Main CSS File -->
     <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
     <link href="{{asset('theme/css/style.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+   <link rel="stylesheet" href="{{asset('css/style.css')}}"> 
 
     <script src="{{ asset('css/sweetAlert/sweetalert2.all.min.js') }}"></script>
+    
     <link href="{{ asset('css/sweetAlert/sweetalert2.min.css') }}" rel="stylesheet">
 
     @yield('css')
@@ -144,15 +144,15 @@
                 </ul>
             </li><!-- End Components Nav -->
        @endcan
-
+@can('lister_souscription_pe', Auth::user())
        <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#pe" data-bs-toggle="collapse" href="#">
             <i class="bi-currency-exchange"></i><span>Programme Entreprendre</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="pe" class="nav-content collapse"
+        <ul id="pe" class="nav-content collapse @yield('pe')"
             data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link">
+                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('startup') " >
                     <i class="bi bi-circle"></i><span>Startups</span>
                 </a>
             </li>
@@ -165,20 +165,21 @@
            
         </ul>
     </li>
-
+    @endcan
+@can('lister_souscription_fp', Auth::user())
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#fp" data-bs-toggle="collapse" href="#">
             <i class="bi-currency-exchange"></i><span>Fonds de partenariat</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="fp" class="nav-content collapse"
+        <ul id="fp" class="nav-content collapse  @yield('fp')"
             data-bs-parent="#sidebar-nav">
             <li>
-                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link">
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link @yield('startup') ">
                     <i class="bi bi-circle"></i><span>Startups</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link">
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('mpme_existant') ">
                     <i class="bi bi-circle"></i><span>Entreprise existante</span>
                 </a>
             </li>
@@ -186,42 +187,44 @@
            
         </ul>
     </li>
+@endcan
 
-
-       @can('user.create', Auth::user())
         <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
                     <i class="bi-currency-exchange"></i><span>Administration</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="ca" class="nav-content collapse"
+                <ul id="ca" class="nav-content collapse @yield('administration')" 
                     data-bs-parent="#sidebar-nav">
+            @can('gerer_critere', Auth::user()) 
                     <li>
-                        <a href="{{ route('critere.index') }}" class="nav-link">
+                        <a href="{{ route('critere.index') }}" class="nav-link @yield('critere')">
                             <i class="bi bi-circle"></i><span>Criteres</span>
                         </a>
                     </li>
+            @endcan
+      @can('gerer_user', Auth::user())  
                     <li>
-                        <a href="{{ route('users.index') }}" class="nav-link">
+                        <a href="{{ route('users.index') }}" class="nav-link @yield('user')">
                             <i class="bi bi-circle"></i><span>Utilisateur</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('role.index') }}" class="nav-link">
+                        <a href="{{ route('role.index') }}" class="nav-link @yield('role')">
                             <i class="bi bi-circle"></i><span>Roles</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('permissions.index') }}" class="nav-link">
+                        <a href="{{ route('permissions.index') }}" class="nav-link @yield('permission')">
                             <i class="bi bi-circle"></i><span>Permissions</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('parametres.index') }}" class="nav-link">
+                        <a href="{{ route('parametres.index') }}" class="nav-link @yield('parametre')">
                             <i class="bi bi-circle"></i><span>Parametres</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('valeurs.index') }}" class="nav-link">
+                        <a href="{{ route('valeurs.index') }}" class="nav-link @yield('valeur')">
                             <i class="bi bi-circle"></i><span>Valeurs</span>
                         </a>
                     </li>
@@ -229,7 +232,7 @@
                 </ul>
             </li>
             <!-- End Forms Nav -->
-        @endcan
+        @endcan 
 
     </ul>
 
@@ -262,7 +265,7 @@
 <script src="{{asset('theme/vendor/chart.js/chart.umd.js')}}"></script>
 <script src="{{asset('theme/vendor/echarts/echarts.min.js')}}"></script>
 <script src="{{asset('theme/vendor/quill/quill.min.js')}}"></script>
-<script src="{{asset('theme/vendor/simple-datatables/simple-datatables.js')}}"></script>
+{{-- <script src="{{asset('theme/vendor/simple-datatables/simple-datatables.js')}}"></script> --}}
 <script src="{{asset('theme/vendor/tinymce/tinymce.min.js')}}"></script>
 <script src="{{asset('theme/vendor/php-email-form/validate.js')}}"></script>
 
@@ -272,7 +275,47 @@
 <script src="{{asset('/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('js/js-brave/vendor/jquery.min.js')}}"></script>
 <script src="{{asset('js/js-brave/plugins.js')}}"></script>
-<script src="{{asset('js/adminlte.min.js')}}"></script>
+{{-- <script src="{{asset('js/adminlte.min.js')}}"></script> --}}
+<script src="{{ asset('js/js-brave/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/js-brave/gmaps.min.js') }}"></script>
+<script src="{{ asset('js/js-brave/exporting.js') }}"></script>
+<script src="{{ asset('js/js-brave/export-data.js') }}"></script>
+    <script src="{{ asset('js/js-brave/datatables.js') }}"></script>
+    {{-- <script src="{{ asset('js/js-brave/app.js') }}"></script> --}}
+    <script>
+        $(function() {
+                  $('.liste').DataTable({ responsive: true,
+                        dom: '<"html5buttons"B>lTfgtip',
+                            buttons: [
+                                {extend: 'csv'},
+                                {extend: 'excel'},
+                                // {extend: 'pdf'},
+                                {extend: 'print',
+                                text:'Imprimer',
+                                }
+                            ],
+language: {
+    "search": '',
+    sLengthMenu: "Lignes _MENU_ ",
+    sInfo: "_START_ à _END_ de _TOTAL_",
+    sPageFirst: "Premier",
+    sPagePrevious: "Précédent",
+    sPageNext: "Suivant",
+    sPageLast: "Dernier",
+    "zeroRecords": "Aucun résultat trouvé",
+    "infoEmpty": "Aucun enregistrement disponible",
+    "infoFiltered": "(filtré à partir de _MAX_ enregistrements au total)",
+    // "paginate": {
+    //     "first": "<i class='fa fa-angle-double-left'></i>",
+    //     "previous":"<i class='fa fa-angle-left' ></i>",
+    //     "next":"<i class='fa fa-angle-right'></i>",
+    //     "last":"<i class='fa fa-angle-double-right'></i>"
+    // }
+}
+});
+
+});
+    </script>
 <script>
     $(document).ready(function() {
       $.fn.modal.Constructor.prototype.enforceFocus = function() {};

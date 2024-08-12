@@ -61,7 +61,7 @@ class EntrepriseController extends Controller
         $source_appros=Valeur::where('parametre_id',12 )->get();
         $formations_souhaites=Valeur::where('parametre_id',50 )->get();
         $formations_effectuees=Valeur::where('parametre_id',51 )->get();
-        
+        $nb_annee_experiences=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
         $nb_annee_existences=Valeur::where("parametre_id", env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT'))->get();
         $sys_suivi_activites=Valeur::where('parametre_id',13 )->get();
         $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
@@ -87,11 +87,11 @@ class EntrepriseController extends Controller
             return view("fond_partenariat.create_entreprise", compact('programme','difficultes','type_entreprise','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","innovation_du_projets","ouinon_reponses","niveau_resiliences"));
         }
         elseif(($promoteur->suscription_etape==1 || $promoteur->suscription_etape==null)&& ($programme == 'FP' &&$type_entreprise!='MPMEExistant')){
-            return view("fond_partenariat.create_preprojetstartup", compact('programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+            return view("fond_partenariat.create_preprojetstartup", compact('nb_annee_experiences','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         elseif($promoteur->suscription_etape==2 && ($programme=='FP' && $type_entreprise=='MPMEExistant')){
            
-            return view("fond_partenariat.projet_souscription", compact('programme',"projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+            return view("fond_partenariat.projet_souscription", compact('nb_annee_experiences','programme',"projet_innovations",'guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
         }
         else{
             return view("fond_partenariat.validateStep1", compact('programme',"promoteur"))->with('success','Item created successfully!');
@@ -118,6 +118,7 @@ public function creation_pe(Request $request)
     $formations_effectuees=Valeur::where('parametre_id',51 )->get();
     $chiffre_daffaire_previsionels_tranches=Valeur::where('parametre_id',52)->get();
     $emplois_tranches = Valeur::where('parametre_id',53 )->get();
+    $nb_annee_experiences=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
     $nb_annee_existences=Valeur::where("parametre_id", env('PARAMETRE_NB_ANNEE_EXISTENCE_ENT'))->get();
     $sys_suivi_activites=Valeur::where('parametre_id',13 )->get();
     $annees=Valeur::where('parametre_id',16 )->where('id','!=', 46)->get();
@@ -139,7 +140,7 @@ public function creation_pe(Request $request)
     $futur_annees=Valeur::where('parametre_id',17 )->get();
     $entreprise=$request->entreprise;
     if(($promoteur->suscription_etape_pe==1 || $promoteur->suscription_etape_pe==null)&& ($programme=='PE' && $type_entreprise=='startup')){
-        return view("programme_entreprendre.create_preprojetstartup", compact('chiffre_daffaire_previsionels_tranches','emplois_tranches','formations_souhaites','formations_effectuees','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
+        return view("programme_entreprendre.create_preprojetstartup", compact('nb_annee_experiences','chiffre_daffaire_previsionels_tranches','emplois_tranches','formations_souhaites','formations_effectuees','programme','projet_innovations','guichets','difficultes','entreprise','futur_annees','indicateur_previsionel_du_projets','innovation_du_projets','nb_annee_existences',"regions","forme_juridiques","nature_clienteles","provenance_clients","maillon_activites","source_appros","sys_suivi_activites","promoteur_code","annees","rentabilite_criteres","effectifs", "nb_annee_activites","secteur_activites","techno_utilisees","ouinon_reponses","niveau_resiliences"));
     }
     else{
         return view("programme_entreprendre.validateStep1", compact('type_entreprise','programme',"promoteur"))->with('success','Item created successfully!');

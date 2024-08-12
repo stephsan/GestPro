@@ -1,5 +1,7 @@
 @extends('./layouts/base')
 @section('title')
+@section('pe', 'show')
+@section('startup', 'active')
 @endsection
 @section('css')
 @endsection
@@ -12,11 +14,14 @@
                 <li class="breadcrumb-item active text-dark">Visuliser</li>
             </ol>
         </nav>
+    @can('evaluer_souscription', Auth::user())
         <nav>
             <button type="button" class="btn btn-success">
                 <a href="#modal-evaluer-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer l'avant projet</a>
             </button>
         </nav>
+    @endcan
+       
     </div>
 <section class="section">
         <div class="row">
@@ -31,9 +36,6 @@
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Informations sur le projet</a>
                                   </li>
-                                  {{-- <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-one-chiffre-tab" data-toggle="pill" href="#custom-tabs-one-chiffre" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">Previsions chiffrées</a>
-                                  </li> --}}
                                   <li class="nav-item">
                                     <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Les Piece jointes</a>
                                   </li>
@@ -865,7 +867,7 @@
                 <h2 class="modal-title"><i class="fa fa-pencil"></i> Evaluer l'avant projet</h2>
             </div>
             <div class="modal-body">
-            <form method="post"  action="{{ route('preprojet.evaluation') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+            <form method="post"  action="{{ route('preprojet_pe.evaluation') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" name="avant_projet" id="" value="{{ $preprojet->id }}">
                 {{-- <div class="form-group{{ $errors->has('grille_devaluation') ? ' has-error' : '' }}">

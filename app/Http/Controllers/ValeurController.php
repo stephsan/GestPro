@@ -26,7 +26,7 @@ class ValeurController extends Controller
         return view('valeur.index', compact('valeurs', 'parametres'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+       // flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
 }
@@ -45,7 +45,7 @@ class ValeurController extends Controller
         return view('valeur.create', compact('parametres','valeurs'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+      //  flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
     }
@@ -71,7 +71,7 @@ class ValeurController extends Controller
         return redirect(route('valeurs.index'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+       // flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
     }
@@ -101,7 +101,7 @@ class ValeurController extends Controller
         return view('valeur.edit',compact('valeur', 'parametres', 'vals'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+       // flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
     }
@@ -125,7 +125,7 @@ class ValeurController extends Controller
         return redirect(route('valeurs.index'));
      }
     else{
-            flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+          //  flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
             return redirect()->back();
         }
     }

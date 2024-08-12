@@ -12,8 +12,6 @@
                 <li class="breadcrumb-item active text-dark">Criteres d'évaluation</li>
             </ol>
         </nav>
-        
-      
         <nav>
             <button type="button" class="btn btn-success">
                 <a href="#modal-create-grille" data-toggle="modal"  data-toggle="tooltip" title="Nouveau" class="text-white"><i class="bi bi-plus-square"></i> Nouveau</a>
@@ -26,14 +24,15 @@
                 <div class="card">
                     <div class="card-body">
 <div class="table-responsive">
-<table class="table datatable">
+<table class="table liste">
         <thead>
                 <tr>
                     <th>numéro</th>
+                    <th>Rubrique</th>
                     <th>categorie</th>
+                    <th>Type entreprise</th>
                     <th>Libellé</th>
                     <th>Ponderation</th>
-                    
                     <th>Action</th>
                 </tr>
         </thead>
@@ -47,7 +46,9 @@
             @endphp
           <tr>
                     <td>{{$i}}</td>
+                    <td>{{getlibelle($critere->rubrique_id)}}</td>
                     <td>{{$critere->categorie}}</td>
+                    <td>{{$critere->type_entreprise}}</td>
                     <td>{{$critere->libelle}}</td>
                     <td>{{$critere->ponderation}}</td>
                     <td class="text-center">
@@ -81,9 +82,27 @@
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="type">Rubrique du critere<span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                <select id="rubrique" name="rubrique" class="select-select2" data-placeholder="Choisir la rubrique d'entreprise" style="width: 100%;"  >
+                                    <option ></option>
+                                    @foreach ($rubrique_criteres as $rubrique_critere)
+                                        <option value="{{ $rubrique_critere->id }}">{{ $rubrique_critere->libelle }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('categorie'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('categorie') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label" for="type">Categorie<span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <select id="categorie" name="categorie" class="select-select2" data-placeholder="Choisir le type de systeme de suivi" style="width: 100%;"  >
+                                <select id="categorie" name="categorie" class="select-select2" data-placeholder="Choisir la categorie d'entreprise" style="width: 100%;"  >
+                                    <option></option>
+                                    <option value="Toute_categorie">Toute catégorie</option>
                                     <option value="FP_preprojet">Fonds de Partenariat-Preprojet</option>
                                     <option value="PE_preprojet">Programme Entreprendre -Preprojet</option>
                                 </select>
@@ -94,12 +113,27 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="type">Type<span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <select id="type_entreprise" name="type_entreprise" class="select-select2" data-placeholder="Choisir le type d'entreprise" style="width: 100%;"  >
+                                    <option></option>
+                                    <option value="Tout_type">Tout Type</option>
+                                    <option value="startup">Startup</option>
+                                    <option value="mpme_existante">MPME Existante</option>
+                                </select>
+                                @if ($errors->has('type_entreprise'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('type_entreprise') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label class=" control-label" for="name">Libelle <span class="text-danger">*</span></label>
-                            
                                 <div class="input-group" style ='width:100%'>
                                         <input id="libelle" type="text" class="form-control" name="libelle" value="{{ old('libelle') }}" required autofocus>
                                         <span class="input-group-addon"><i class="gi gi-user"></i></span>
@@ -155,15 +189,49 @@
                     <input type="hidden" name="grille_id" id="grille_id">
                     <div class="row">
                         <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="type">Rubrique du critere<span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                <select id="rubrique_u" name="rubrique" class="select-select2" data-placeholder="Choisir la categorie d'entreprise" style="width: 100%;"  >
+                                    <option ></option>
+                                    @foreach ($rubrique_criteres as $rubrique_critere)
+                                        <option value="{{ $rubrique_critere->id }}">{{ $rubrique_critere->libelle }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('categorie'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('categorie') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label" for="type">Categorie<span class="text-danger">*</span></label>
                             <div class="col-md-6">
-                                <select id="categorie" name="categorie" class="select-select2" data-placeholder="Choisir le type de systeme de suivi" style="width: 100%;"  >
+                                <select id="categorie_u" name="categorie" class="select-select2" data-placeholder="Choisir le type de systeme de suivi" style="width: 100%;"  >
+                                    <option></option>
+                                    <option value="Toute_categorie">Toute catégorie</option>
                                     <option value="FP_preprojet">Fonds de Partenariat-Preprojet</option>
                                     <option value="PE_preprojet">Programme Entreprendre -Preprojet</option>
                                 </select>
                                 @if ($errors->has('categorie'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('categorie') }}</strong>
+                                </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="type">Type<span class="text-danger">*</span></label>
+                            <div class="col-md-6">
+                                <select id="type_entreprise_u" name="type_entreprise" class="select-select2" data-placeholder="Choisir le type d'entreprise" style="width: 100%;"  >
+                                    <option></option>
+                                    <option value="Tout_type">Tout type</option>
+                                    <option value="startup">Startup</option>
+                                    <option value="mpme_existante">MPME Existante</option>
+                                </select>
+                                @if ($errors->has('type_entreprise'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('type_entreprise') }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -256,7 +324,10 @@
                         success:function(data){
                             console.log(data)
                             $("#grille_id").val(data.id);
-                            $("#categorie").val(data.categorie);                           
+                            $("#rubrique_u").val(data.rubrique_id); 
+                            $("#type_entreprise_u").val(data.type_entreprise); 
+                             
+                            $("#categorie_u").val(data.categorie);                           
                            $("#libelle_u").val(data.libelle);
                            $("#ponderation_u").val(data.ponderation);
                           

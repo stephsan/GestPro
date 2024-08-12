@@ -1,6 +1,8 @@
-@extends('./layouts/base')
+@extends('layouts.base')
 @section('title')
 @endsection
+@section('administration', 'show')
+@section('role', 'active')
 @section('css')
 @endsection
 @section('content')
@@ -29,7 +31,7 @@
                     <div class="card-body">
                         <!-- Table with stripped rows -->
 <div class="table-responsive">
-    <table class="table datatable">
+    <table class="table liste">
         <thead>
                 <tr>
                     <th>Libelle</th>

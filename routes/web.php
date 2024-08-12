@@ -74,6 +74,8 @@ Route::get("/lister/souscription/PE", [PreprojetController::class, 'lister_pe'])
 Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
 Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');
+Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe'])->name('preprojet_pe.evaluation');
+
 
 Route::resource('critere', CritereController::class);
 Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');

@@ -9,7 +9,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark"><a href="{{route('dashboard')}}">Accueil</a></li>
-                <li class="breadcrumb-item active text-dark"><a href="{{route('roles.index')}}">permissions</a></li>
+                <li class="breadcrumb-item active text-dark"><a href="{{route('role.index')}}">permissions</a></li>
                 <li class="breadcrumb-item active text-dark active">Ajout une nouveau role</li>
             </ol>
         </nav>

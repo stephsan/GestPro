@@ -27,13 +27,13 @@ class UserController extends Controller
     {
         //User::find(1)->roles;
        // dd(User::find(1)->roles);
-    if (Auth::user()->can('user.create')) {
+    // if (Auth::user()->can('gerer_user')) {
         $users= User::orderBy('updated_at', 'desc')->get();
         return view('users.index', compact("users"));
-     }
-    else{
-        return redirect()->back();
-     }
+    //  }
+    // else{
+    //     return redirect()->back();
+    //  }
     }
 
     /**
@@ -43,17 +43,17 @@ class UserController extends Controller
      */
     public function create()
     {
-    if (Auth::user()->can('user.create')) {
+   // if (Auth::user()->can('gerer_user')) {
         $roles= Role::all();
         $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_BOUCLE_DU_MOUHOUN'), env('VALEUR_ID_NORD')])->get();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
         //$banques= Banque::all();
         return view("users.create", compact("roles", "zones","strucure_representees"));
-    }
-    else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-        return redirect()->back();
-    }
+    // }
+    // else{
+    //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+    //     return redirect()->back();
+    // }
     }
 
     /**
@@ -64,7 +64,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-    if (Auth::user()->can('user.create')) {
+     if (Auth::user()->can('gerer_user')) {
         $request->validate([
             "nom"=>"required",
             "email"=>"required|email"
@@ -84,18 +84,18 @@ class UserController extends Controller
             'email' => $request['email'],
             'structure_represente'=>$structure_represente,
             'firstcon' => 1,
-            'banque_id'=>$request['banque'],
-            'password' => bcrypt('bwburkina@2022')
+            //'banque_id'=>$request['banque'],
+            'password' => bcrypt('ecotec@2024')
         ]);
         $user->roles()->sync($request->roles);
-        flash("Utilisateur ajouté avec succes !!!")->success();
+       // flash("Utilisateur ajouté avec succes !!!")->success();
 
         return redirect()->route("user.index");
     }
-    else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+     else{
+    //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
-    }
+     }
     }
 public function reinitialize(Request $request){
             $user= User::find($request->id);
@@ -128,19 +128,19 @@ public function reinitialize(Request $request){
      */
     public function edit(User $user)
     {
-    if (Auth::user()->can('user.create')) {
+    if (Auth::user()->can('gerer_user')) {
         $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_BOUCLE_DU_MOUHOUN'), env('VALEUR_ID_NORD')])->get();
         //$zones= Valeur::where("parametre_id",env("PRARAMETRE_ZONE"))->get();
         $roles=Role::all();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
         //$banques= Banque::all();
-        return view("users.update",compact(["user","roles","zones","strucure_representees"]));
+         return view("users.update",compact(["user","roles","zones","strucure_representees"]));
     }
-    else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-        return redirect()->back();
+     else{
+        //flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+         return redirect()->back();
     }
-    }
+ }
 
     /**
      * Update the specified resource in storage.
@@ -151,7 +151,7 @@ public function reinitialize(Request $request){
      */
     public function update(Request $request, User $user)
     {
-     if (Auth::user()->can('user.create')) {
+      if (Auth::user()->can('gerer_user')) {
         $request->validate([
             'nom'=>"required",
             'email'=>"required|email"
@@ -169,16 +169,16 @@ public function reinitialize(Request $request){
             'zone' => $request ['organisation'],
             'telephone'=> $request ['telephone'],
             'email' => $request['email'],
-            'banque_id'=>$request['banque'],
+            //'banque_id'=>$request['banque'],
             'structure_represente'=>$structure_represente,
         ]);
         $user->roles()->sync($request->roles);
-        flash("Utilisateur modiffié avec succes !!!")->error();
-        return redirect()->route("user.index");
+       // flash("Utilisateur modiffié avec succes !!!")->error();
+        return redirect()->route("users.index");
     }
-        else{
-            flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-            return redirect()->back();
+         else{
+    //        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+             return redirect()->back();
         }
     }
 

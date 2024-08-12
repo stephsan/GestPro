@@ -34,7 +34,15 @@ class SouscriptionPolicy
     {
         return $this->getPermission($user,4);
     }
-
+   public function lister_souscription_pe(User $user){
+      return $this->getPermission($user,2);
+   }
+   public function lister_souscription_fp(User $user){
+      return $this->getPermission($user,1);
+   }
+   public function evaluer_souscription(User $user){
+      return $this->getPermission($user,3);
+   }
     /**
      * Determine whether the user can create models.
      *

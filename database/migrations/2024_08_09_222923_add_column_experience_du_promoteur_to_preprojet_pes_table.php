@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('preprojets', function (Blueprint $table) {
-            $table->integer("note_totale")->nullable();
+        Schema::table('preprojet_pes', function (Blueprint $table) {
+            $table->integer("experience_du_promoteur");
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('preprojets', function (Blueprint $table) {
-           $table->dropColumn('note_totale');
+        Schema::table('preprojet_pes', function (Blueprint $table) {
+            $table->dropColumn('experience_du_promoteur');
         });
     }
 };

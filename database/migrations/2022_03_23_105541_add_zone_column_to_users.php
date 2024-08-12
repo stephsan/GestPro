@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class AddZoneColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('preprojets', function (Blueprint $table) {
-            $table->integer("note_totale")->nullable();
+        Schema::table('users', function (Blueprint $table) {
+           $table->integer("zone")->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('preprojets', function (Blueprint $table) {
-           $table->dropColumn('note_totale');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn("zone");
         });
     }
-};
+}

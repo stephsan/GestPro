@@ -1,5 +1,7 @@
 @extends('./layouts/base')
 @section('title')
+@section('pe', 'show')
+@section('startup', 'active')
 @endsection
 @section('css')
 @endsection
@@ -23,7 +25,7 @@
                     <div class="card-body">
                         <!-- Table with stripped rows -->
 <div class="table-responsive">
-<table class="table datatable">
+<table class="table liste ">
             <thead>
                 <tr>
                     <th class="text-center">Numéro</th>
@@ -32,12 +34,12 @@
                     <th class="text-center" >Titre du projet</th>
                     <th class="text-center" >Secteur d'activité</th>
                     <th class="text-center" >Maillon d'activite</th>
-                    <th class="text-center" >Region du projet</th>
-                    <th class="text-center" >Province du projet</th>
-                    <th class="text-center" >Commune du projet</th>
-                    <th class="text-center" >Arondissement du projet</th>
-                    <th class="text-center" >Cout total du projet</th>
-                    <th class="text-center" >Subvention Sollicitée</th>
+                    <th class="text-center" >Region</th>
+                    <th class="text-center" >Province</th>
+                    <th class="text-center" >Commune</th>
+                    <th class="text-center" >secteur</th>
+                    {{-- <th class="text-center" >Cout total du projet</th>
+                    <th class="text-center" >Subvention Sollicitée</th> --}}
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -60,8 +62,8 @@
                         <td class="text-center">{{ getlibelle($preprojet->province) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->commune) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_village) }}</td>
-                        <td class="text-center">{{format_prix($preprojet->cout_total) }}</td>
-                        <td class="text-center">{{ $preprojet->subvention_souhaite }}</td>
+                        {{-- <td class="text-center">{{format_prix($preprojet->cout_total) }}</td>
+                        <td class="text-center">{{ $preprojet->subvention_souhaite }}</td> --}}
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('preprojet_pe.details', $preprojet) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>

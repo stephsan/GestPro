@@ -1,6 +1,8 @@
 @extends('./layouts/base')
 @section('title')
 @endsection
+@section('administration', 'show')
+@section('user', 'active')
 @section('css')
 @endsection
 @section('content')
@@ -29,7 +31,7 @@
                     <div class="card-body">
                         <!-- Table with stripped rows -->
 <div class="table-responsive">
-<table class="table datatable">
+<table class="table liste">
         <thead>
                 <tr>
                     <th>N°</th>
@@ -57,14 +59,14 @@
                     <td>{{ $user->telephone}}</td>
                     <td>{{ $user->login}}</td>
                     <td class="text-center">
-                        @can('user.update',Auth::user()) 
+                        {{-- @can('gerer_user',Auth::user())  --}}
                             <div class="btn-group">
                                 <a href="{{ route('users.edit',$user) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i></a>
                             </div>
                             <div class="btn-group">
                                 <a href="#modal-user-reinitialise" data-toggle="modal" title="télécharger" class="btn btn-xs btn-success"  onclick="recup_id('{{$user->id}}')"><i class="fa fa-repeat"></i>  </a>
                             </div>
-                        @endcan 
+                        {{-- @endcan  --}}
                     </td>
 
                 </tr>
