@@ -14,7 +14,7 @@ class ParametreController extends Controller
     }
     public function index()
     {
-    if (Auth::user()->can('parametre.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $parametres = Parametre::all();
         return view('parametres.index', compact('parametres'));
     }
@@ -31,7 +31,7 @@ class ParametreController extends Controller
      */
     public function create()
     {
-    if (Auth::user()->can('parametre.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $parametres = Parametre::all();
         return view('parametres.create', compact('parametres'));
     }
@@ -49,7 +49,7 @@ class ParametreController extends Controller
      */
     public function store(Request $request)
     {
-    if (Auth::user()->can('parametre.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         Parametre::create([
           'parametre_id'=>$request->parent,
            'libelle'=>$request->libele,
@@ -83,7 +83,7 @@ class ParametreController extends Controller
      */
     public function edit(Parametre $parametre)
     {
-    if (Auth::user()->can('parametre.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $params = Parametre::all();
         return view('parametres.edit', compact('parametre', 'params'));
     }
@@ -102,7 +102,7 @@ class ParametreController extends Controller
      */
     public function update(Request $request, Parametre $parametre)
     {
-    if (Auth::user()->can('parametre.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $parametre->libelle = $request->libelle;
         $parametre->description = $request->description;
         $parametre->parametre_id = $request->parent;

@@ -95,9 +95,24 @@
                                                         Informations non disponible
                                                     @endempty
                                                     @if($preprojet->promoteur->genre==1)
-                                                        Masulin
+                                                        Féminin
                                                     @else
-                                                        Feminin
+                                                        Masculin
+                                                        @endif
+                                                </span>
+                                            </span>
+                                            </div>
+                                            <div  class="form-group ">
+                                                <span class="col-md-5 control-label labdetail"> <span class="labdetail">Handicapé: </span> </span>
+                                                <span class="col-md-6" >
+                                                <span class="valdetail">
+                                                    @empty($preprojet->promoteur->avec_handicape)
+                                                        Informations non disponible
+                                                    @endempty
+                                                    @if($preprojet->promoteur->avec_handicape==1)
+                                                        Oui {{ getlibelle($preprojet->promoteur->type_handicap) }}
+                                                    @else
+                                                        Non
                                                         @endif
                                                 </span>
                                             </span>

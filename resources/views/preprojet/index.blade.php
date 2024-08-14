@@ -29,15 +29,13 @@
             <thead>
                 <tr>
                     <th class="text-center">Numéro</th>
+                    <th class="text-center" >Guichet</th>
                     <th class="text-center">Nom & prenom </th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
                     <th class="text-center" >Secteur d'activité</th>
                     <th class="text-center" >Maillon d'activite</th>
                     <th class="text-center" >Region du projet</th>
-                    <th class="text-center" >Province du projet</th>
-                    <th class="text-center" >Commune du projet</th>
-                    <th class="text-center" >Arondissement du projet</th>
                     <th class="text-center" >Cout total du projet</th>
                     <th class="text-center" >Subvention Sollicitée</th>
                     <th class="text-center">Actions</th>
@@ -53,15 +51,13 @@
                         @endphp
                     <tr>
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
+                        <td class="text-center">{{ getlibelle($preprojet->guichet) }}</td>
                         <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
                         <td class="text-center">{{ $preprojet->num_projet }}</td>
                         <td class="text-center">{{ $preprojet->titre_projet }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->region) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->province) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->commune) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->secteur_village) }}</td>
                         <td class="text-center">{{format_prix($preprojet->cout_total) }}</td>
                         <td class="text-center">{{ $preprojet->subvention_souhaite }}</td>
                         <td class="text-center">

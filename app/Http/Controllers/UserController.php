@@ -27,13 +27,13 @@ class UserController extends Controller
     {
         //User::find(1)->roles;
        // dd(User::find(1)->roles);
-    // if (Auth::user()->can('gerer_user')) {
+     if (Auth::user()->can('gerer_user')) {
         $users= User::orderBy('updated_at', 'desc')->get();
         return view('users.index', compact("users"));
-    //  }
-    // else{
-    //     return redirect()->back();
-    //  }
+      }
+     else{
+         return redirect()->back();
+      }
     }
 
     /**
@@ -43,17 +43,17 @@ class UserController extends Controller
      */
     public function create()
     {
-   // if (Auth::user()->can('gerer_user')) {
+    if (Auth::user()->can('gerer_user')) {
         $roles= Role::all();
         $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_BOUCLE_DU_MOUHOUN'), env('VALEUR_ID_NORD')])->get();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
         //$banques= Banque::all();
         return view("users.create", compact("roles", "zones","strucure_representees"));
-    // }
-    // else{
-    //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-    //     return redirect()->back();
-    // }
+     }
+     else{
+    //    flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+         return redirect()->back();
+     }
     }
 
     /**
@@ -90,7 +90,7 @@ class UserController extends Controller
         $user->roles()->sync($request->roles);
        // flash("Utilisateur ajouté avec succes !!!")->success();
 
-        return redirect()->route("user.index");
+        return redirect()->route("users.index");
     }
      else{
     //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
@@ -105,7 +105,7 @@ public function reinitialize(Request $request){
                 'password' => bcrypt($pass)
             ]);
             $e_msg='Votre Mot de passe a ete initialise. Le nouveau mot de passe est : '.$password ;
-            $titre= 'REINITIALISATION DE MOT DE PASSE BRAVE WOMEN';
+            $titre= 'REINITIALISATION DE MOT DE PASSE DE LA PLATEFORME ECOTEC';
             $mail= $user->email;
             Mail::to($mail)->queue(new ReinitialiseMail($titre, $e_msg,'mails.reinitializeMail'));
 }

@@ -93,9 +93,9 @@
                                                         Informations non disponible
                                                     @endempty
                                                     @if($preprojet->promoteur->genre==1)
-                                                        Masulin
+                                                        Féminin
                                                     @else
-                                                        Feminin
+                                                        Masculin
                                                         @endif
                                                 </span>
                                             </span>

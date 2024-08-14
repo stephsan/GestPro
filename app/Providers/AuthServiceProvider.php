@@ -40,7 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('evaluer_souscription',[SouscriptionPolicy::class,'evaluer_souscription'] );
         Gate::define('gerer_user',[UserPolicy::class,'gerer_user'] );
         Gate::define('gerer_critere',[UserPolicy::class,'gerer_critere'] );
-
+        Gate::define('gerer_parametrage',[ParametrePolicy::class,'gerer_parametrage'] );
         
        
 

@@ -312,19 +312,23 @@
           </div>
           <div class="modal-body" >
            <div class="row" style="text-align: justify;">
-            <p>Le Programme Entreprendre et de renforcement des capacités des entreprises ou « Programme Entreprendre », 
-              fournira une formation de groupe et une assistance technique. 
-              Le programme permettra de mettre à niveau des chaînes de valeur et des grappes industrielles précises.
-              Le Programme Entreprendre améliorera des chaînes de valeur et des groupes d’industries spécifiques à travers deux volets :
+            <p>Le Programme Entreprendre et de renforcement des capacités des entreprises ou « Programme Entreprendre », fournira une formation de groupe et une assistance technique.
+               Le programme permettra de mettre à niveau des chaînes de valeur et des grappes industrielles précises.
+               Le Programme Entreprendre améliorera des chaînes de valeur et des groupes d’industries spécifiques à travers deux volets :
               <ol>
-                  <li style="color: red">Compétences et mentalité entrepreneuriales</li>
-                  <p> Le premier volet contribuera à développer les capacités et l’esprit d’entreprise, à l’aide d’une combinaison de formation et de coaching</p>
-                  <li style="color: red">Adoption de technologies et capacités de production </li>
-                  <p>Le deuxième volet fournira des conseils et des services d’appui aux entreprises en groupe, afin de soutenir l’adoption de technologies,
-                     les pratiques de gestion et l’accès au marché, en mettant l’accent sur les certifications environnementales et de qualité,
-                     y compris les pratiques commerciales écologiques et durables : mise en œuvre de stratégies d’économie circulaire et adoption de mesures de continuité des activités (résilience). </p>
+                  <li style="color: red">Compétences et mentalités entrepreneuriales</li>
+                  <p> Le premier volet aidera à développer les capacités et les mentalités entrepreneuriales grâce à une combinaison de formation et d'encadrement. Ce niveau sera axé sur :
+
+                    (i) compétences socio-émotionnelles (initiative personnelle, esprit d'entreprise),
+                    
+                    (ii) les compétences organisationnelles (définition des objectifs, suivi, bonnes pratiques de gestion),
+                    
+                    (iii) la gestion financière (accès aux finances, comptabilité de base, tenue de registres);
+                    
+                    (iv) la durabilité, en particulier en ce qui concerne les mesures d'adaptation et d'atténuation visant à améliorer l'intégration dans les la chaîne de valeur mondiale (CVM).</p>
+                  <li style="color: red">Adoption de la technologie et capacités de production</li>
+                  <p>Le deuxième volet fournira des conseils et des services d’appui aux entreprises en groupe, afin de soutenir l’adoption de technologies, les pratiques de gestion et l’accès au marché, en mettant l’accent sur les certifications environnementales et de qualité, y compris les pratiques commerciales écologiques et durables : mise en œuvre de stratégies d’économie circulaire et adoption de mesures de continuité des activités (résilience).  </p>
                      <div class="text-center" style="margin-top:10px">
-                     
                       <a  data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a> 
                       {{-- <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>  --}}
                       <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
@@ -350,13 +354,16 @@
       <div class="modal-content" style="padding:15px;">
           <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
-              <h3 class="modal-title"><i class="gi gi-pen" ></i>Description du fonds de Partenariat</h3>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>DESCRIPTION DU FONDS DE PARTENARIAT</h3>
           </div>
           <div class="modal-body" >
            <div class="row" style="text-align: justify;">
-            <p>Le Fonds de Partenariat pour l’adoption des technologies et la transformation verte de la composante 1 cofinancera les investissements dans les biens d’équipement, l’assistance technique pour soutenir l’adoption des technologies, l’innovation des entreprises et des produits, l’obtention de certifications des produits et d’accréditations de la qualité.
-               Une partie du Fonds soutiendra des solutions vertes associées au passage à des sources d’énergie renouvelables, plus résistantes et à des solutions d’économie circulaire (EC).
-               Les subventions seront attribuées sur une base concurrentielle selon les trois guichets suivants :
+            <p>Le Fonds de Partenariat cofinance les investissements dans les biens d’équipement, l’assistance technique pour soutenir l’adoption des technologies, 
+              l’innovation des entreprises et des produits, l’obtention de certifications des produits et d’accréditations de la qualité. 
+              Le Fonds encouragera de manière proactive les investissements privés dans les technologies améliorant l’adaptation et la résilience au climat grâce à des stratégies de réutilisation, 
+              de réduction, de remplacement, de recyclage ou de refabrication. 
+              Une partie du Fonds soutiendra des solutions vertes associées au passage à des sources d’énergies renouvelables, plus résistantes et à des solutions d’économie circulaire (EC).
+              Les subventions seront attribuées sur une base concurrentielle selon les trois (0 3) guichets suivants :
               <ol>
                   <img src="{{ asset('img/Resume_FP_en Image.png') }}" alt="" width="100%">
                      <div class="text-center" style="margin-top:10px">
@@ -464,7 +471,7 @@
         setTimeout('showDate()',t)
     }
     function showDate(){
-        var date1 = new Date("08/12/2024");
+        var date1 = new Date("08/19/2024");
         var date2 = new Date();
       diff = dateDiff(date2,date1);
         var time= 'Clôture des souscriptions dans: '+diff.day+' Jours'+ ' ' +diff.hour +' Heures'+ ' '+diff.min+' minutes'+' '+diff.sec +' '+ 'secondes';

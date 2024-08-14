@@ -261,8 +261,8 @@ class PreprojetController extends Controller
                             
                             $this->createEvaluation_pe($preprojet->id,1, $note_genre);
                             $this->createEvaluation_pe($preprojet->id,2, $note_handicap);
-                            $this->createEvaluation_pe($preprojet->id,2, $note_experience_promoteur);
-                            $this->createEvaluation_pe($preprojet->id,14, $note_creation_emplois);
+                            $this->createEvaluation_pe($preprojet->id,14, $note_experience_promoteur);
+                            $this->createEvaluation_pe($preprojet->id,16, $note_creation_emplois);
                             $this->createEvaluation_pe($preprojet->id,19, $note_etude_technique_de_faisabilite);
                             $this->createEvaluation_pe($preprojet->id,22, $note_site);
                             $this->createEvaluation_pe($preprojet->id,21, $note_recherche_de_financement_envisage);
@@ -585,8 +585,8 @@ if($preprojet->entreprise->nombre_annee_existence==6704){
 }
 $this->createEvaluation_fp($preprojet->id,1, $note_genre);
 $this->createEvaluation_fp($preprojet->id,2, $note_handicap);
-$this->createEvaluation_fp($preprojet->id,2, $note_experience_promoteur);
-$this->createEvaluation_fp($preprojet->id,14, $note_creation_emplois);
+$this->createEvaluation_fp($preprojet->id,14, $note_experience_promoteur);
+$this->createEvaluation_fp($preprojet->id,16, $note_creation_emplois);
 $this->createEvaluation_fp($preprojet->id,23, $note_existence_entreprise);
 
 

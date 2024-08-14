@@ -33,7 +33,6 @@
                         <div class="input-group">
                             <select  class="form-control select-select2" id="parent" name="parent"  >
                                 <option></option>
-
                                 @foreach($parametres as $parametre)
                                                                 <option value="{{ $parametre->id }}">{{ $parametre->libelle }}</option>
                                                                 @endforeach

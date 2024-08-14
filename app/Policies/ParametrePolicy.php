@@ -9,6 +9,10 @@ class ParametrePolicy
 {
     use HandlesAuthorization;
 
+
+    public function gerer_parametrage(User $user){
+        return $this->getPermission($user,7);
+     }
     /**
      * Create a new policy instance.
      *

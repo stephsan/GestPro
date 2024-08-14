@@ -20,7 +20,7 @@ class ValeurController extends Controller
      */
     public function index()
     {
-    if (Auth::user()->can('valeur.view')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $parametres = Parametre::all();
         $valeurs= Valeur::with("parametre")->orderBy('updated_at', 'desc')->get();
         return view('valeur.index', compact('valeurs', 'parametres'));
@@ -39,7 +39,7 @@ class ValeurController extends Controller
      */
     public function create()
     {
-    if (Auth::user()->can('valeur.create')) {
+    if (Auth::user()->can('gerer_parametrage')) {
         $valeurs = Valeur::all();
         $parametres = Parametre::all();
         return view('valeur.create', compact('parametres','valeurs'));
@@ -58,14 +58,12 @@ class ValeurController extends Controller
      */
     public function store(Request $request)
     {
-     if (Auth::user()->can('valeur.create')) {
+     if (Auth::user()->can('gerer_parametrage')) {
         Valeur::create([
             'parametre_id'=>$request->parametre,
             'valeur_id'=>$request->parent,
             'libelle'=>$request->libelle,
             'description'=>$request->description,
-
-
         ]);
        // flash("Valeur ajouté avec succes !!!")->success();
         return redirect(route('valeurs.index'));
@@ -95,7 +93,7 @@ class ValeurController extends Controller
      */
     public function edit(Valeur $valeur)
     {
-     if (Auth::user()->can('valeur.create')) {
+     if (Auth::user()->can('gerer_parametrage')) {
         $vals= Valeur::all();
         $parametres= Parametre::all();
         return view('valeur.edit',compact('valeur', 'parametres', 'vals'));
@@ -115,7 +113,7 @@ class ValeurController extends Controller
      */
     public function update(Request $request, Valeur $valeur)
     {
-     if (Auth::user()->can('valeur.create')) {
+     if (Auth::user()->can('gerer_parametrage')) {
         $valeur->parametre_id= $request->parametre;
         $valeur->valeur_id= $request->parent;
         $valeur->libelle=$request->libelle;
@@ -139,7 +137,7 @@ class ValeurController extends Controller
     public function destroy($id)
     {
        Valeur::destroy($id);
-       return redirect()->route("valeurs.index");
+       return redirect()->route("gerer_parametrage");
     }
     public function selection(Request $request)
     {
