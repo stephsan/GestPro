@@ -39,7 +39,7 @@ class recepisseMail extends Mailable
     public function build()
     {
         $id_promo = $this->id_promoteur;
-        $programme = $this->id_promoteur;
+        $programme = $this->programme_type;
         $promoteur= Promoteur::where("id", $id_promo)->first();
         if($this->programme_type=='FP'){
            $preprojet= Preprojet::where("promoteur_id", $promoteur->id)->orderBy('created_at','desc')->first();
@@ -56,6 +56,6 @@ class recepisseMail extends Mailable
         $details['email'] = $promoteur->email;
         $details['nom'] = $promoteur->nom;
         $details['prenom'] = $promoteur->prenom;
-        return $this->view('recepisse',compact('details'))->attachData($pdf->output(), "recépissé.pdf");
+        return $this->view('recepisse',compact('details','programme'))->attachData($pdf->output(), "recépissé.pdf");
     }
 }

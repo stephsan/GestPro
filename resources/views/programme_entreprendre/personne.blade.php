@@ -81,7 +81,7 @@
                                                    </select>
                                            </div>
                                            <div class="form-group" id='champ_cnib' style="display: none;">
-                                               <label class=" control-label" for="">Numéro de la cnib (Le NIP) <span class="text-danger">*</span> <span data-toggle="tooltip" title="Renseigner le long numero de la CNIB. Pas le numéro de la carte"><i class="fa fa-info-circle"></i></span></label>
+                                               <label class=" control-label" for="">Numéro de la cnib (Le NIP) <span class="text-danger">*</span> <span data-toggle="tooltip" title="Renseigner le numéro à 17 chiffres au recto de la CNIB (partie photo)"><i class="fa fa-info-circle"></i></span></label>
                                                <div class="input-group">
                                                    <input type="text" id="numero_identite_cnib" name="numero_identite_cnib" value="{{old('numero_identite')}}" class="form-control masked_cnib" placeholder="ex:090102001150029567" onchange="controler_de_doublon_promotrice('numero_identite_cnib')">
                                                </div>
@@ -105,12 +105,12 @@
                                        <div class="form-group">
                                            <label class=" control-label" for="">Date d'établissement <span class="text-danger">*</span></label>
                                        <div class="input-group">
-                                           <input type="text" id="date_identification" value="{{old('date_identification')}}" name="date_identification" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="mm/dd/yy"required>
+                                           <input type="text" id="date_identification" value="{{old('date_identification')}}" name="date_identification" class="form-control datepicker" data-date-format="dd-mm-yyyy" placeholder="dd/mm/yy"required>
                                    </div>
                                        </div>
                                    
                            <div class="form-group{{ $errors->has('docidentite') ? ' has-error' : '' }}">
-                               <label class="control-label" for="docidentite">Joindre une copie<span class="text-danger">*</span></label>
+                               <label class="control-label" for="docidentite">Joindre une copie scannée<span class="text-danger">*</span></label>
                                    <input class="form-control" type="file" name="docidentite" id="docidentite1" accept=".pdf, .jpeg, .png"   placeholder="Charger une copie du document d'identification" onchange="VerifyUploadSizeIsOK('docidentite1')" required>
                                    <span class="help-block" style="text-align: center; color:red;">
                                     Taille maximale autorirée :2MB
@@ -129,7 +129,7 @@
                         <legend>Contacts</legend>
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label class=" control-label" for="val_username">Télephone Principal:<span class="text-danger">*</span><span data-toggle="tooltip" title="Ce numéro de téléphone ne sera pas utilisé pour d'autre souscription"><i class="fa fa-info-circle"></i></span></label>
+                                <label class=" control-label" for="val_username">Télephone Principal (préciser sans indicatif):<span class="text-danger">*</span><span data-toggle="tooltip" title="Ce numéro de téléphone ne sera pas utilisé pour d'autre souscription"><i class="fa fa-info-circle"></i></span></label>
                                     <div class="input-group">
                                         <input type="text" id="telephone_promoteur" name="telephone_promoteur" class="form-control masked_phone"  data-inputmask='"mask": "(999) 999-9999"' value="{{old('telephone_promoteur')}}" placeholder="Votre numéro de télephone" required="Ce champ est obligatoire" onchange="controler_de_doublon_promotrice('telephone_promoteur')">
                                     </div>
@@ -142,7 +142,7 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label class=" control-label" for="val_username">Mobile (WhatsApp)<span class="text-danger">*</span></label>
+                                <label class=" control-label" for="val_username">Mobile (WhatsApp préciser avec indicatif)<span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <input type="text" id="mobile_promoteur" name="mobile_promoteur" value="{{old('mobile_promoteur')}}" class="form-control" placeholder="Votre numéro de télephone WhatsApp" onchange="controler_de_doublon_promotrice('mobile_promoteur')" required >
                                     </div>

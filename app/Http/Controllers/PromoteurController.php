@@ -85,6 +85,7 @@ class PromoteurController extends Controller
        $validated= $request->validate([
             'nom_promoteur' =>'required',
             'numero_identite'=>'unique:promoteurs|max:255',
+            'mobile_promoteur'=>'unique:promoteurs|max:255',
             'telephone_promoteur'=>'unique:promoteurs|max:255',
             ]);
         $dateTime = new \DateTime();
@@ -157,7 +158,8 @@ class PromoteurController extends Controller
                   'url'=>$urldocidentite,
               ]);
         }
-        //$dest=dispatch(new SendEmailJob($details));
+      
+        $dest=dispatch(new SendEmailJob($details));
         if($programme=='FP'){
              return  view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur"))->with('success','Item created successfully!');
         }

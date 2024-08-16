@@ -1,5 +1,6 @@
 @extends('layouts.frontend')
 @section('content')
+@section('accueil','active')
 <section id="hero" class="d-flex align-items-center" >
   <div class="row"  data-aos="zoom-out">
      <img src="{{ asset('/img/banniere.jpeg') }}"  alt="">

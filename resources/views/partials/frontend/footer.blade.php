@@ -393,15 +393,16 @@
               <h3 class="modal-title"><i class="gi gi-pen" ></i> Les obligations et conditions</h3>
           </div>
           <div class="modal-body" >
-              <h4 class="sub-header">Conditions de participation</h4>
-              <p style="line-height: 32px;"> -   respecter les principes de la loi islamique ; </p>
-               <p style="line-height: 32px;">-	travailler avec les banques partenaires locales ; </p>
-               <p style="line-height: 32px;"> -	accepter de formaliser l’entreprise si ce n’est pas encore le cas ;</p>
-               <p style="line-height: 32px;"> -	suivre tout le processus de mise en œuvre du projet.</p>
+              <p style="line-height: 32px;"> Si d’aventure ma candidature vient à être retenu, je m’engages à :</p>
+              <p style="line-height: 32px;">- formaliser mon entreprise, le cas échéant ; </p>
+               <p style="line-height: 32px;">- procéder à l’ouverture d’un compte dédié ; </p>
+               <p style="line-height: 32px;">- garantir la mobilisation de ma contrepartie à la mise en œuvre du sous-projet ;</p>
+               <p style="line-height: 32px;"> -	respecter les termes et conditions d’octroi de la subvention sollicitée;</p>
+               <p style="line-height: 32px;"> -	me conformer aux exigences et normes environnementales et sociales nationales et de la Banque mondiale.</p>
               </p style="line-height: 32px;">
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">J'ai lu les termes!</button>
+              <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">J'ai lu les termes!</button>
           </div>
       </div>
   </div>

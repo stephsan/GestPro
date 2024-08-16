@@ -131,6 +131,7 @@ class PreprojetController extends Controller
         $entreprise_nn_traite= Entreprise::where('promoteur_id', $promoteur->id)->get();
         $preprojet_controle_doublon= PreprojetPe::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
             if(count($preprojet_controle_doublon)==0){
+               
             $preprojet=PreprojetPE::create([
                 "titre_projet"=> $request->titre_projet,
                 "secteur_dactivite"=>  $request->secteur_activite,
@@ -268,13 +269,39 @@ class PreprojetController extends Controller
                             $this->createEvaluation_pe($preprojet->id,21, $note_recherche_de_financement_envisage);
                             $this->createEvaluation_pe($preprojet->id,20, $note_prototype_existe);
 
-
-
-
-            
-            $data["email"] = $promoteur->email_promoteur;
-            $this->email= $promoteur->email_promoteur;
-            Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'PE'));
+                            if ($request->hasFile('doc_projet')) {
+                                $file = $request->file('doc_projet');
+                                $extension=$file->getClientOriginalExtension();
+                                $fileName = 'doc_projet'.'.'.$extension;
+                                $emplacement='public'.'/'.$preprojet->num_projet;
+                                $urldoc_projet= $request['doc_projet']->storeAs($emplacement, $fileName);
+                                Piecejointe::create([
+                                      'type_piece'=>env("VALEUR_ID_DOCUMENT_SYNTHETIQUE_PROJET"),
+                                      'preprojet_pe_id'=>$preprojet->id,
+                                      'url'=>$urldoc_projet,
+                                  ]);
+                            }
+                            else{
+                                $urldoc_projet=null;
+                            }
+                            if ($request->hasFile('engagement')) {
+                                $file = $request->file('engagement');
+                                $extension=$file->getClientOriginalExtension();
+                                $fileName = 'engagement'.'.'.$extension;
+                                $emplacement='public'.'/'.$preprojet->num_projet;
+                                $urlengagement= $request['engagement']->storeAs($emplacement, $fileName);
+                                Piecejointe::create([
+                                      'type_piece'=>env("VALEUR_ID_DOCUMENT_ENGAGEMENT"),
+                                      'preprojet_pe_id'=>$preprojet->id,
+                                      'url'=>$urlengagement,
+                                  ]);
+                            }
+                            else{
+                                $urlengagement=null;
+                            }
+                            $data["email"] = $promoteur->email_promoteur;
+                            $this->email= $promoteur->email_promoteur;
+                            Mail::to($this->email)->queue(new recepisseMail($promoteur->id,'PE'));
             
         }
             $nbre_ent_nn_traite = count($entreprise_nn_traite);
@@ -306,9 +333,9 @@ class PreprojetController extends Controller
             $criteres= $criteres->except($id_criteres);
             //dd($evaluations);
         if($entreprise)
-            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("preprojet_fp_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
-            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+            $piecejointes=Piecejointe::Where("preprojet_fp_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
             //dd($criteres);
         return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
            // dd($preprojet);
@@ -337,10 +364,10 @@ class PreprojetController extends Controller
         $criteres= Critere::where('categorie','PE_preprojet')->orWhere('categorie','Toute_categorie')->get();
         $criteres= $criteres->except($id_criteres);
         if($entreprise)
-            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("preprojet_pe_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
-            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
-            //dd($evaluations);
+            $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("preprojet_pe_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+          
         return view('preprojet.show_pe',compact('formations_effectuees','formations_souhaites','source_appros','projet_innovations','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
           
     }
@@ -366,7 +393,7 @@ class PreprojetController extends Controller
     if($entreprise)
         $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
     else
-        $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
+        $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("preprojet_fp_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         
        return view('preprojet.show',compact('evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
     }
@@ -463,6 +490,13 @@ class PreprojetController extends Controller
         $preprojet_controle_doublon= Preprojet::where("promoteur_id",$promoteur->id)->where("titre_projet",$request->titre_projet)->get();
        
              if(count($preprojet_controle_doublon)==0){
+            //  $request->validate([
+            //         'cout_total' =>'required',
+            //         'apport_personnel' =>'required',
+            //         'subvention_souhaite' =>'required',
+            //         'autre_financement' =>'required',
+            //         'titre_projet' =>'required',
+            //         ]);
             $preprojet=Preprojet::create([
                 "titre_projet"=> $request->titre_projet,
                 "secteur_dactivite"=>  $request->secteur_activite,
@@ -589,7 +623,36 @@ $this->createEvaluation_fp($preprojet->id,14, $note_experience_promoteur);
 $this->createEvaluation_fp($preprojet->id,16, $note_creation_emplois);
 $this->createEvaluation_fp($preprojet->id,23, $note_existence_entreprise);
 
-
+if ($request->hasFile('doc_projet')) {
+    $file = $request->file('doc_projet');
+    $extension=$file->getClientOriginalExtension();
+    $fileName = 'doc_projet'.'.'.$extension;
+    $emplacement='public'.'/'.$preprojet->num_projet;
+    $urldoc_projet= $request['doc_projet']->storeAs($emplacement, $fileName);
+    Piecejointe::create([
+        'type_piece'=>env("VALEUR_ID_DOCUMENT_SYNTHETIQUE_PROJET"),
+          'preprojet_fp_id'=>$preprojet->id,
+          'url'=>$urldoc_projet,
+      ]);
+}
+else{
+    $urldoc_projet=null;
+}
+if ($request->hasFile('engagement')) {
+    $file = $request->file('engagement');
+    $extension=$file->getClientOriginalExtension();
+    $fileName = 'engagement'.'.'.$extension;
+    $emplacement='public'.'/'.$preprojet->num_projet;
+    $urlengagement= $request['engagement']->storeAs($emplacement, $fileName);
+    Piecejointe::create([
+        'type_piece'=>env("VALEUR_ID_DOCUMENT_ENGAGEMENT"),
+          'preprojet_fp_id'=>$preprojet->id,
+          'url'=>$urlengagement,
+      ]);
+}
+else{
+    $urlengagement=null;
+}
 
 // Startup
 
@@ -600,7 +663,6 @@ if($preprojet->entreprise_id==null){
 elseif($preprojet->entreprise_id==null){
     
 }
-
         $data["email"] = $promoteur->email_promoteur;
         $this->email= $promoteur->email_promoteur;
         //Mail::to($this->email)->queue(new resumeMail($entreprise->promotrice->id));

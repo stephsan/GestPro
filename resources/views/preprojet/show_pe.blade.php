@@ -631,10 +631,10 @@
                                                 <span class="col-md-5 control-label labdetail"> <span class="labdetail">Démarches pour les recherches de financement réalisé : </span> </span>
                                                 <span class="col-md-6" >
                                                 <span class="valdetail">
-                                                    @empty($preprojet->prototype_existe)
+                                                    @empty($preprojet->recherche_de_financement_envisage)
                                                         Informations non disponible
                                                     @endempty
-                                                        @if($preprojet->prototype_existe==1)
+                                                        @if($preprojet->recherche_de_financement_envisage==1)
                                                             Oui
                                                         @else
                                                              Non

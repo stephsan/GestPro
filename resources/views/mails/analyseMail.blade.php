@@ -7,7 +7,7 @@
             <p> {{ $url }}</p>
 			<hr>
 			<strong>Cordialement</strong><br>
-			<div><h3>BRAVE WOMEN Burkina</h3></div>
+			<div><h3>ECOTEC</h3></div>
 		</div>
 	</div>
 </div>

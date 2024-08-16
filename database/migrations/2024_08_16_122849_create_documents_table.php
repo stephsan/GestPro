@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('piecejointes', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->integer("type_piece");
-            $table->integer("promoteur_id")->nullable();
-            $table->integer("entreprise_id")->nullable();
-            $table->integer("preprojet_fp_id")->nullable();
-            $table->integer("preprojet_pe_id")->nullable();
-            $table->string("url",100);
+            $table->integer("categorie_id");
+            $table->string("titre");
+            $table->string("cible");
+            $table->string("url_doc");
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('piecejointes');
+        Schema::dropIfExists('documents');
     }
 };

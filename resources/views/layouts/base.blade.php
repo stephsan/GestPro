@@ -201,6 +201,11 @@
                             <i class="bi bi-circle"></i><span>Criteres</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('documents.index') }}" class="nav-link @yield('document')">
+                            <i class="bi bi-circle"></i><span>Documents</span>
+                        </a>
+                    </li>
             @endcan
       @can('gerer_user', Auth::user())  
                     <li>

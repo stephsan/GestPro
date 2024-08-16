@@ -1886,4 +1886,25 @@ section {
   font-size: 22px;
   text-align: justify;
 }
-
+#document th, td {
+  padding: 12px;
+  text-align: left;
+}
+#document th {
+  background-color: #19a73f57;
+}
+#document tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#document tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+#document tr:hover {
+  background-color: #f1f1f1;
+}
+#document  td {
+  border: 1px solid #ddd;
+}
+.titre_doc{
+  font-weight: bold;
+}

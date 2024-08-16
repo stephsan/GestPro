@@ -18,10 +18,8 @@
   <!-- Vendor CSS Files -->
   <link href="{{asset('frontend/vendor/aos/aos.css')}}" rel="stylesheet">
   <!-- <link rel="stylesheet" href="{{asset('wizard/css/style.css')}}"> -->
-
  
-  
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   
   <link href="{{asset('frontend/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
@@ -35,6 +33,7 @@
   <link href="{{asset('frontend/assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
   <link href="{{asset('frontend/assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+  
   <!-- Template Main CSS File -->
   <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
   {{-- <link rel="stylesheet" href="{{asset('formulaire/css/bootstrap.min.css')}}">   --}}
@@ -99,12 +98,13 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="{{route('index')}}">Accueil</a></li>
-          <li><a class="nav-link scrollto" data-toggle="modal"  data-target="#modal-comment-souscrire" href="#modal-comment-souscrire">Comment Postuler</a></li>
+          <li><a class="nav-link scrollto @yield('accueil')" href="{{route('index')}}">Accueil</a></li>
+          <li><a class="nav-link scrollto " data-toggle="modal"  data-target="#modal-comment-souscrire" href="#modal-comment-souscrire">Comment Postuler</a></li>
           {{-- <button type="button"  class="btn-get-started scrollto" data-toggle="modal" class="btn-get-started scrollto" data-target="#modal-choix-option"> Programme Entreprendre</button> --}}
           {{-- <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-entreprendre" href="#">Programme Entreprendre</a></li>
           <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-fond-de-partenariat" href="#">Fonds de Partenariat</a></li> --}}
-          <li class="dropdown"><a href="#"><span>Documents</span> <i class="bi bi-chevron-down"></i></a>
+          <li><a class="nav-link scrollto @yield('document')" href="{{ route('documents.public') }}">Documents</a></li>
+          {{-- <li class="dropdown"><a href="#"><span>Documents</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
                 <ul>
@@ -125,7 +125,7 @@
                 </ul>
               </li>
             </ul>
-          </li>
+          </li> --}}
          <li class="dropdown"><a href="#"><span>Poursuivre</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ValeurController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PermissionController;
@@ -72,14 +73,16 @@ Route::get("/lister/souscription/FP", [PreprojetController::class, 'lister_fp'])
 Route::get("/lister/souscription/PE", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
 
 Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
+
 Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
 Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');
 Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe'])->name('preprojet_pe.evaluation');
+// Route::get("/lister/documents/utliles", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
+Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
+Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
 
 
-Route::resource('critere', CritereController::class);
-Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');
-Route::post('store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
+
 Route::get('/accueil', function () {
     return view('index');
 })->name("accueil");
@@ -89,7 +92,13 @@ Route::get("/test", function () {
 Route::group([  
     "prefix" => "administration",
 ], function(){
+    Route::resource('critere', CritereController::class);
+    Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');
+    Route::post('store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
     Route::resource('users', UserController::class);
+    Route::resource('documents', DocumentController::class);
+    Route::get('modif/critere',[DocumentController::class, 'modifier'] )->name('document.modif');
+Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )->name('document.storemodif');
     Route::resource('permissions', PermissionController::class);
     Route::resource("role",RoleController::class);
     Route::resource("parametres",ParametreController::class);

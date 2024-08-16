@@ -101,6 +101,18 @@
                                         <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span></label>
                                          <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" maxlength="500"  placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
                                     </div>
+                                    <div class="form-group{{ $errors->has('doc_projet') ? ' has-error' : '' }}">
+                                        <label class=" control-label" for="doc_projet">Joindre le document synthétique du projet(5 pages max) <span data-toggle="tooltip" title="joindre un document synthétique d’au moins 3 à 5 pages max avec plus de detail de votre projet."><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span> : </label>
+                                            <input class="form-control" type="file" id="doc_projet" accept=".pdf, .jpeg, .png" name="doc_projet"  placeholder="Charger un document synthétique du projet" onchange="VerifyUploadSizeIsOK('doc_projet');"  required>
+                                            <span class="help-block" style="text-align: center; color:red;">
+                                                Taille maximale autorirée :2MB
+                                            </span>
+                                        @if ($errors->has('doc_projet'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('doc_projet') }}</strong>
+                                            </span>
+                                            @endif
+                                    </div>
                                 </div>
                         </div>
                        
@@ -108,7 +120,6 @@
                             <fieldset>
                                 <legend>Zone d’installation du projet</legend>
                             <div class="col-md-5">
-                                    
                                 <div class="form-group">
                                     <label class="control-label" for="region">Region<span class="text-danger">*</span></label>
                                         <select id="region_residence" name="region" class="select-select2" data-placeholder="Choisir la region d'implatation .." value="{{old("region")}}" onchange="changeValue('region_residence', 'province_residence', {{ env('PARAMETRE_ID_PROVINCE') }});"   style="width:100%;" required>
@@ -358,10 +369,21 @@
                         </fieldset>
                         </div>
                 </div>
-                
             <div class="row">
-                
-
+                <div class="col-md-10">
+                    <div class="form-group{{ $errors->has('engagement') ? ' has-error' : '' }}">
+                        <label class=" control-label" for="engagement">Joindre une copie scannée de l'engagement <span data-toggle="tooltip" title="joindre une copie scannée de l'engagement."><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span> : </label>
+                            <input class="form-control" type="file" id="engagement" accept=".pdf, .jpeg, .png" name="engagement"  placeholder="Joindre une copie scannée de l'engagement" onchange="VerifyUploadSizeIsOK('engagement');"  required>
+                            <span class="help-block" style="text-align: center; color:red;">
+                                Taille maximale autorirée :2MB
+                            </span>
+                        @if ($errors->has('engagement'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('engagement') }}</strong>
+                            </span>
+                            @endif
+                    </div>
+                </div>
             </div>
             <div class="row">
                <p style="color: red">NB: Une fois validé les informations soumises ne seront plus modifiables. Merci de réparcourir le formulaire avant de le valider.</p> 
