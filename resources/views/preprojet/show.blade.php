@@ -356,6 +356,16 @@
                                                 </span>
                                             </span>
                                             </div>
+                                            <div class="form-group">
+                                                <span class="col-md-5 control-label labdetail">Expérience du promoteur en lien avec l'activité :  </span>
+                                                    <span class="col-md-6" >
+                                                    <span class="valdetail" style="text-justify: auto;">
+                                                    @empty($preprojet->experience_du_promoteur)
+                                                            Informations non disponible
+                                                        @endempty
+                                                      {{ getlibelle($preprojet->experience_du_promoteur) }}
+                                                </span></span>
+                                            </div>
                                             <div  class="form-group ">
                                                 <span class="col-md-5 control-label labdetail"> <span class="labdetail">Secteur d'activité : </span> </span>
                                                 <span class="col-md-6" >

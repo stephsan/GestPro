@@ -39,8 +39,6 @@ return new class extends Migration
             $table->integer("formation_en_rapport_avec_activite");
             $table->integer("occupation_professionnelle_actuelle")->nullable();
             $table->string("numero_du_proche")->nullable();
-            $table->integer("nombre_annee_experience");
-            $table->string("autre_experience")->nullable();
             $table->string("code_promoteur",20);
             $table->integer("membre_ass");
             $table->integer("status")->nullable();

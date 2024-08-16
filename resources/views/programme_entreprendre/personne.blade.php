@@ -254,7 +254,7 @@
                           </div>
                         <div class="offset-md-1 col-md-5">
                                 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class=" control-label" for="example-chosen">Nombre d’années d’expérience dans le domaine d’activité <span class="text-danger">*</span></label>
                                            <select id="nbre_dannee_experience" name="nombre_annee_experience" class="select-select2" data-placeholder="Quel est votre niveau d'instruction.."  style="width: 100%;"  required>
                                                <option></option>
@@ -262,7 +262,7 @@
                                                     <option value="{{ $nbre_dannee_experience->id  }}" {{ old('nombre_annee_experience') == $nbre_dannee_experience->id ? 'selected' : '' }}>{{ $nbre_dannee_experience->libelle }}</option>
                                                @endforeach
                                            </select>
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label class=" control-label" for="example-chosen">Situation profssionnelle actuelle<span class="text-danger">*</span></label>
                                         <select id="situation_professionnelle" name="situation_professionnelle"  value="{{old("situation_profession")}}"  class="select-select2" data-placeholder="Selectionnez une situation professionelle .." style="width: 100%;" required>

@@ -134,7 +134,7 @@ class PromoteurController extends Controller
             'autre_niveau_dinstruction' => $request->autre_niveau_instruction,
             'numero_du_proche'=> $request->numero_du_proche,
             // 'domaine_formation'=> $request->domaine_formation,
-            'nombre_annee_experience'=> $request->nombre_annee_experience,
+            //'nombre_annee_experience'=> $request->nombre_annee_experience,
             'precision_residence' => $request->precision_residence,
             'formation_en_rapport_avec_activite' => $request->formation_activite,
             'occupation_professionnelle_actuelle' => $request->occupation_pro_actuelle,

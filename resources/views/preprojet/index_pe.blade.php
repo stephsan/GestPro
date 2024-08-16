@@ -30,6 +30,7 @@
                 <tr>
                     <th class="text-center">Numéro</th>
                     <th class="text-center">Nom & prenom </th>
+                    <th class="text-center">Contacts </th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
                     <th class="text-center" >Secteur d'activité</th>
@@ -54,6 +55,7 @@
                     <tr>
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
                         <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
+                        <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>
                         <td class="text-center">{{ $preprojet->num_projet }}</td>
                         <td class="text-center">{{ $preprojet->titre_projet }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
