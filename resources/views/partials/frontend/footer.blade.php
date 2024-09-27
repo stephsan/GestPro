@@ -472,7 +472,7 @@
         setTimeout('showDate()',t)
     }
     function showDate(){
-        var date1 = new Date("08/19/2024");
+        var date1 = new Date("09/29/2024");
         var date2 = new Date();
       diff = dateDiff(date2,date1);
         var time= 'Clôture des souscriptions dans: '+diff.day+' Jours'+ ' ' +diff.hour +' Heures'+ ' '+diff.min+' minutes'+' '+diff.sec +' '+ 'secondes';

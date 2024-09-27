@@ -134,7 +134,7 @@
           <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
             <div class="count-box">
               <i class="bi bi-headset"></i>
-              <span  >8 Milliars FrCFA</span>
+              <span>9,5 Mrd. FrCFA</span>
               <p> De co-investissements privés mobilisé par le Fonds de partenariat </p>
             </div>
           </div>
@@ -269,8 +269,8 @@
           <div class="col-lg-3 col-md-6">
             <div class="info-box  mb-4">
               <i class="bx bx-phone-call"></i>
-              <h3>Contactez Nous</h3>
-              <p>+226 25-41-03-09 / 10</p>
+              <h3>CENTRE & PLATEAU CENTRAL</h3>
+              <p>63 99 96 73 / 53 60 60 10</p>
             </div>
           </div>
 
@@ -279,25 +279,25 @@
           
             <div class="info-box col-md-3 mb-4">
               <i class="bx bx-map"></i>
-              <h3>Nord</h3>
-              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+              <h3>HAUTS-BASSINS CASCADES & SUD-OUEST</h3>
+              <p>72 64 03 39 / 73 36 88 88</p>
           
           </div>
             
             <div class="info-box col-md-3 mb-4">
               <i class="bx bx-map"></i>
-              <h3>Hauts-Bassin</h3>
-              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+              <h3>CENTRE-OUEST & BOUCLE DU MOUHOUN</h3>
+              <p> 72 36 26 15 / 73 16 18 13</p>
             </div>
             <div class="info-box col-md-3 mb-4">
               <i class="bx bx-map"></i>
-              <h3>Centre Est</h3>
-              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+              <h3>NORD CENTRE-NORD & SAHEL</h3>
+              <p>70 43 57 14 / 74 65 34 09</p>
             </div>
             <div class="info-box col-md-3 mb-4">
               <i class="bx bx-map"></i>
-              <h3>Centre-Ouest</h3>
-              <p>132, Avenue de Lyon 11 BP 379 Ouagadougou 11 | Burkina Faso</p>
+              <h3>CENTRE-EST CENTRE-SUD EST</h3>
+              <p>62 73 75 70</p>
             </div>
           
         </div>

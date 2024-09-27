@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(["verifier_conformite_cpt",'storecomptePromoteur','login_form_beneficiaire']);
+        $this->middleware('auth')->except(['register',"verifier_conformite_cpt",'storecomptePromoteur','login_form_beneficiaire']);
     }
     /**
      * Display a listing of the resource.
@@ -96,6 +96,10 @@ class UserController extends Controller
     //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
      }
+    }
+
+  public function register(){
+        return redirect()->route('index');
     }
 public function reinitialize(Request $request){
             $user= User::find($request->id);

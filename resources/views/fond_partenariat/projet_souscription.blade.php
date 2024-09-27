@@ -37,7 +37,7 @@
                             <div class="offset-md-1 col-md-5">
                                 <div class="form-group">
                                     <label class="control-label" for="val_denomination">Titre de votre projet<span class="text-danger">*</span></label>
-                                    <input type="text" id="titre_projet" name="titre_projet" class="form-control" placeholder="Reseigner le titre de votre projet" value="{{old("denomination")}}" required >
+                                    <input type="text" id="titre_projet" maxlength="200"  name="titre_projet" class="form-control" placeholder="Reseigner le titre de votre projet" value="{{old("denomination")}}" required >
                                     <p id="error" style="background-color: rgb(231, 179, 179); color">Une entreprise est déja enregistrée sous cette dénomination.Merci de changer le nom de l'entreprise pour pouvoir remplir les autres champs</p>
                                     @if ($errors->has('denomination'))
                                             <span class="help-block text-danger">
@@ -94,11 +94,11 @@
                                 </div>
                                 <div class="offset-md-1 col-lg-5">
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i> </span><span class="text-danger">*</span> </label>
-                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" maxlength="600"  rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
+                                        <label class=" control-label" for="example-textarea-input">Description  du projet (expliquez votre idée de projet en 500 caractères max) <span data-toggle="tooltip" title="expliquez votre idée de projet"><i class="fa fa-info-circle"></i> </span><span class="text-danger">*</span> </label>
+                                            <textarea id="description_idee_de_projet" name="description_idee_de_projet" maxlength="500"  rows="6" class="form-control" placeholder="expliquez votre idée de projet" autofocus required title="Ce champ est obligatoire">{{old('description_idee_de_projet') }}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet<span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span></label>
+                                        <label class=" control-label" for="example-textarea-input">Quels sont les objectifs du projet (500 caractères max) <span data-toggle="tooltip" title="expliquez les objectifs du projet"><i class="fa fa-info-circle"></i><span class="text-danger">*</span></span></label>
                                          <textarea id="objectifs_projet" name="objectifs_projet" rows="6" class="form-control" maxlength="500"  placeholder="expliquez les objectifs du projet" autofocus required title="Ce champ est obligatoire">{{old('objectifs_projet') }}</textarea>
                                     </div>
                                     <div class="form-group{{ $errors->has('doc_projet') ? ' has-error' : '' }}">

@@ -468,6 +468,7 @@ class PreprojetController extends Controller
     }
     public function store_preprojet(Request $request){
         //dd($request->all());
+
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
        // dd($type_entreprise);

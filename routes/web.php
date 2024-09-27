@@ -47,6 +47,8 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
 });
+
+Route::get('/register',[UserController::class,'register']);
 Route::post("/contact/message/", [SouscriptionPEController::class, "contactSendMessage"])->name("contact");
 Route::get('page/souscription/PF/personne', [SouscriptionPEController::class,'create_personne'])->name('fp.create.personne');
 Route::get('page/souscription/PE/personne', [SouscriptionPEController::class,'create_personne'])->name('pe.create.personne');

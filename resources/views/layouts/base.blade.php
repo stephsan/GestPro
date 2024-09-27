@@ -166,16 +166,18 @@
         </ul>
     </li>
     @endcan
+    <p>Fonds de partenariat</p>
+    <hr>
 @can('lister_souscription_fp', Auth::user())
     <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#fp" data-bs-toggle="collapse" href="#">
-            <i class="bi-currency-exchange"></i><span>Fonds de partenariat</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#startup_fp" data-bs-toggle="collapse" href="#">
+            <i class="bi-currency-exchange"></i><span>Startups</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="fp" class="nav-content collapse  @yield('fp')"
+        <ul id="startup_fp" class="nav-content collapse  @yield('fp')"
             data-bs-parent="#sidebar-nav">
             <li>
                 <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link @yield('startup') ">
-                    <i class="bi bi-circle"></i><span>Startups</span>
+                    <i class="bi bi-circle"></i><span>Soumis</span>
                 </a>
             </li>
             <li>
@@ -183,8 +185,39 @@
                     <i class="bi bi-circle"></i><span>Entreprise existante</span>
                 </a>
             </li>
-           
-           
+        </ul>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#fp_mpme_existante" data-bs-toggle="collapse" href="#">
+            <i class="bi-currency-exchange"></i><span>Entreprises existantes</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="fp_mpme_existante" class="nav-content collapse  @yield('fp')"
+            data-bs-parent="#sidebar-nav">
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link @yield('startup') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets enregistrées</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('mpme_existant') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets a évalués</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('mpme_existant') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('mpme_existant') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('mpme_existant') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
+                </a>
+            </li>
         </ul>
     </li>
 @endcan

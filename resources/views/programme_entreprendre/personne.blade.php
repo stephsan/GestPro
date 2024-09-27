@@ -224,9 +224,9 @@
                                        </select>
                                </div>
                                <div class="form-group">
-                                <label class=" control-label" for="">Préciser le domaine d’étude <span class="text-danger">*</span></label>
+                                <label class=" control-label" for="">Préciser le domaine d’étude (max 100 caractères) <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text" id="domaine_detude" name="domaine_detude" value="{{old('domaine_detude')}}" class="form-control" placeholder="Préciser le domaine d’étude"  required>
+                                    <input type="text" id="domaine_detude" name="domaine_detude" value="{{old('domaine_detude')}}" class="form-control" maxlength="100"  placeholder="Préciser le domaine d’étude"  required>
                                 </div>
                                 @if ($errors->has('domaine_detude'))
                                     <span class="help-block text-danger">
@@ -244,9 +244,9 @@
                                         </select>
                                 </div>
                                 <div class="form-group" id="domaine_formation">
-                                    <label class="control-label" for="">Précisez le domaine ou thème</label>
+                                    <label class="control-label" for="">Précisez le domaine ou thème (max 100 caractères)</label>
                                     <div class="input-group">
-                                        <input type="text"  name="domaine_formation" class="form-control" data-placeholder=""="Précisez le domaine de formation " value="{{old("domaine_formation")}}" >
+                                        <input type="text"  name="domaine_formation" class="form-control" data-placeholder="Précisez le domaine de formation" maxlength="100" value="{{old("domaine_formation")}}" >
                                         <span class="input-group-addon"><i class="gi gi-learning"></i></span>
                                     </div>
                                 </div>
