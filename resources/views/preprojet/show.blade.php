@@ -14,13 +14,6 @@
                 <li class="breadcrumb-item active text-dark">Visuliser</li>
             </ol>
         </nav>
-@can('evaluer_souscription', Auth::user())
-        <nav>
-            <button type="button" class="btn btn-success">
-                <a href="#modal-evaluer-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer l'avant projet</a>
-            </button>
-        </nav>
-@endcan
     </div>
 <section class="section">
         <div class="row">

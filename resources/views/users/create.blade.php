@@ -64,7 +64,7 @@
                                 <label class="col-md-4 control-label" for="organisation">Zone </label>
                                 <div class="col-md-6">
                                         <div class=" col-md-12 input-group ">
-                                            <select  id="organisation" name="organisation" class="form-control">
+                                            <select  id="organisation" name="organisation" class="select-select2" style="width: 100%">
                                             <option value="">Sélectionner une zone</option>
                                                 <option value="00100">Coordination</option>
                                                     @foreach ($zones as $user_zone)

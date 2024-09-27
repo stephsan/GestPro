@@ -20,6 +20,7 @@ use App\Models\PreprojetParametre;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 class PreprojetController extends Controller
 {
@@ -308,7 +309,7 @@ class PreprojetController extends Controller
             return view("programme_entreprendre.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
      }
 
-     public function afficher_details_fp(Preprojet $preprojet){
+     public function afficher_details_fp(Preprojet $preprojet, Request $request){
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
         $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
         $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
@@ -336,9 +337,11 @@ class PreprojetController extends Controller
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("preprojet_fp_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
             $piecejointes=Piecejointe::Where("preprojet_fp_id", $promoteur->id )->orWhere("projet_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
-            //dd($criteres);
+        if($request->type_detail=='analyser')
+        return view('preprojet.analyser',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
+           else
         return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
-           // dd($preprojet);
+        
     }
     public function afficher_details_pe(PreprojetPe $preprojet){
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
@@ -433,6 +436,7 @@ class PreprojetController extends Controller
         }
         $preprojet->update([
             'note_totale'=>$evaluation_du_projet->sum('note'),
+            'statut'=>'evalue'
         ]);
         return redirect()->back();
     }
@@ -675,7 +679,41 @@ elseif($preprojet->entreprise_id==null){
         return view("fond_partenariat.validateStep1", compact('programme',"type_entreprise","promoteur","nbre_ent_nn_traite"));
   }
 
+/*** BLOC TRAITEMENT DES avant-projets fonds de partenariat */
 
+public function lister_preprojet_fp_en_traitement(Request $request){
+    if($request->type_entreprise=='entreprise_existante'){
+        if($request->statut=='a_evaluer'){
+            $preprojets= Preprojet::where('statut',NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_a_evaluer';
+            $titre='Liste des avant-projets a évaluer du fonds de partenatiat';
+        }
+        elseif($request->statut=='evalues'){
+            $preprojets= Preprojet::where('statut','evalue')->get();
+            $type='fp_mpme_existante';
+            $statut='fp_evalues';
+            $titre="Liste des avant-projets en attente de l'avis de l'équipe";
+        }
+        elseif($request->statut=='soumis_au_comite' ){
+            $preprojets= Preprojet::where('statut','soumis_au_comite')->where('region', 54)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_soumis_au_comite';
+            $titre="Liste des avant-projets soumis au comité";
+        }
+       else{
+        return redirect()->back();
+       }
+    }
+    return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
+}
+
+public function lister_preprojet_fp_preselectionnes(Request $request){
+    
+
+}
+
+/*** FIn du bloc  */
 
     /**
      * Show the form for editing the specified resource.

@@ -83,6 +83,10 @@ Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe']
 Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
 Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
 
+Route::get("/lister/preprojet/FP/traitement", [PreprojetController::class, 'lister_preprojet_fp_en_traitement'])->name("preprojet.traitement");
+Route::get("/lister/preprojet/FP/preselectionnes", [PreprojetController::class, 'lister_preprojet_fp_preselectionnes'])->name("preprojet.selected");
+
+
 
 
 Route::get('/accueil', function () {

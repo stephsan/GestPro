@@ -1,7 +1,7 @@
 @extends('./layouts/base')
 @section('title')
-@section('fp', 'show')
-@section('mpme_existant', 'active')
+@section('fp_mpme_existante', 'show')
+@section('fp_enregistre', 'active')
 @endsection
 @section('css')
 @endsection
@@ -10,7 +10,7 @@
         <h1 class="text-success">Souscription</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item text-dark">Fonds de partenariat {{ $type }}</li>
+                <li class="breadcrumb-item text-dark">Liste des souscription au fonds de partenariat {{ $type }}</li>
                 <li class="breadcrumb-item active text-dark">Lister</li>
             </ol>
         </nav>
@@ -64,7 +64,7 @@
                         <td class="text-center">{{ $preprojet->subvention_souhaite }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('preprojet.details', $preprojet) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('preprojet.details', $preprojet) }}?type_detail=visualiser" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                 {{-- <a  href="#modal-confirm-delete" onclick="delConfirm({{ $preprojet->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a> --}}
                             </div>
                         </td>

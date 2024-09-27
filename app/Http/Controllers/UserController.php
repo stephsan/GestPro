@@ -45,7 +45,7 @@ class UserController extends Controller
     {
     if (Auth::user()->can('gerer_user')) {
         $roles= Role::all();
-        $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_BOUCLE_DU_MOUHOUN'), env('VALEUR_ID_NORD')])->get();
+        $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_CENTRE_OUEST'), env('VALEUR_ID_CENTRE_EST'), env('VALEUR_ID_NORD')])->get();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
         //$banques= Banque::all();
         return view("users.create", compact("roles", "zones","strucure_representees"));
@@ -133,7 +133,7 @@ public function reinitialize(Request $request){
     public function edit(User $user)
     {
     if (Auth::user()->can('gerer_user')) {
-        $zones=Valeur::where('parametre_id',1 )->whereIn('id', [env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_BOUCLE_DU_MOUHOUN'), env('VALEUR_ID_NORD')])->get();
+        $zones=Valeur::where('parametre_id',1 )->whereIn('id',[env('VALEUR_ID_CENTRE'),env('VALEUR_ID_HAUT_BASSIN'), env('VALEUR_ID_CENTRE_OUEST'), env('VALEUR_ID_CENTRE_EST'), env('VALEUR_ID_NORD')])->get();
         //$zones= Valeur::where("parametre_id",env("PRARAMETRE_ZONE"))->get();
         $roles=Role::all();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
