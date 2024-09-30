@@ -42,10 +42,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('gerer_critere',[UserPolicy::class,'gerer_critere'] );
         Gate::define('gerer_parametrage',[ParametrePolicy::class,'gerer_parametrage'] );
         
+        Gate::define('lister_souscription_a_evaluer_fp',[SouscriptionPolicy::class,'lister_souscription_a_evaluer_fp']);
+        Gate::define('lister_souscription_evalues_fp',[SouscriptionPolicy::class,'lister_souscription_evalues_fp']);
+        Gate::define('lister_souscription_soumis_au_fp',[SouscriptionPolicy::class,'lister_souscription_evalues_fp']);
+        Gate::define('lister_souscription_evalues_fp',[SouscriptionPolicy::class,'lister_souscription_evalues_fp']);
+
        
 
-        
-
-        //
+    
     }
 }

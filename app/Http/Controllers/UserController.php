@@ -142,7 +142,7 @@ public function reinitialize(Request $request){
     }
      else{
         //flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-         return redirect()->back();
+         return redirect()->back()->with('error',"Vous ne disposez pas des droits requis pour acceder a cette ressource");;
     }
  }
 
@@ -178,7 +178,7 @@ public function reinitialize(Request $request){
         ]);
         $user->roles()->sync($request->roles);
        // flash("Utilisateur modiffié avec succes !!!")->error();
-        return redirect()->route("users.index");
+        return redirect()->route("users.index")->with('success',"Utilisateur modifié avec success");
     }
          else{
     //        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();

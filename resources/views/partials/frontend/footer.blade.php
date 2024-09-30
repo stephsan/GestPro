@@ -126,6 +126,8 @@
 </div>
 
 
+
+
 <div id="modal-programme-entreprendre-MPMEExistant"class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg" style="padding:15px;">
       <div class="modal-content">
@@ -331,7 +333,7 @@
                      <div class="text-center" style="margin-top:10px">
                       <a  data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a> 
                       {{-- <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>  --}}
-                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup" @disabled(true)  class="btn btn-success" >Souscrire en Startup</a>
                   </div>
               </ol>
          </p>
@@ -367,7 +369,7 @@
               <ol>
                   <img src="{{ asset('img/Resume_FP_en Image.png') }}" alt="" width="100%">
                      <div class="text-center" style="margin-top:10px">
-                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existante</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a>
                       <a data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en Startup</a>
                       {{-- <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a> --}}
                   </div>
@@ -407,6 +409,23 @@
       </div>
   </div>
 </div>
+
+<div id="modal-souscription-close"class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg" style="padding:15px;">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+              <h3 class="modal-title"><i class="gi gi-pen" ></i>Souscription close</h3>
+          </div>
+          <center><img src="{{ asset('img/oups.jpg') }}" width="300" alt=""></center>
+          <center><p style="color:brown; font-size:18px; font-weight:600;">Les souscriptions sont closes</p></center>
+        <div class="modal-footer">
+          <button type="button"class="btn btn-sm btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+          </div>
+          
+      </div>
+  </div>
 
 
 
@@ -475,7 +494,8 @@
         var date1 = new Date("09/29/2024");
         var date2 = new Date();
       diff = dateDiff(date2,date1);
-        var time= 'Clôture des souscriptions dans: '+diff.day+' Jours'+ ' ' +diff.hour +' Heures'+ ' '+diff.min+' minutes'+' '+diff.sec +' '+ 'secondes';
+        // var time= 'Clôture des souscriptions dans: '+diff.day+' Jours'+ ' ' +diff.hour +' Heures'+ ' '+diff.min+' minutes'+' '+diff.sec +' '+ 'secondes';
+        var time='Les souscriptions pour les avants projets au projet ECOTEC sont closes'
         document.getElementById('horloge').innerHTML = time; 
         refresh();
 }; 

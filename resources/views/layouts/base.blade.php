@@ -9,7 +9,8 @@
     <title>ECOTEC</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
     <!-- Favicons -->
     <link href="{{asset('frontend/img/logo-ecotec.jpg')}}" rel="icon">
     <link href="{{asset('img/apple-touch-icon.png')}}" rel="apple-touch-icon">
@@ -353,7 +354,7 @@
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main {{-- {{ $active =='administration'? 'dashboard-content-bg':'' }} --}}">
-
+    @include('flash-message')
     @yield('content')
     <!-- Overlay -->
     <div id="overlay" class="overlay">
@@ -395,10 +396,24 @@
 <script src="{{ asset('js/js-brave/exporting.js') }}"></script>
 <script src="{{ asset('js/js-brave/export-data.js') }}"></script>
     <script src="{{ asset('js/js-brave/datatables.js') }}"></script>
+
+    <script>
+        $('.alert').delay(3000).slideUp(350);
+           // $('.test').('hide')// or fade, css display however you'd like.
+    </script>
     {{-- <script src="{{ asset('js/js-brave/app.js') }}"></script> --}}
     <script>
+        new DataTable('liste', {
+    layout: {
+        bottomEnd: {
+            paging: {
+                firstLast: false
+            }
+        }
+    }
+});
         $(function() {
-                  $('.liste').DataTable({ responsive: true,
+                  $('.listew').DataTable({ responsive: true,
                         dom: '<"html5buttons"B>lTfgtip',
                             buttons: [
                                 {extend: 'csv'},
@@ -419,12 +434,12 @@ language: {
     "zeroRecords": "Aucun résultat trouvé",
     "infoEmpty": "Aucun enregistrement disponible",
     "infoFiltered": "(filtré à partir de _MAX_ enregistrements au total)",
-    // "paginate": {
-    //     "first": "<i class='fa fa-angle-double-left'></i>",
-    //     "previous":"<i class='fa fa-angle-left' ></i>",
-    //     "next":"<i class='fa fa-angle-right'></i>",
-    //     "last":"<i class='fa fa-angle-double-right'></i>"
-    // }
+     "paginate": {
+         "first": "<i class='fa fa-angle-double-left'></i>",
+         "previous":"<i class='fa fa-angle-left' ></i>",
+         "next":"<i class='fa fa-angle-right'></i>",
+         "last":"<i class='fa fa-angle-double-right'></i>"
+     }
 }
 });
 

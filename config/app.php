@@ -164,7 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
+        //MercurySeries\Flashy\FlashyServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        
 
     ],
 
@@ -194,7 +195,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        "PDF" => Barryvdh\DomPDF\Facade::class
+        "PDF" => Barryvdh\DomPDF\Facade::class,
+        //'Flashy' => MercurySeries\Flashy\Flashy::class,
     ])->toArray(),
 
 ];

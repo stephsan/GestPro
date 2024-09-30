@@ -446,7 +446,7 @@ class PreprojetController extends Controller
             'note_totale'=>$evaluation_du_projet->sum('note'),
             'statut'=>'evalue'
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('success',"Evaluation enregistrée avec success");
     }
     public function evaluer_pe(Request $request){
         $preprojet = PreprojetPe::find($request->avant_projet);
@@ -476,7 +476,8 @@ class PreprojetController extends Controller
         $preprojet->update([
             'note_totale'=>$evaluation_du_projet->sum('note'),
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('success',"Evaluation enregistrée avec success");
+
     }
     public function store_preprojet(Request $request){
         //dd($request->all());
