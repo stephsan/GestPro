@@ -76,7 +76,12 @@
 </div>
 </div></div></div></section>
 @endsection
+@section('modal_part')
+
+
+@endsection
 <script>
+    
     function delConfirm(id){
             //alert(id);
             document.getElementById("id_table").setAttribute("value", id);

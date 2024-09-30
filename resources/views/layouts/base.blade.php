@@ -145,30 +145,85 @@
             </li><!-- End Components Nav -->
        @endcan
 @can('lister_souscription_pe', Auth::user())
-       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#pe" data-bs-toggle="collapse" href="#">
-            <i class="bi-currency-exchange"></i><span>Programme Entreprendre</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="pe" class="nav-content collapse @yield('pe')"
-            data-bs-parent="#sidebar-nav">
-            <li>
-                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('startup') " >
-                    <i class="bi bi-circle"></i><span>Startups</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=entreprise_existante" class="nav-link">
-                    <i class="bi bi-circle"></i><span>Entreprise existante</span>
-                </a>
-            </li>
-           
-           
-        </ul>
-    </li>
+<p>Programme Entreprendre</p>
+<hr>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#startup_pe" data-bs-toggle="collapse" href="#">
+        <i class="bi-currency-exchange"></i><span>Startups</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="startup_pe" class="nav-content collapse  @yield('startup_pe')"
+        data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_enregistre') ">
+                <i class="bi bi-circle"></i><span>Avant-projets enregistrées</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_a_evaluer') ">
+                <i class="bi bi-circle"></i><span>Avant-projets a évalués</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_evalues') ">
+                <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_soumis_au_comite') ">
+                <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_selectionnes') ">
+                <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
+            </a>
+        </li>
+    </ul>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#pe_mpme_existante" data-bs-toggle="collapse" href="#">
+        <i class="bi-currency-exchange"></i><span>Entreprises existantes</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="pe_mpme_existante" class="nav-content collapse  @yield('pe_mpme_existante')"
+        data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_enregistre') ">
+                <i class="bi bi-circle"></i><span>Avant-projets enregistrées</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?type_entreprise=entreprise_existante&statut=a_evaluer" class="nav-link @yield('fp_a_evaluer') ">
+                <i class="bi bi-circle"></i><span>Avant-projets a analyser</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?type_entreprise=entreprise_existante&statut=eligible" class="nav-link @yield('fp_eligible') ">
+                <i class="bi bi-circle"></i><span>Avant-projets éligibles</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?type_entreprise=entreprise_existante&statut=evalues" class="nav-link @yield('fp_evalues') ">
+                <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?type_entreprise=entreprise_existante&statut=soumis_au_comite" class="nav-link @yield('fp_soumis_au_comite') ">
+                <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('preprojetpe.selected') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_selectionnes') ">
+                <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
+            </a>
+        </li>
+    </ul>
+</li>
     @endcan
-    <p>Fonds de partenariat</p>
-    <hr>
+    
 @can('lister_souscription_fp', Auth::user())
+<p>Fonds de partenariat</p>
+    <hr>
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#startup_fp" data-bs-toggle="collapse" href="#">
             <i class="bi-currency-exchange"></i><span>Startups</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -215,9 +270,15 @@
             </li>
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=a_evaluer" class="nav-link @yield('fp_a_evaluer') ">
-                    <i class="bi bi-circle"></i><span>Avant-projets a évalués</span>
+                    <i class="bi bi-circle"></i><span>Avant-projets a analyser</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=eligible" class="nav-link @yield('fp_eligible') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets éligibles</span>
+                </a>
+            </li>
+            
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=evalues" class="nav-link @yield('fp_evalues') ">
                     <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
@@ -370,6 +431,18 @@ language: {
 });
     </script>
 <script>
+function activerbtn(id_btn,id_champ){
+        //alert('ok');
+        var contenu_du_champ= $('#'+id_champ).val();
+        
+         if(contenu_du_champ==""){
+           $('.'+id_btn).prop('disabled',true)
+     }
+        else{
+          
+         $('.'+id_btn).prop('disabled', false)
+     }
+    }
     $(document).ready(function() {
       $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     })

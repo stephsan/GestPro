@@ -409,6 +409,14 @@ class PreprojetController extends Controller
         return view("document.show", compact('piecejointe'));
     }
 
+    public function save_eligibilite(Request $request){
+        $preprojet= Preprojet::find($request->preprojet_id);
+        $preprojet->update([
+            'eligible'=>$request->avis,
+            'commentaire_eligibilité'=>$request->observation,
+        ]);
+        return redirect()->back();
+    }
     public function evaluer(Request $request){
         $preprojet = Preprojet::find($request->avant_projet);
         $evaluations=Evaluation::where('preprojet_fp_id',$request->avant_projet)->get();
@@ -424,7 +432,7 @@ class PreprojetController extends Controller
         foreach($criteres as $critere){
             $note= $critere->id;
         $evaluation_du_projet = Evaluation::where(['preprojet_fp_id'=>$preprojet->id,'critere_id'=> $critere->id,])->get();
-        //dd($evaluation_du_projet->count());
+        
         if($evaluation_du_projet->count()==0){
             Evaluation::create([
                 'preprojet_fp_id'=> $preprojet->id,
@@ -684,10 +692,16 @@ elseif($preprojet->entreprise_id==null){
 public function lister_preprojet_fp_en_traitement(Request $request){
     if($request->type_entreprise=='entreprise_existante'){
         if($request->statut=='a_evaluer'){
-            $preprojets= Preprojet::where('statut',NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
+            $preprojets= Preprojet::where('statut',NULL)->where('eligible', NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
             $type='fp_mpme_existante';
             $statut='fp_a_evaluer';
-            $titre='Liste des avant-projets a évaluer du fonds de partenatiat';
+            $titre='Liste des avant-projets a analyser du fonds de partenatiat';
+        }
+        elseif($request->statut=='eligible'){
+            $preprojets= Preprojet::where('statut',NULL)->where('eligible','eligible')->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_eligible';
+            $titre="Liste des avant-projets éligibles en attente d'évaluation";
         }
         elseif($request->statut=='evalues'){
             $preprojets= Preprojet::where('statut','evalue')->get();
@@ -713,6 +727,42 @@ public function lister_preprojet_fp_preselectionnes(Request $request){
 
 }
 
+public function lister_preprojet_pe_en_traitement(Request $request){
+    if($request->type_entreprise=='entreprise_existante'){
+        if($request->statut=='a_evaluer'){
+            $preprojets= Preprojet::where('statut',NULL)->where('eligible', NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_a_evaluer';
+            $titre='Liste des avant-projets a analyser du fonds de partenatiat';
+        }
+        elseif($request->statut=='eligible'){
+            $preprojets= Preprojet::where('statut',NULL)->where('eligible','eligible')->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_eligible';
+            $titre="Liste des avant-projets éligibles en attente d'évaluation";
+        }
+        elseif($request->statut=='evalues'){
+            $preprojets= Preprojet::where('statut','evalue')->get();
+            $type='fp_mpme_existante';
+            $statut='fp_evalues';
+            $titre="Liste des avant-projets en attente de l'avis de l'équipe";
+        }
+        elseif($request->statut=='soumis_au_comite' ){
+            $preprojets= Preprojet::where('statut','soumis_au_comite')->where('region', 54)->get();
+            $type='fp_mpme_existante';
+            $statut='fp_soumis_au_comite';
+            $titre="Liste des avant-projets soumis au comité";
+        }
+       else{
+        return redirect()->back();
+       }
+    }
+    return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
+}
+public function lister_preprojet_pe_preselectionnes(Request $request){
+    
+
+}
 /*** FIn du bloc  */
 
     /**

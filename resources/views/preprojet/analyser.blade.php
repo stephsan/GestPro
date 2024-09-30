@@ -15,7 +15,14 @@
             </ol>
         </nav>
 @can('evaluer_souscription', Auth::user())
-@if($preprojet->statut==null)
+@if($preprojet->statut==null && $preprojet->eligible==null)
+        <nav>
+            <button type="button" class="btn btn-success">
+                <a href="#modal-eligilite-du-preprojet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Eligibilité de l'avant projet</a>
+            </button>
+        </nav>
+@endif
+@if($preprojet->statut==null && $preprojet->eligible !=null)
         <nav>
             <button type="button" class="btn btn-success">
                 <a href="#modal-evaluer-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer l'avant projet</a>
@@ -1056,7 +1063,31 @@
 </section>
 @endsection
 @section('modal_part')
-
+<div id="modal-eligilite-du-preprojet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> L'éligibilité de l'avant projet</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="preprojet_id"  id='preprojet_eligibilite' value="{{ $preprojet->id }}">
+                <div class="form-group">
+                  <label for="">Entrez les observations :</label>
+                  <textarea id="observation_eligibilite" name="observation" placeholder="Observation" required  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_eligibilite')" aria-describedby="helpId"></textarea>
+                </div>
+            <div class="form-group form-actions">
+                <div class="text-right">
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_eligibilite_du_projet('eligible');" disabled>Eligible</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="save_eligibilite_du_projet('ineligible');" disabled>Inéligible</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div> 
 <div id="modal-evaluer-avant-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1126,6 +1157,21 @@
 </div>
 @endsection 
 <script>
+    function save_eligibilite_du_projet(avis){
+        var preprojet_id= $("#preprojet_eligibilite").val();
+        
+        var observation= $("#observation_eligibilite").val();
+        var url = "{{ route('preprojet.save_eligibilite') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {preprojet_id: preprojet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
    function isValid(champ){
         
         var valeur= $('#'+champ).val();
