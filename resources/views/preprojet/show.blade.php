@@ -989,8 +989,7 @@
                                     </table>
                                 </div>
                             </div> 
-                                
-                                  </div>
+                            </div>
                                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                         <div class="row">
                                             <div class="col-md-6">

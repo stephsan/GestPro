@@ -137,12 +137,11 @@ public function reinitialize(Request $request){
         //$zones= Valeur::where("parametre_id",env("PRARAMETRE_ZONE"))->get();
         $roles=Role::all();
         $strucure_representees=Valeur::where('parametre_id',env("PARAMETRE_ID_REPRESENTANT_STRUCTURE") )->get();
-        //$banques= Banque::all();
          return view("users.update",compact(["user","roles","zones","strucure_representees"]));
     }
      else{
         //flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-         return redirect()->back()->with('error',"Vous ne disposez pas des droits requis pour acceder a cette ressource");;
+         return redirect()->back()->with('error',"Vous ne disposez pas des droits requis pour acceder a cette ressource");
     }
  }
 

@@ -40,6 +40,24 @@ class SouscriptionPolicy
    public function lister_souscription_fp(User $user){
       return $this->getPermission($user,1);
    }
+   public function lister_avant_projet_a_evaluer_fp(User $user){
+      return $this->getPermission($user,8);
+   }
+   public function lister_avant_projet_evalues_fp(User $user){
+      return $this->getPermission($user,9);
+   }
+   public function lister_avant_projet_selectionnes_fp(User $user){
+      return $this->getPermission($user,10);
+   }
+   public function lister_avant_projet_soumis_au_comite_fp(User $user){
+      return $this->getPermission($user,11);
+   }
+   public function valider_levaluation_de_lavant_projet_fp(User $user){
+      return $this->getPermission($user,13);
+   }
+   public function donner_lavis_de_lequipe_fp(User $user){
+      return $this->getPermission($user,14);
+   }
    public function evaluer_souscription(User $user){
       return $this->getPermission($user,3);
    }

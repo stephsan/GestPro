@@ -30,6 +30,7 @@
                 <tr>
                     <th class="text-center">Numéro</th>
                     <th class="text-center">Nom & prenom </th>
+                    <th class="text-center">Sexe </th>
                     <th class="text-center">Contacts </th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
@@ -55,6 +56,16 @@
                     <tr>
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
                         <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
+                        <td class="text-center">
+                            @empty($preprojet->promoteur->genre)
+                                        Informations non disponible
+                                    @endempty
+                                    @if($preprojet->promoteur->genre==1)
+                                        Féminin
+                                    @else
+                                        Masculin
+                                    @endif
+                        </td>
                         <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>
                         <td class="text-center">{{ $preprojet->num_projet }}</td>
                         <td class="text-center">{{ $preprojet->titre_projet }}</td>
@@ -64,8 +75,6 @@
                         <td class="text-center">{{ getlibelle($preprojet->province) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->commune) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_village) }}</td>
-                        {{-- <td class="text-center">{{format_prix($preprojet->cout_total) }}</td>
-                        <td class="text-center">{{ $preprojet->subvention_souhaite }}</td> --}}
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('preprojet_pe.details', $preprojet) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>

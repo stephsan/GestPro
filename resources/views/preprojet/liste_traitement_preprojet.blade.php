@@ -27,18 +27,18 @@
 <div class="table-responsive">
 <table class="table  liste">
             <thead>
-                <tr>
+                <tr >
                     <th class="text-center">Numéro</th>
                     <th class="text-center" >Guichet</th>
                     <th class="text-center">Nom & prenom </th>
-                    <th class="text-center">Numéro dossier</th>
                     <th class="text-center">Contact </th>
+                    <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
                     <th class="text-center" >Secteur d'activité</th>
                     <th class="text-center" >Maillon d'activite</th>
                     <th class="text-center" >Region du projet</th>
-                    <th class="text-center" >Cout total du projet</th>
-                    <th class="text-center" >Subvention Sollicitée</th>
+                    <th class="text-center" >Statut du dossier</th>
+                    <th class="text-center" >Eligibilité</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -50,21 +50,38 @@
                         @php
                            $i++;
                         @endphp
-                    <tr>
-                        <td class="text-center" style="width: 10%">{{ $i }}</td>
+                    <tr class="text-danger">
+                        <td 
+                        class="text-center" style="width: 10%">{{ $i }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->guichet) }}</td>
                         <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
                         <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>
                         <td class="text-center">{{ $preprojet->num_projet }}</td>
-                        <td class="text-center">{{ $preprojet->titre_projet }}</td>
+                        <td 
+                        @if($preprojet->statut=='evaluation_rejetee')
+                            style="background-color: red"
+                            @elseif($preprojet->statut=='evaluation_validee')
+                                style="background-color: #497956"
+                        @endif
+                        class="text-center">{{ $preprojet->titre_projet }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->region) }}</td>
-                        <td class="text-center">{{format_prix($preprojet->cout_total) }}</td>
-                        <td class="text-center">{{ $preprojet->subvention_souhaite }}</td>
+                        <td class="text-center">
+                            @isset($preprojet->statut)
+                                {{$preprojet->statut }}
+                            @else
+                                Soumis
+                            @endisset</td>
+                        <td class="text-center">
+                            @isset($preprojet->statut)
+                                {{$preprojet->eligible }}
+                            @else
+                                Non définie
+                            @endisset</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('preprojet.details', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('preprojet.details', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Analyser l'avant projet" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                 {{-- <a  href="#modal-confirm-delete" onclick="delConfirm({{ $preprojet->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a> --}}
                             </div>
                         </td>

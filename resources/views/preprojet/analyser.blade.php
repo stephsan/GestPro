@@ -33,10 +33,26 @@
 @if($preprojet->statut=='evalue')
         <nav>
             <button type="button" class="btn btn-success">
-                <a href="#modal-evaluer-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Statuer sur l'évaluation</a>
+                <a href="#modal-valider-levaluation-preprojet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Statuer sur l'évaluation</a>
             </button>
         </nav>
 @endif
+@if($preprojet->statut=='evaluation_validee')
+        <nav>
+            <button type="button" class="btn btn-warning">
+                <a href="#modal-avis-de-lequipe" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-black"><i class="bi bi-plus-square"></i> Avis de l'équipe</a>
+            </button>
+        </nav>
+@endif
+
+@if($preprojet->statut=='affectes_au_comite_de_selection')
+        <nav>
+            <button type="button" class="btn btn-danger">
+                <a href="#modal-decision_comite_de_selection" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Décision du comité de selection</a>
+            </button>
+        </nav>
+@endif
+
 
     </div>
 <section class="section">
@@ -1049,7 +1065,81 @@
                                                   
                                             </div>
                                             <div class="col-md-6">
-
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Eligibilité : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail">
+                                                            @empty($preprojet->eligible)
+                                                        @else
+                                                           {{ $preprojet->eligible }}
+                                                         @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                                @isset($preprojet->commentaire_evaluation)
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Observation sur l'évaluation : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail text-danger">
+                                                                {{ $preprojet->commentaire_evaluation }}
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                                @endisset
+                                         @isset($preprojet->avis_de_lequipe)
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Avis de l'équipe : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail">
+                                                            @empty($preprojet->avis_de_lequipe)
+                                                        @else
+                                                           {{ $preprojet->avis_de_lequipe }}
+                                                         @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Commentaire de l'équipe : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail">
+                                                            @empty($preprojet->commentaires_de_lequipe)
+                                                        @else
+                                                           {{ $preprojet->commentaires_de_lequipe }}
+                                                         @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                            @endisset
+                                            @isset($preprojet->decision_du_comite)
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Avis de l'équipe : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail">
+                                                            @empty($preprojet->decision_du_comite)
+                                                        @else
+                                                           {{ $preprojet->decision_du_comite }}
+                                                         @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Commentaire de l'équipe : </span> </p>
+                                                            <p class="col-md-7" >
+                                                            <span class="valdetail">
+                                                            @empty($preprojet->commentaire_du_comite)
+                                                        @else
+                                                           {{ $preprojet->commentaire_du_comite }}
+                                                         @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                            @endisset
                                             </div>
                                         </div>
                                  </div>
@@ -1088,6 +1178,81 @@
         </div>
     </div>
 </div> 
+<div id="modal-valider-levaluation-preprojet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> Valider l'évaluation de l'avant projet</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="preprojet_id"  id='preprojet_val_evaluation' value="{{ $preprojet->id }}">
+                <div class="form-group">
+                  <label for="">Entrez les observations :</label>
+                  <textarea id="observation_evaluation" name="observation" placeholder="Observation" required  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_evaluation')" aria-describedby="helpId"></textarea>
+                </div>
+            <div class="form-group form-actions">
+                <div class="text-right">
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="valider_evaluation_du_projet('evaluation_validee');" disabled>Valider l'évaluation</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="valider_evaluation_du_projet('evaluation_rejetee');" disabled>Rejetter l'évaluation </button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div> 
+<div id="modal-avis-de-lequipe" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> Avis de l'Equipe sur l'avant projet {{ $preprojet->num_projet }} </h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="preprojet_id"  id='preprojet_avis_equipe' value="{{ $preprojet->id }}">
+                <div class="form-group">
+                  <label for="">Entrez les observations :</label>
+                  <textarea id="observation_avis_equipe" name="observation" placeholder="Observation" required  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_avis_equipe')" aria-describedby="helpId"></textarea>
+                </div>
+            <div class="form-group form-actions">
+                <div class="text-right">
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="avis_de_lequipe_projet('favorable');" disabled>Favorable</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="avis_de_lequipe_projet('défavorable');" disabled>Défavorable </button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div> 
+<div id="modal-decision_comite_de_selection" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> Décision du comité de selection sur l'avant projet {{ $preprojet->num_projet }} </h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="preprojet_id"  id='preprojet_decision_du_comite' value="{{ $preprojet->id }}">
+                <div class="form-group">
+                  <label for="">Entrez les observations :</label>
+                  <textarea id="observation_decision_du_comite" name="observation" placeholder="Observation" required  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_decision_du_comite')" aria-describedby="helpId"></textarea>
+                </div>
+            <div class="form-group form-actions">
+                <div class="text-right">
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_decision_du_comite('favorable');" disabled>Favorable</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="save_decision_du_comite('défavorable');" disabled>Défavorable </button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
 <div id="modal-evaluer-avant-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1162,6 +1327,50 @@
         
         var observation= $("#observation_eligibilite").val();
         var url = "{{ route('preprojet.save_eligibilite') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {preprojet_id: preprojet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+    function valider_evaluation_du_projet(avis){
+        var preprojet_id= $("#preprojet_val_evaluation").val();
+        var observation= $("#observation_evaluation").val();
+        var url = "{{ route('preprojet.valider_evaluation') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {preprojet_id: preprojet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+
+    function avis_de_lequipe_projet(avis){
+        var preprojet_id= $("#preprojet_avis_equipe").val();
+        var observation= $("#observation_avis_equipe").val();
+        var url = "{{ route('preprojet.save_avis_de_lequipe') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {preprojet_id: preprojet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+    function save_decision_du_comite (avis){
+        var preprojet_id= $("#preprojet_decision_du_comite").val();
+        
+        var observation= $("#observation_decision_du_comite").val();
+        var url = "{{ route('preprojet.save_decision_du_comite') }}";
         $.ajax({
                 url: url,
                 type:'GET',

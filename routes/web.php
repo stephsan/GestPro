@@ -97,10 +97,10 @@ Route::group([
 ], function(){
     Route::resource('critere', CritereController::class);
     Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');
-    Route::post('store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
+    Route::post('/critaria/store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
     Route::resource('users', UserController::class);
     Route::resource('documents', DocumentController::class);
-    Route::get('modif/critere',[DocumentController::class, 'modifier'] )->name('document.modif');
+    Route::get('critariat/modif/critere',[DocumentController::class, 'modifier'] )->name('document.modif');
 Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )->name('document.storemodif');
     Route::resource('permissions', PermissionController::class);
     Route::resource("role",RoleController::class);
@@ -113,8 +113,12 @@ Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )
     Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe'])->name('preprojet_pe.evaluation');
     Route::get('preprojet/save/eligibilite/fp',[PreprojetController::class,'save_eligibilite'])->name('preprojet.save_eligibilite');
     Route::get("/lister/preprojet/FP/traitement", [PreprojetController::class, 'lister_preprojet_fp_en_traitement'])->name("preprojet.traitement");
-Route::get("/lister/preprojet/FP/preselectionnes", [PreprojetController::class, 'lister_preprojet_fp_preselectionnes'])->name("preprojet.selected");
-Route::get("/lister/preprojet/PE/traitement", [PreprojetController::class, 'lister_preprojet_pe_en_traitement'])->name("preprojetpe.traitement");
-Route::get("/lister/preprojet/PE/preselectionnes", [PreprojetController::class, 'lister_preprojet_pe_preselectionnes'])->name("preprojetpe.selected");
+    Route::get("/lister/preprojet/FP/preselectionnes", [PreprojetController::class, 'lister_preprojet_fp_preselectionnes'])->name("preprojet.selected");
+    Route::get("/lister/preprojet/PE/traitement", [PreprojetController::class, 'lister_preprojet_pe_en_traitement'])->name("preprojetpe.traitement");
+    Route::get("/lister/preprojet/PE/preselectionnes", [PreprojetController::class, 'lister_preprojet_pe_preselectionnes'])->name("preprojetpe.selected");
+    Route::get("/completer/preprojet/evaluation/", [PreprojetController::class, 'completer_evaluation_automatique'])->name("preprojetpe.completer_evaluation_automatique");
+    Route::get('preprojet/valider/evaluation/fp',[PreprojetController::class,'valider_evaluation'])->name('preprojet.valider_evaluation');
+    Route::get('enre/avis/de/lequipe/preprojet/fp',[PreprojetController::class,'save_avis_de_lequipe'])->name('preprojet.save_avis_de_lequipe');
+    Route::get('save/decision/du/comite/preprojet/fp',[PreprojetController::class,'save_avis_decision_du_comite'])->name('preprojet.save_decision_du_comite');
    
 });
