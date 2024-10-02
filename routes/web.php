@@ -110,6 +110,8 @@ Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )
     Route::get("/reinitialise/password",[UserController::class, 'reinitialize'] )->name("user.reinitialize");
     Route::get('/listeval', [ValeurController::class,"listevakeur"])->name("valeur.listeval");
     Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');
+    Route::post('modify/evaluation/preprojet', [PreprojetController::class,'evaluation_modify'])->name('preprojet.evaluation_modify');
+
     Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe'])->name('preprojet_pe.evaluation');
     Route::get('preprojet/save/eligibilite/fp',[PreprojetController::class,'save_eligibilite'])->name('preprojet.save_eligibilite');
     Route::get("/lister/preprojet/FP/traitement", [PreprojetController::class, 'lister_preprojet_fp_en_traitement'])->name("preprojet.traitement");
@@ -120,5 +122,6 @@ Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )
     Route::get('preprojet/valider/evaluation/fp',[PreprojetController::class,'valider_evaluation'])->name('preprojet.valider_evaluation');
     Route::get('enre/avis/de/lequipe/preprojet/fp',[PreprojetController::class,'save_avis_de_lequipe'])->name('preprojet.save_avis_de_lequipe');
     Route::get('save/decision/du/comite/preprojet/fp',[PreprojetController::class,'save_avis_decision_du_comite'])->name('preprojet.save_decision_du_comite');
+    
    
 });

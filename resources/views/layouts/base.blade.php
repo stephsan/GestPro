@@ -231,31 +231,41 @@
         </a>
         <ul id="startup_fp" class="nav-content collapse  @yield('startup_fp')"
             data-bs-parent="#sidebar-nav">
+        @can('lister_souscription_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=startup" class="nav-link @yield('fp_enregistre') ">
                     <i class="bi bi-circle"></i><span>Avant-projets enregistrées</span>
                 </a>
             </li>
+        @endcan
+        @can('lister_avant_projet_a_evaluer_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=startup&statut=a_evaluer" class="nav-link @yield('fp_a_evaluer') ">
                     <i class="bi bi-circle"></i><span>Avant-projets a évalués</span>
                 </a>
             </li>
+        @endcan
+        @can('lister_avant_projet_evalues_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=startup&statut=evalues" class="nav-link @yield('fp_evalues') ">
                     <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
                 </a>
             </li>
+        @endcan
+        @can('lister_avant_projet_soumis_au_comite_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=startup&statut=soumis_au_comite" class="nav-link @yield('fp_soumis_au_comite') ">
                     <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
                 </a>
             </li>
+        @endcan
+        @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.selected') }}?type_entreprise=startup" class="nav-link @yield('fp_selectionne_par_le_comite') ">
                     <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
                 </a>
             </li>
+        @endcan
         </ul>
     </li>
     <li class="nav-item">

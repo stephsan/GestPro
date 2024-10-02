@@ -14,13 +14,23 @@
                 <li class="breadcrumb-item active text-dark">Analyser</li>
             </ol>
         </nav>
-@can('evaluer_souscription', Auth::user())
+@can('valider_leligibilite_fp', Auth::user())
 @if($preprojet->statut==null && $preprojet->eligible==null)
         <nav>
             <button type="button" class="btn btn-success">
                 <a href="#modal-eligilite-du-preprojet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Eligibilité de l'avant projet</a>
             </button>
         </nav>
+@endif
+@endcan
+@can('valider_leligibilite_fp', Auth::user())
+@if ($preprojet->statut=='evaluation_rejetee')
+<nav>
+    <button type="button" class="btn btn-success">
+        <a href="#modal-modifier-evaluation-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Modifer l'évaluation de l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Modifier l'évaluation</a>
+    </button>
+</nav>
+
 @endif
 @if($preprojet->statut==null && $preprojet->eligible !=null)
         <nav>
@@ -30,6 +40,7 @@
         </nav>
 @endif
 @endcan
+@can('valider_levaluation_de_lavant_projet_fp', Auth::user())
 @if($preprojet->statut=='evalue')
         <nav>
             <button type="button" class="btn btn-success">
@@ -37,6 +48,8 @@
             </button>
         </nav>
 @endif
+@endcan
+@can('donner_lavis_de_lequipe_fp', Auth::user())
 @if($preprojet->statut=='evaluation_validee')
         <nav>
             <button type="button" class="btn btn-warning">
@@ -44,16 +57,16 @@
             </button>
         </nav>
 @endif
-
-@if($preprojet->statut=='affectes_au_comite_de_selection')
-        <nav>
-            <button type="button" class="btn btn-danger">
-                <a href="#modal-decision_comite_de_selection" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Décision du comité de selection</a>
-            </button>
-        </nav>
-@endif
-
-
+@endcan
+@can('valider_la_decision_du_comite', Auth::user())
+    @if($preprojet->statut=='affectes_au_comite_de_selection')
+            <nav>
+                <button type="button" class="btn btn-danger">
+                    <a href="#modal-decision_comite_de_selection" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Décision du comité de selection</a>
+                </button>
+            </nav>
+    @endif
+@endcan
     </div>
 <section class="section">
         <div class="row">
@@ -1034,7 +1047,7 @@
                                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                    @foreach ($evaluations as $evaluation )
+                                                    @foreach ($all_evaluations  as $evaluation )
                                                         <div class="row">
                                                             <div  id="condanation" class="form-group row">
                                                                 <p class="col-md-7 control-label labdetail"><span class="">{{ $evaluation->critere->libelle }} : </span> </p>
@@ -1117,7 +1130,7 @@
                                             @isset($preprojet->decision_du_comite)
                                                 <div class="row">
                                                     <div  id="condanation" class="form-group row">
-                                                        <p class="col-md-5 control-label labdetail"><span class="">Avis de l'équipe : </span> </p>
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Décision du comité de sélection : </span> </p>
                                                             <p class="col-md-7" >
                                                             <span class="valdetail">
                                                             @empty($preprojet->decision_du_comite)
@@ -1129,7 +1142,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div  id="condanation" class="form-group row">
-                                                        <p class="col-md-5 control-label labdetail"><span class="">Commentaire de l'équipe : </span> </p>
+                                                        <p class="col-md-5 control-label labdetail"><span class="">Observation du comité de sélection : </span> </p>
                                                             <p class="col-md-7" >
                                                             <span class="valdetail">
                                                             @empty($preprojet->commentaire_du_comite)
@@ -1140,6 +1153,7 @@
                                                     </div>
                                                 </div>
                                             @endisset
+                                            
                                             </div>
                                         </div>
                                  </div>
@@ -1253,6 +1267,64 @@
         </div>
     </div>
 </div>
+<div id="modal-modifier-evaluation-avant-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-pencil"></i> Modifier l'avant projet</h2>
+            </div>
+            <div class="modal-body">
+            <form method="post"  action="{{ route('preprojet.evaluation_modify') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden" name="avant_projet" id="" value="{{ $preprojet->id }}">
+                
+                <div class="row">
+                    @foreach ($evaluations as $evaluation )
+                    <div class="col-md-4" >
+                        <div class="form-group row">
+                            <label class="control-label" for="example-username">{{ $evaluation->critere->libelle}}  </label>
+                                <input type="number" id="{{ $evaluation->id}}" name="{{ $evaluation->id}}" max='{{ $evaluation->note}}' min="0" class="form-control" value="{{ $evaluation->note }}" disabled>
+                        </div>
+                        @if ($errors->has('note'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('note') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+               <div class="row">
+                @foreach ($evaluations_humains as $evaluations_humain )
+                <div class="col-md-4" >
+                    <div class="form-group row">
+                        <label class="control-label" for="example-username">{{ $evaluations_humain->critere->libelle}}  sur {{ $evaluations_humain->critere->ponderation}} </label>
+                            <input type="text" id="{{ $evaluations_humain->id}}" name="{{ $evaluations_humain->id}}" max='{{ $evaluations_humain->critere->ponderation}}' min="0" class="form-control" value="{{ $evaluations_humain->note }} " required onchange="isValid('{{ $evaluations_humain->critere->id}}')">
+                        <p id='message_ponderation_depasse' style="background-color:red; display:none">La Note maximal pour ce critère est    {{  $evaluations_humain->critere->ponderation}}</p>
+
+                            {{-- <input type="number" id="{{ $critere->id}}" name="{{ $critere->id}}" max='{{ $critere->ponderation}}' min="0" class="form-control" placeholder="Evaluer ..." text="Valeur depassé" required onchange="isValid('{{ $critere->id}}')"> --}}
+                    </div>
+                    @if ($errors->has('note'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('note') }}</strong>
+                    </span>
+                    @endif
+                </div>  
+            
+                @endforeach
+                </div> 
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-4">
+                        <a  type="button" class="btn btn-sm btn-danger" data-dismiss="modal"></i> Annuler</a>
+                        <button type="submit" class="btn btn-sm btn-success valider_evaluation" ><i class="fa fa-arrow-right"></i> Valider</button>
+                    </div>
+                </div>
+            </form>      
+            </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
 <div id="modal-evaluer-avant-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -1264,18 +1336,7 @@
             <form method="post"  action="{{ route('preprojet.evaluation') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden" name="avant_projet" id="" value="{{ $preprojet->id }}">
-                {{-- <div class="form-group{{ $errors->has('grille_devaluation') ? ' has-error' : '' }}">
-                    <label class="control-label col-md-4" for="grille_devaluation">Joindre la grille d'évaluation <span class="text-danger">*</span></label>
-                    <div class="input-group col-md-6">
-                        <input class="form-control col-md-6" type="file" name="grille_devaluation" id="" accept=".pdf, .jpeg, .png"   placeholder="Charger la grille d'évaluation" required>
-                        <span class="input-group-addon"><i class="gi gi-user"></i></span>
-                    </div>
-                    @if ($errors->has('grille_devaluation'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('grille_devaluation') }}</strong>
-                        </span>
-                        @endif
-                </div> --}}
+                
                 <div class="row">
                     @foreach ($evaluations as $evaluation )
                     <div class="col-md-4" >

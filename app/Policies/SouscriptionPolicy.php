@@ -61,6 +61,12 @@ class SouscriptionPolicy
    public function evaluer_souscription(User $user){
       return $this->getPermission($user,3);
    }
+   public function valider_la_decision_du_comite(User $user){
+      return $this->getPermission($user,15);
+   }
+   public function valider_leligibilite_fp(User $user){
+      return $this->getPermission($user,16);
+   }
     /**
      * Determine whether the user can create models.
      *

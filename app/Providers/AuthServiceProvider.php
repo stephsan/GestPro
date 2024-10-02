@@ -43,14 +43,20 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('gerer_parametrage',[ParametrePolicy::class,'gerer_parametrage'] );
         
         Gate::define('lister_avant_projet_a_evaluer_fp',[SouscriptionPolicy::class,'lister_avant_projet_a_evaluer_fp']);
+
         Gate::define('lister_avant_projet_evalues_fp',[SouscriptionPolicy::class,'lister_avant_projet_evalues_fp']);
         Gate::define('lister_avant_projet_soumis_au_comite_fp',[SouscriptionPolicy::class,'lister_avant_projet_soumis_au_comite_fp']);
 
         Gate::define('lister_avant_projet_selectionnes_fp',[SouscriptionPolicy::class,'lister_avant_projet_selectionnes_fp']);
         Gate::define('donner_lavis_de_lequipe_fp',[SouscriptionPolicy::class,'donner_lavis_de_lequipe_fp']);
         Gate::define('valider_levaluation_de_lavant_projet_fp',[SouscriptionPolicy::class,'valider_levaluation_de_lavant_projet_fp']);
+        Gate::define('valider_la_decision_du_comite',[SouscriptionPolicy::class,'valider_la_decision_du_comite']);
 
-
+        Gate::define('lister_avant_projet_a_evaluer_pe',[SouscriptionPolicy::class,'lister_avant_projet_a_evaluer_pe']);
+        Gate::define('lister_avant_projet_evalues_pe',[SouscriptionPolicy::class,'lister_avant_projet_evalues_pe']);
+       
+        Gate::define('valider_leligibilite_fp',[SouscriptionPolicy::class,'valider_leligibilite_fp']);
+        
        
 
     
