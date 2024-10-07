@@ -76,7 +76,8 @@
                                 Soumis
                             @endisset</td>
                         <td class="text-center">
-                            @isset($preprojet->statut)
+                            
+                            @isset($preprojet->eligible)
                                 {{$preprojet->eligible }}
                             @else
                                 Non définie

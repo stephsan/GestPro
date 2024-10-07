@@ -57,6 +57,7 @@ class PromoteurController extends Controller
      */
     public function create()
     {
+        return redirect()->back();
         $regions=Valeur::where('parametre_id',env('PARAMETRE_ID_REGION'))->get();
         $niveau_instructions=Valeur::where("parametre_id", env('PARAMETRE_NIVEAU_D_INSTRUCTION'))->get();
         $nb_annee_experience=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
@@ -75,6 +76,7 @@ class PromoteurController extends Controller
      */
     public function store(Request $request)
     {
+        return redirect()->back();
         $type_entreprise= $request->type_entreprise;
         $programme= $request->programme;
         // dd( $type_entreprise.''.$programme);

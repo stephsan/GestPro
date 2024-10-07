@@ -118,13 +118,20 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
+     @can('lister_souscription_fp', Auth::user())
         <li class="nav-item">
             <a class="nav-link" href="{{route('dashboard')}}">
                 <i class="bi bi-grid"></i>
-                <span>Tableau de bord</span>
+                <span>Tableau de bord FP</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('dashboard')}}">
+                <i class="bi bi-grid"></i>
+                <span>Tableau de bord PE</span>
+            </a>
+        </li>
+    @endcan
         @can("consultation")
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
@@ -149,43 +156,65 @@
 <p>Programme Entreprendre</p>
 <hr>
 <li class="nav-item">
-    <a class="nav-link collapsed" data-bs-target="#startup_pe" data-bs-toggle="collapse" href="#">
+    <a class="nav-link collapsed" data-bs-target="#pe_startup" data-bs-toggle="collapse" href="#">
         <i class="bi-currency-exchange"></i><span>Startups</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="startup_pe" class="nav-content collapse  @yield('startup_pe')"
+    <ul id="pe_startup" class="nav-content collapse  @yield('pe_startup')"
         data-bs-parent="#sidebar-nav">
+    @can('lister_souscription_pe', Auth::user())
         <li>
-            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_enregistre') ">
+            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('pe_enregistre') ">
                 <i class="bi bi-circle"></i><span>Avant-projets enregistrées</span>
             </a>
         </li>
+    @endcan
+    @can('lister_avant_projet_a_evaluer_pe', Auth::user())
         <li>
-            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_a_evaluer') ">
-                <i class="bi bi-circle"></i><span>Avant-projets a évalués</span>
+            <a href="{{ route('preprojetpe.traitement') }}?statut=a_evaluer&type_entreprise=startup" class="nav-link @yield('pe_a_analyser') ">
+                <i class="bi bi-circle"></i><span>Avant-projets a analyser</span>
             </a>
         </li>
+    @endcan
+    @can('lister_avant_projet_a_evaluer_pe', Auth::user())
         <li>
-            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_evalues') ">
+            <a href="{{ route('preprojetpe.traitement') }}?statut=eligible&type_entreprise=startup" class="nav-link @yield('pe_eligible') ">
+                <i class="bi bi-circle"></i><span>Avant-projets éligibles</span>
+            </a>
+        </li>
+    @endcan
+    @can('lister_avant_projet_a_evaluer_pe', Auth::user())
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?statut=ineligible&type_entreprise=startup" class="nav-link @yield('pe_ineligible') ">
+                <i class="bi bi-circle"></i><span>Avant-projets inéligibles</span>
+            </a>
+        </li>
+    @endcan
+    @can('lister_avant_projet_evalues_pe', Auth::user())
+        <li>
+            <a href="{{ route('preprojetpe.traitement') }}?statut=evalues&type_entreprise=startup"  class="nav-link @yield('pe_evalues') ">
                 <i class="bi bi-circle"></i><span>Avant-projets évalués</span>
             </a>
         </li>
+    @endcan
         <li>
-            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_soumis_au_comite') ">
+            <a href="{{ route('preprojetpe.traitement') }}?statut=soumis_au_comite&type_entreprise=startup" class="nav-link @yield('pe_soumis_au_comite') ">
                 <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
             </a>
         </li>
-        <li>
-            <a href="{{ route('preprojet.lister_pe') }}?type_entreprise=startup" class="nav-link @yield('fp_selectionnes') ">
-                <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
-            </a>
-        </li>
+        @can('lister_avant_projet_selectionne_pe', Auth::user())
+            <li>
+                <a href="{{ route('preprojet_pe.selected') }}?type_entreprise=startup" class="nav-link @yield('pe_selectionne_par_le_comite') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
+                </a>
+            </li>
+        @endcan
     </ul>
 </li>
 <li class="nav-item">
     <a class="nav-link collapsed" data-bs-target="#pe_mpme_existante" data-bs-toggle="collapse" href="#">
         <i class="bi-currency-exchange"></i><span>Entreprises existantes</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="pe_mpme_existante" class="nav-content collapse  @yield('pe_mpme_existante')"
+    {{-- <ul id="pe_mpme_existante" class="nav-content collapse  @yield('pe_mpme_existante')"
         data-bs-parent="#sidebar-nav">
         <li>
             <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_enregistre') ">
@@ -218,7 +247,7 @@
                 <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
             </a>
         </li>
-    </ul>
+    </ul> --}}
 </li>
     @endcan
 
@@ -229,7 +258,7 @@
         <a class="nav-link collapsed" data-bs-target="#startup_fp" data-bs-toggle="collapse" href="#">
             <i class="bi-currency-exchange"></i><span>Startups</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="startup_fp" class="nav-content collapse  @yield('startup_fp')"
+        {{-- <ul id="startup_fp" class="nav-content collapse  @yield('startup_fp')"
             data-bs-parent="#sidebar-nav">
         @can('lister_souscription_fp', Auth::user())
             <li>
@@ -266,7 +295,7 @@
                 </a>
             </li>
         @endcan
-        </ul>
+        </ul> --}}
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#fp_mpme_existante" data-bs-toggle="collapse" href="#">
@@ -295,6 +324,13 @@
                 </a>
             </li>
         @endcan
+        @can('lister_avant_projet_ineligible', Auth::user())
+            <li>
+                <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=ineligible" class="nav-link @yield('fp_ineligible') ">
+                    <i class="bi bi-circle"></i><span>Avant-projets inéligibles</span>
+                </a>
+            </li>
+        @endcan
         @can('lister_avant_projet_evalues_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=evalues" class="nav-link @yield('fp_evalues') ">
@@ -319,7 +355,7 @@
         </ul>
     </li>
 @endcan
-
+@can('gerer_critere', Auth::user())
         <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#ca" data-bs-toggle="collapse" href="#">
                     <i class="bi-currency-exchange"></i><span>Administration</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -369,7 +405,7 @@
             </li>
             <!-- End Forms Nav -->
         @endcan
-
+        @endcan
     </ul>
 
 </aside><!-- End Sidebar-->

@@ -7,7 +7,7 @@
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1 class="text-success">Souscription</h1>
+        <h1 class="text-success">Avant-projets</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark">{{ $titre }}</li>
@@ -29,7 +29,7 @@
             <thead>
                 <tr >
                     <th class="text-center">Numéro</th>
-                    <th class="text-center" >Guichet</th>
+                    <th class="text-center">Guichet</th>
                     <th class="text-center">Nom & prenom </th>
                     <th class="text-center">Contact </th>
                     <th class="text-center">Numéro dossier</th>
@@ -39,6 +39,8 @@
                     <th class="text-center" >Region du projet</th>
                     <th class="text-center" >Statut du dossier</th>
                     <th class="text-center" >Eligibilité</th>
+                    <th class="text-center" >Avis de l'équipe</th>
+                    <th class="text-center" >Décision du comité de sélection</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -74,14 +76,18 @@
                                 Soumis
                             @endisset</td>
                         <td class="text-center">
+                            
                             @isset($preprojet->eligible)
                                 {{$preprojet->eligible }}
                             @else
                                 Non définie
                             @endisset</td>
+                        <td class="text-center">{{ $preprojet->avis_de_lequipe }}</td>
+                        <td class="text-center">{{ $preprojet->decision_du_comite }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('preprojet.details', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Analyser l'avant projet" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('preprojet_pe.details', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Analyser l'avant projet" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                               
                             </div>
                         </td>
                     </tr>

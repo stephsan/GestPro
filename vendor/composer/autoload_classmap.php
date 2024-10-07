@@ -55,6 +55,7 @@ return array(
     'App\\Models\\Evalualtion' => $baseDir . '/app/Models/Evalualtion.php',
     'App\\Models\\Evaluation' => $baseDir . '/app/Models/Evaluation.php',
     'App\\Models\\HistoriquePreprojet' => $baseDir . '/app/Models/HistoriquePreprojet.php',
+    'App\\Models\\HistoriquePreprojetPe' => $baseDir . '/app/Models/HistoriquePreprojetPe.php',
     'App\\Models\\Infoeffectifentreprise' => $baseDir . '/app/Models/Infoeffectifentreprise.php',
     'App\\Models\\Infoentreprise' => $baseDir . '/app/Models/Infoentreprise.php',
     'App\\Models\\InnovationProjet' => $baseDir . '/app/Models/InnovationProjet.php',

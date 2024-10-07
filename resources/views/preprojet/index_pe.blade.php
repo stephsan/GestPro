@@ -1,7 +1,7 @@
 @extends('./layouts/base')
 @section('title')
-@section('pe', 'show')
-@section('startup', 'active')
+@section($type, 'show')
+@section($statut, 'active')
 @endsection
 @section('css')
 @endsection
@@ -77,7 +77,7 @@
                         <td class="text-center">{{ getlibelle($preprojet->secteur_village) }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('preprojet_pe.details', $preprojet) }}" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('preprojet_pe.details', $preprojet) }}?type_detail=visualiser" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                 {{-- <a  href="#modal-confirm-delete" onclick="delConfirm({{ $preprojet->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a> --}}
                             </div>
                         </td>

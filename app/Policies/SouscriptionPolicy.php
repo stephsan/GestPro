@@ -49,6 +49,9 @@ class SouscriptionPolicy
    public function lister_avant_projet_selectionnes_fp(User $user){
       return $this->getPermission($user,10);
    }
+   public function lister_avant_projet_selectionnes_pe(User $user){
+      return $this->getPermission($user,10);
+   }
    public function lister_avant_projet_soumis_au_comite_fp(User $user){
       return $this->getPermission($user,11);
    }
@@ -58,15 +61,49 @@ class SouscriptionPolicy
    public function donner_lavis_de_lequipe_fp(User $user){
       return $this->getPermission($user,14);
    }
+   public function donner_lavis_de_lequipe_pe(User $user){
+      return $this->getPermission($user,26);
+   }
    public function evaluer_souscription(User $user){
       return $this->getPermission($user,3);
    }
    public function valider_la_decision_du_comite(User $user){
       return $this->getPermission($user,15);
    }
+   public function valider_la_decision_du_comite_pe(User $user){
+      return $this->getPermission($user,27);
+   }
    public function valider_leligibilite_fp(User $user){
       return $this->getPermission($user,16);
    }
+   public function lister_avant_projet_ineligible(User $user){
+      return $this->getPermission($user,17);
+   }
+   public function lister_avant_projet_a_evaluer_pe(User $user){
+      return $this->getPermission($user,18);
+   }
+   public function lister_avant_projet_evalues_pe(User $user){
+      return $this->getPermission($user,19);
+   }
+   public function valider_levaluation_de_lavant_projet_pe(User $user){
+      return $this->getPermission($user,25);
+   }
+   public function lister_avant_projet_soumis_au_comite_pe(User $user){
+      return $this->getPermission($user,20);
+   }
+   public function lister_avant_projet_selectionne_pe(User $user){
+      return $this->getPermission($user,22);
+   }
+   public function evaluer_souscription_pe(User $user){
+      return $this->getPermission($user,22);
+   }
+   public function valider_leligibilite_pe(User $user){
+      return $this->getPermission($user,23);
+   }
+   public function lister_avant_projet_ineligible_pe(User $user){
+      return $this->getPermission($user,24);
+   }
+
     /**
      * Determine whether the user can create models.
      *

@@ -81,20 +81,7 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
-                <th class="text-center">Numéro</th>
-                    <th class="text-center" >Guichet</th>
-                    <th class="text-center">Nom & prenom </th>
-                    <th class="text-center">Numéro dossier</th>
-                    <th class="text-center">Contact </th>
-                    <th class="text-center" >Titre du projet</th>
-                    <th class="text-center" >Secteur d'activité</th>
-                    <th class="text-center" >Maillon d'activite</th>
-                    <th class="text-center" >Region du projet</th>
-                    <th class="text-center" >Cout total du projet</th>
-                    <th class="text-center" >Subvention Sollicitée</th>
-                    <th class="text-center">Actions</th>
-            </tfoot>
+           
         </table>
     </div>
 </div>

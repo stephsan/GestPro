@@ -18,6 +18,7 @@ use App\Models\Entreprise;
 use App\Models\Critere;
 use App\Models\PreprojetParametre;
 use App\Models\HistoriquePreprojet;
+use App\Models\HistoriquePreprojetPe;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
@@ -44,7 +45,14 @@ class PreprojetController extends Controller
     function create_historique_preprojet_traitement($preproje_id,$operation){
         HistoriquePreprojet::create([
             'preprojet_id'=>$preproje_id,
-            'operation'=>$preproje_id,
+            'operation'=>$operation,
+            'user_id' =>Auth::user()->id,
+        ]);
+    }
+    function create_historique_preprojet_traitement_pe($preproje_id,$operation){
+        HistoriquePreprojetPe::create([
+            'preprojet_pe_id'=>$preproje_id,
+            'operation'=>$operation,
             'user_id' =>Auth::user()->id,
         ]);
     }
@@ -74,25 +82,30 @@ class PreprojetController extends Controller
         $type_entreprise= $request->type_entreprise;
         if($type_entreprise=='startup'){
             $preprojets=Preprojet::where('entreprise_id', null)->orderBy('created_at','desc')->get();
-            $type='Startup';
+                $type='pe_startup';
+                $statut='fp_a_evaluer';
         }
         else if($type_entreprise=='entreprise_existante'){
             $preprojets=Preprojet::where('entreprise_id','!=', null)->orderBy('created_at','desc')->get();
-            $type='Entreprise existante';
+            $type='fp_mpme_existante';
+            $statut='fp_enregistre';
         }
-        return view('preprojet.index',compact('preprojets','type'));
+        return view('preprojet.index',compact('preprojets','type','statut'));
     }
     public function lister_pe(Request $request){
         $type_entreprise= $request->type_entreprise;
         if($type_entreprise=='startup'){
             $preprojets=PreprojetPe::where('entreprise_id', null)->orderBy('created_at','desc')->get();
-            $type='Startup';
+            $type='pe_startup';
+            $statut='pe_enregistre';
+            
         }
         else if($type_entreprise=='entreprise_existante'){
             $preprojets=PreprojetPe::where('entreprise_id','!=', null)->orderBy('created_at','desc')->get();
-            $type='Entreprise existante';
+            $type='pe_mpme_existante';
+            $statut='pe_enregistre';
         }
-        return view('preprojet.index_pe',compact('preprojets','type'));
+        return view('preprojet.index_pe',compact('preprojets','type','statut'));
     }
 
     /**
@@ -124,6 +137,7 @@ class PreprojetController extends Controller
      */
 
      function store_preprojet_pe(Request $request){
+        return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
@@ -355,7 +369,7 @@ class PreprojetController extends Controller
         return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
         
     }
-    public function afficher_details_pe(PreprojetPe $preprojet){
+    public function afficher_details_pe(PreprojetPe $preprojet, Request $request){
         $entreprise=Entreprise::where('id',$preprojet->entreprise_id)->first();
         $promoteur=Promoteur::where('id',$preprojet->promoteur_id)->first();
         $chiffre_daffaires=Infoentreprise::where('preprojet_id',$preprojet->id)->where('indicateur',env('VALEUR_ID_CHIFFRE_DAFFAIRE_PREVI'))->get();
@@ -366,9 +380,9 @@ class PreprojetController extends Controller
         $source_appros= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',12)->get();
         $formations_effectuees= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',51)->get();
         $formations_souhaites= PreprojetParametre::where("preprojet_pe_id",$preprojet->id)->where('parametre_id',50)->get();
- 
-        $evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
-    
+        //$evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
+        $evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->where('type_evaluation','automatique')->get();
+        $all_evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
         $id_criteres=[];
         $i=0;
         foreach($evaluations as $evaluation)
@@ -382,8 +396,12 @@ class PreprojetController extends Controller
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("entreprise_id", $entreprise->id )->orWhere("preprojet_pe_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
         else
             $piecejointes=Piecejointe::Where("promoteur_id", $promoteur->id )->orWhere("preprojet_pe_id", $preprojet->id )->orderBy('updated_at', 'desc')->get();
-          
-        return view('preprojet.show_pe',compact('formations_effectuees','formations_souhaites','source_appros','projet_innovations','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire_previsionels','chiffre_daffaires','preprojet','piecejointes'));
+        if($request->type_detail=='analyser'){
+            $evaluations_humains=Evaluation::where('preprojet_pe_id',$preprojet->id)->where('type_evaluation','humain')->get();
+            return view('preprojet.analyser_pe',compact('source_appros','all_evaluations','evaluations_humains','effectif_permanent_previsionels','evaluations','effectif_temporaire_previsionels','criteres','projet_innovations','formations_effectuees','formations_souhaites','chiffre_daffaires','preprojet','piecejointes'));
+        }
+       else
+        return view('preprojet.show_pe',compact('source_appros','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
           
     }
     public function show(Preprojet $preprojet)
@@ -450,6 +468,16 @@ class PreprojetController extends Controller
         $this->create_historique_preprojet_traitement($preprojet->id,"Donner l'avis de l'équipe");
         return redirect()->back();
     }
+    public function save_avis_de_lequipe_pe(Request $request){
+        $preprojet= PreprojetPe::find($request->preprojet_id);
+        $preprojet->update([
+            'statut'=>'affectes_au_comite_de_selection',
+            'avis_de_lequipe'=>$request->avis,
+            'commentaires_de_lequipe'=>$request->observation,
+        ]);
+        $this->create_historique_preprojet_traitement_pe($preprojet->id,"Donner l'avis de l'équipe");
+        return redirect()->back();
+    }
     public function save_avis_decision_du_comite(Request $request){
         $preprojet= Preprojet::find($request->preprojet_id);
         $preprojet->update([
@@ -458,6 +486,16 @@ class PreprojetController extends Controller
             'commentaire_du_comite'=>$request->observation,
         ]);
         $this->create_historique_preprojet_traitement($preprojet->id,"Enregistrer la décision du comité");
+        return redirect()->back();
+    }
+    public function save_avis_decision_du_comite_pe(Request $request){
+        $preprojet= PreprojetPe::find($request->preprojet_id);
+        $preprojet->update([
+            'statut'=>'traite_par_le_comite',
+            'decision_du_comite'=>$request->avis,
+            'commentaire_du_comite'=>$request->observation,
+        ]);
+        $this->create_historique_preprojet_traitement_pe($preprojet->id,"Enregistrer la décision du comité");
         return redirect()->back();
 
     }
@@ -521,6 +559,38 @@ class PreprojetController extends Controller
         return back()->with('success', 'Evaluation modifiée avec succes');
 
     }
+    public function evaluation_modify_pe(Request $request){
+        $preprojet= PreprojetPe::find($request->avant_projet);
+        $evaluations_humains=Evaluation::where('preprojet_pe_id',$preprojet->id)->where('type_evaluation','humain')->get();
+        foreach($evaluations_humains as $evaluations_humain){
+            $variable=$evaluations_humain->id;
+            $evaluations_humain->update([
+                'note'=>$request->$variable,
+            ]);
+
+        }
+        $evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
+        $total=$evaluations->sum('note');
+       // dd($total);
+        $preprojet->update([
+            'statut'=>'evalue',
+            'note_totale'=> $total,
+            'commentaire_evaluation'=>''
+
+        ]);
+        return back()->with('success', 'Evaluation modifiée avec succes');
+
+    }
+    public function save_eligibilite_pe(Request $request){
+        $preprojet= PreprojetPe::find($request->preprojet_id);
+        $preprojet->update([
+            'eligible'=>$request->avis,
+            'commentaire_eligibilité'=>$request->observation,
+        ]);
+        $this->create_historique_preprojet_traitement_pe($preprojet->id,"Eligiblité de l'avant-projet");
+        return redirect()->back();
+    }
+
     public function evaluer_pe(Request $request){
         $preprojet = PreprojetPe::find($request->avant_projet);
         $evaluations=Evaluation::where('preprojet_pe_id',$request->avant_projet)->get();
@@ -543,18 +613,29 @@ class PreprojetController extends Controller
                 'type_evaluation'=>'humain',
                 'note'=> $request->$note
         ]);
-        }        
+            $this->create_historique_preprojet_traitement_pe($preprojet->id,"Eligiblité de l'avant-projet");
+
+        } 
         }
+        $note_totale=Evaluation::where('preprojet_pe_id',$request->avant_projet)->sum('note');
         $preprojet->update([
-            'note_totale'=>$evaluation_du_projet->sum('note'),
+            'note_totale'=>$note_totale,
+            'statut'=>'evalue'
         ]);
-        
         return redirect()->back()->with('success',"Evaluation enregistrée avec success");
 
     }
+    public function valider_evaluation_pe(Request $request){
+        $preprojet= PreprojetPe::find($request->preprojet_id);
+        $preprojet->update([
+            'statut'=>$request->avis,
+            'commentaire_evaluation'=>$request->observation,
+        ]);
+        $this->create_historique_preprojet_traitement_pe($preprojet->id,"Valider l'évaluation");
+        return redirect()->back();
+    }
     public function store_preprojet(Request $request){
-        //dd($request->all());
-
+        return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
        // dd($type_entreprise);
@@ -801,6 +882,7 @@ public function lister_preprojet_fp_en_traitement(Request $request){
         //dossiers analysés en attente d'evaluation des conseillers
         elseif($request->statut=='eligible'){
             if (Auth::user()->can('lister_avant_projet_a_evaluer_fp')) {
+                if(Auth::user()->zone!=100){
                     $preprojets= Preprojet::where(function ($query) {
                         $query->where('statut', '=', NULL)
                               ->orWhere('statut', '=', 'evaluation_rejetee');
@@ -812,6 +894,11 @@ public function lister_preprojet_fp_en_traitement(Request $request){
                                 ->where('eligible','eligible')
                                 ->orderBy('updated_at','desc')
                                 ->get();
+                }else{
+                    $preprojets= Preprojet::where('eligible','eligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+                }
                     $type='fp_mpme_existante';
                     $statut='fp_eligible';
                     $titre="Liste des avant-projets éligibles en attente d'évaluation";
@@ -819,6 +906,34 @@ public function lister_preprojet_fp_en_traitement(Request $request){
             else{
                 return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
             }  
+        }
+        elseif($request->statut=='ineligible'){
+            if (Auth::user()->can('lister_avant_projet_ineligible')) {
+                if(Auth::user()->zone!=100){
+                    $preprojets= Preprojet::where(function ($query) {
+                        $query->where('statut', '=', NULL)
+                              ->orWhere('statut', '=', 'evaluation_rejetee');
+                                })
+                                ->where(function ($query) {
+                                    $query->where('zone_daffectation', '=', Auth::user()->zone)
+                                        ->orWhere('region', '=', Auth::user()->zone);
+                                })
+                                ->where('eligible','ineligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+              }
+            else{
+                    $preprojets= Preprojet::where('eligible','ineligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+                }
+                        $type='fp_mpme_existante';
+                        $statut='fp_ineligible';
+                        $titre="Liste des avant-projets inéligibles";
+        }
+        else{
+            return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+        } 
         }
         elseif($request->statut=='evalues'){
             if (Auth::user()->can('lister_avant_projet_evalues_fp')) {
@@ -838,10 +953,10 @@ public function lister_preprojet_fp_en_traitement(Request $request){
                 $statut='fp_soumis_au_comite';
                 $titre="Liste des avant-projets soumis au comité";
             }
+
             else{
                 return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
             }  
-        //return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
     }
         return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
 
@@ -853,49 +968,166 @@ public function lister_preprojet_fp_en_traitement(Request $request){
 }
 
 public function lister_preprojet_fp_preselectionnes(Request $request){
-    $preprojets= Preprojet::where('statut','traite_par_le_comite')->where('decision_du_comite','favorable')->orderBy('updated_at','desc')->get();
-    $type='fp_mpme_existante';
-    $statut='fp_selectionne_par_le_comite';
-    $titre="Liste des avant-projets sélectionnés par le comité de selection";
+    if($request->type_entreprise=='entreprise_existante'){
+        if(Auth::user()->zone!=100){
+            $preprojets= Preprojet::where('statut','traite_par_le_comite')->where('decision_du_comite','favorable')
+            ->where(function ($query) {
+                $query->where('zone_daffectation', '=', Auth::user()->zone)
+                    ->orWhere('region', '=', Auth::user()->zone);
+            })
+            ->orderBy('updated_at','desc')->get();
+        }
+        elseif(Auth::user()->zone==100){
+            $preprojets= Preprojet::where('statut','traite_par_le_comite')->where('decision_du_comite','favorable')->orderBy('updated_at','desc')->get();
+        }
+            $type='fp_mpme_existante';
+            $statut='fp_selectionne_par_le_comite';
+            $titre="Liste des avant-projets sélectionnés par le comité de selection";
+       
+    }
+    elseif($request->type_entreprise=='startup'){
+
+    }
+    
     return view('preprojet.liste_preprojet_traite_par_le_comite',compact('preprojets','type','statut','titre'));
 }
 
+public function lister_preprojet_pe_preselectionnes(Request $request){
+    if($request->type_entreprise=='startup'){
+        if(Auth::user()->zone!=100){
+            $preprojets= PreprojetPe::where('statut','traite_par_le_comite')->where('decision_du_comite','favorable')
+            ->where(function ($query) {
+                $query->where('zone_daffectation', '=', Auth::user()->zone)
+                    ->orWhere('region', '=', Auth::user()->zone);
+            })
+            ->orderBy('updated_at','desc')->get();
+        }
+        elseif(Auth::user()->zone==100){
+            $preprojets= PreprojetPe::where('statut','traite_par_le_comite')->where('decision_du_comite','favorable')->orderBy('updated_at','desc')->get();
+        }
+            $type='pe_startup';
+            $statut='pe_selectionne_par_le_comite';
+            $titre="Liste des avant-projets sélectionnés par le comité de sélection pour le programme entreprendre";
+    }
+    elseif($request->type_entreprise=='mpme_existante'){
+
+    }
+    
+    return view('preprojet.liste_preprojet_traite_par_le_comite_pe',compact('preprojets','type','statut','titre'));
+}
+
+
+
 public function lister_preprojet_pe_en_traitement(Request $request){
-    if($request->type_entreprise=='entreprise_existante'){
+    if($request->type_entreprise=='startup'){
         if($request->statut=='a_evaluer'){
-            $preprojets= Preprojet::where('statut',NULL)->where('eligible', NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
-            $type='fp_mpme_existante';
-            $statut='fp_a_evaluer';
-            $titre='Liste des avant-projets a analyser du fonds de partenatiat';
+            if (Auth::user()->can('lister_avant_projet_a_evaluer_pe')) {
+                    $preprojets= PreprojetPe::where('statut',NULL)->where('eligible', NULL)
+                        ->where(function ($query) {
+                            $query->where('zone_daffectation', '=', Auth::user()->zone)
+                                ->orWhere('region', '=', Auth::user()->zone);
+                        })
+                        ->orderBy('updated_at','desc')
+                        ->get();
+                $type='pe_startup';
+                $statut='pe_a_analyser';
+                $titre='Liste des avant-projets a analyser du programme entreprendre';
+            }
+            else{
+                return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+            }
         }
         elseif($request->statut=='eligible'){
-            $preprojets= Preprojet::where('statut',NULL)->where('eligible','eligible')->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->get();
-            $type='fp_mpme_existante';
-            $statut='fp_eligible';
-            $titre="Liste des avant-projets éligibles en attente d'évaluation";
+            if (Auth::user()->can('lister_avant_projet_a_evaluer_pe')) {
+                if(Auth::user()->zone!=100){
+                    $preprojets= PreprojetPe::where(function ($query) {
+                        $query->where('statut', '=', NULL)
+                              ->orWhere('statut', '=', 'evaluation_rejetee');
+                                })
+                                ->where(function ($query) {
+                                    $query->where('zone_daffectation', '=', Auth::user()->zone)
+                                        ->orWhere('region', '=', Auth::user()->zone);
+                                })
+                                ->where('eligible','eligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+                }else{
+                    $preprojets= PreprojetPe::where('eligible','eligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+                }
+                    $type='pe_startup';
+                    $statut='pe_eligible';
+                    $titre="Liste des avant-projets éligibles en attente d'évaluation";
+            }
+            else{
+                return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+            }  
+        }
+        elseif($request->statut=='ineligible'){
+            if (Auth::user()->can('lister_avant_projet_ineligible')) {
+                if(Auth::user()->zone!=100){
+                    $preprojets= PreprojetPe::where(function ($query) {
+                        $query->where('statut', '=', NULL)
+                              ->orWhere('statut', '=', 'evaluation_rejetee');
+                                })
+                                ->where(function ($query) {
+                                    $query->where('zone_daffectation', '=', Auth::user()->zone)
+                                        ->orWhere('region', '=', Auth::user()->zone);
+                                })
+                                ->where('eligible','ineligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+              }
+            else{
+                    $preprojets= PreprojetPe::where('eligible','ineligible')
+                                ->orderBy('updated_at','desc')
+                                ->get();
+                }
+                        $type='pe_startup';
+                        $statut='pe_ineligible';
+                        $titre="Liste des avant-projets du programme entreprendre inéligibles";
+        }
+        else{
+            return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+        } 
         }
         elseif($request->statut=='evalues'){
-            $preprojets= Preprojet::where('statut','evalue')->get();
-            $type='fp_mpme_existante';
-            $statut='fp_evalues';
-            $titre="Liste des avant-projets en attente de l'avis de l'équipe";
+            if (Auth::user()->can('lister_avant_projet_evalues_pe')) {
+                $preprojets= PreprojetPe::whereIn('statut',['evalue','evaluation_validee'])->orderBy('updated_at','desc')->get();
+                $type='pe_startup';
+                $statut='pe_evalues';
+                $titre="Liste des avant-projets du programme entreprendre en attente de l'avis de l'équipe";
+            }
+            else{
+                return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+            }  
         }
         elseif($request->statut=='soumis_au_comite' ){
-            $preprojets= Preprojet::where('statut','soumis_au_comite')->where('region', 54)->get();
-            $type='fp_mpme_existante';
-            $statut='fp_soumis_au_comite';
-            $titre="Liste des avant-projets soumis au comité";
-        }
-       else{
-        return redirect()->back();
-       }
+            if (Auth::user()->can('lister_avant_projet_soumis_au_comite_pe')) {
+                $preprojets= PreprojetPe::where('statut','affectes_au_comite_de_selection')->orderBy('updated_at','desc')->get();
+                $type='pe_startup';
+                $statut='pe_soumis_au_comite';
+                $titre="Liste des avant-projets du programme entreprendre soumis au comité";
+            }
+
+            else{
+                return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');
+            }  
+     }
     }
-    return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
+    return view('preprojet.liste_traitement_preprojet_pe',compact('preprojets','type','statut','titre'));
 }
-public function lister_preprojet_pe_preselectionnes(Request $request){
-   
+public function lister_preprojet_soumis_au_comite_fp(Request $request)
+{
+    $type='fp_mpme_existante';
+    $statut='fp_soumis_au_comite';
+    $titre="Liste des avant-projets soumis au comité";
+    $preprojets= Preprojet::where('statut','soumis_au_comite')->get();
+    return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
 
 }
+
 /*** FIn du bloc  */
 
     /**

@@ -6,7 +6,7 @@
 			<div style="font-size: 1rem;"> {!! $e_msg !!} </div>
 			<hr>
 			<strong>Cordialement</strong><br>
-			<div><h3>BRAVE WOMEN Burkina</h3></div>
+			<div><h3>Projet ECOTEC</h3></div>
 		</div>
 	</div>
 </div>

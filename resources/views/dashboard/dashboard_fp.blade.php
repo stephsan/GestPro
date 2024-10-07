@@ -5,7 +5,7 @@
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1 class="text-success">Tableau de bord</h1>
+        <h1 class="text-success">Tableau de bord du fond de partenariat</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark">Accueil</li>

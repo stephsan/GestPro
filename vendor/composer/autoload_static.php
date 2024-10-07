@@ -668,6 +668,7 @@ class ComposerStaticInit9a4913df48d16945f93c7a0c81571182
         'App\\Models\\Evalualtion' => __DIR__ . '/../..' . '/app/Models/Evalualtion.php',
         'App\\Models\\Evaluation' => __DIR__ . '/../..' . '/app/Models/Evaluation.php',
         'App\\Models\\HistoriquePreprojet' => __DIR__ . '/../..' . '/app/Models/HistoriquePreprojet.php',
+        'App\\Models\\HistoriquePreprojetPe' => __DIR__ . '/../..' . '/app/Models/HistoriquePreprojetPe.php',
         'App\\Models\\Infoeffectifentreprise' => __DIR__ . '/../..' . '/app/Models/Infoeffectifentreprise.php',
         'App\\Models\\Infoentreprise' => __DIR__ . '/../..' . '/app/Models/Infoentreprise.php',
         'App\\Models\\InnovationProjet' => __DIR__ . '/../..' . '/app/Models/InnovationProjet.php',

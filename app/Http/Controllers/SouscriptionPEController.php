@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Valeur;
 use App\Mail\ContactMail;
@@ -10,6 +9,7 @@ use App\Models\Contact;
 class SouscriptionPEController extends Controller
 {
     function create_personne(Request $request){
+        return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $occupation_professionnelle_actuelles =Valeur::where("parametre_id",env('PARAMETRE_OCCUPATION_PROFESSIONNELLE'))->get();
@@ -42,7 +42,6 @@ class SouscriptionPEController extends Controller
         ]
     ]);
     $responses = json_decode ($response->getBody ());
- 
     if ($responses->success) {
         $this->validate($request, [
     		'nom'=> "required",
