@@ -122,14 +122,15 @@ Route::group([
     Route::get("/completer/preprojet/evaluation/", [PreprojetController::class, 'completer_evaluation_automatique'])->name("preprojetpe.completer_evaluation_automatique");
     Route::get('preprojet/valider/evaluation/fp',[PreprojetController::class,'valider_evaluation'])->name('preprojet.valider_evaluation');
     Route::get('preprojet/valider/evaluation/pe',[PreprojetController::class,'valider_evaluation_pe'])->name('preprojet.valider_evaluation_pe');
-
     Route::get('enre/avis/de/lequipe/preprojet/fp',[PreprojetController::class,'save_avis_de_lequipe'])->name('preprojet.save_avis_de_lequipe');
     Route::get('enre/avis/de/lequipe/preprojet/pe',[PreprojetController::class,'save_avis_de_lequipe_pe'])->name('preprojet.save_avis_de_lequipe_pe');
-
     Route::get('save/decision/du/comite/preprojet/fp',[PreprojetController::class,'save_avis_decision_du_comite'])->name('preprojet.save_decision_du_comite');
     Route::get('save/decision/du/comite/preprojet/pe',[PreprojetController::class,'save_avis_decision_du_comite_pe'])->name('preprojet.save_decision_du_comite_pe');
-
     Route::get('soumis/au/comite/preprojet/fp',[PreprojetController::class,'lister_preprojet_soumis_au_comite_fp'])->name('preprojet.soumis_au_comite_fp');
+    Route::get('soumis/au/comite/preprojet/pe',[PreprojetController::class,'lister_preprojet_soumis_au_comite_pe'])->name('preprojet.soumis_au_comite_pe');
+
+    Route::get('/dashboard/programme/entreprendre',[DashboardController::class,'dashboard_pe'])->name('dashboard.pe');
+    Route::get('/dashboard/fonds/partenariat',[DashboardController::class,'dashboard_fp'])->name('dashboard.fp');
 
     
    

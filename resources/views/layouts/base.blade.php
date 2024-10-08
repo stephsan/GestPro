@@ -118,15 +118,17 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-     @can('lister_souscription_fp', Auth::user())
+     @can('acceder_au_dashboard_du_fp', Auth::user())
         <li class="nav-item">
-            <a class="nav-link" href="{{route('dashboard')}}">
+            <a class="nav-link" href="{{route('dashboard.fp')}}">
                 <i class="bi bi-grid"></i>
                 <span>Tableau de bord FP</span>
             </a>
         </li>
+    @endcan
+    @can('acceder_au_dashboard_du_pe', Auth::user())
         <li class="nav-item">
-            <a class="nav-link" href="{{route('dashboard')}}">
+            <a class="nav-link" href="{{route('dashboard.pe')}}">
                 <i class="bi bi-grid"></i>
                 <span>Tableau de bord PE</span>
             </a>
@@ -182,7 +184,7 @@
             </a>
         </li>
     @endcan
-    @can('lister_avant_projet_a_evaluer_pe', Auth::user())
+    @can('lister_avant_projet_ineligible_pe', Auth::user())
         <li>
             <a href="{{ route('preprojetpe.traitement') }}?statut=ineligible&type_entreprise=startup" class="nav-link @yield('pe_ineligible') ">
                 <i class="bi bi-circle"></i><span>Avant-projets inéligibles</span>

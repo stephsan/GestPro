@@ -401,7 +401,7 @@ class PreprojetController extends Controller
             return view('preprojet.analyser_pe',compact('source_appros','all_evaluations','evaluations_humains','effectif_permanent_previsionels','evaluations','effectif_temporaire_previsionels','criteres','projet_innovations','formations_effectuees','formations_souhaites','chiffre_daffaires','preprojet','piecejointes'));
         }
        else
-        return view('preprojet.show_pe',compact('source_appros','evaluations','criteres','projet_innovations','effectif_permanent_previsionels','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
+        return view('preprojet.show_pe',compact('source_appros','all_evaluations','effectif_permanent_previsionels','evaluations','effectif_temporaire_previsionels','criteres','projet_innovations','formations_effectuees','formations_souhaites','chiffre_daffaires','preprojet','piecejointes'));
           
     }
     public function show(Preprojet $preprojet)
@@ -1065,7 +1065,7 @@ public function lister_preprojet_pe_en_traitement(Request $request){
             }  
         }
         elseif($request->statut=='ineligible'){
-            if (Auth::user()->can('lister_avant_projet_ineligible')) {
+            if (Auth::user()->can('lister_avant_projet_ineligible_pe')) {
                 if(Auth::user()->zone!=100){
                     $preprojets= PreprojetPe::where(function ($query) {
                         $query->where('statut', '=', NULL)
@@ -1125,6 +1125,15 @@ public function lister_preprojet_soumis_au_comite_fp(Request $request)
     $titre="Liste des avant-projets soumis au comité";
     $preprojets= Preprojet::where('statut','soumis_au_comite')->get();
     return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
+
+}
+public function lister_preprojet_soumis_au_comite_pe(Request $request)
+{
+    $type='pe_startup';
+    $statut='pe_soumis_au_comite';
+    $titre="Liste des avant-projets soumis au comité pour le programme entreprendre";
+    $preprojets= PreprojetPe::where('statut','soumis_au_comite')->get();
+    return view('preprojet.liste_traitement_preprojet_pe',compact('preprojets','type','statut','titre'));
 
 }
 
