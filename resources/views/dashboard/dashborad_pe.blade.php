@@ -18,13 +18,13 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 >100</h3>
-                    Avant-projets Enregistrés
+                    <h3 >{{ $nombre_de_preprojet_soumis }}</h3>
+                     Avant-projets Enregistrés
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="" class="small-box-footer block1">Plus de détails</a>
+                <a href="#" class="small-box-footer block1" onclick="change_details('avant_projets_soumis','projets_soumis','financement','impacts')">Plus de détails</a>
 
             </div>
                 
@@ -32,13 +32,13 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 >100</h3>
-                    Projets soumis
+                    <h3 >0</h3>
+                    Formés
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="" class="small-box-footer block2">Plus de détails</a>
+                <a href="#" class="small-box-footer block2" onclick="change_details('formes','avant_projets_soumis','financement','impacts')">Plus de détails</a>
 
             </div>
                 
@@ -46,13 +46,13 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 > 100 000 000</h3>
-                    Financement accordé
+                    <h3 > 0</h3>
+                    Coaché
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="" class="small-box-footer block3">Plus de détails</a>
+                <a href="#" class="small-box-footer block3" onclick="change_details('avant_projets_soumis','projets_soumis','financement','impacts')">Plus de détails</a>
 
             </div>
                 
@@ -66,7 +66,7 @@
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="" class="small-box-footer block4">Plus de détails</a>
+                <a href="#" class="small-box-footer block4" onclick="change_details('impacts','projets_soumis','avant_projets_soumis','financement')">Plus de détails</a>
 
             </div>
                 
@@ -77,6 +77,91 @@
             <div class="col-12 col-md-12 offset-0 ">
                 <div class="card mt-2">
                     <div class="card-body">
+                    <div class="row" id="avant_projets_soumis">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="dash-block">
+                                <div class="dash-block-title">
+                                    <h2 class="dash-compteur">
+                                        Avants-projets MPMEs Existantes
+                                    </h2>
+                                </div>
+                               <div class="themed-background-muted-light">
+                                <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                        <h4 class="text-left compteur">
+                                                <strong class="text-danger">{{ $nombre_de_preprojet_soumis }}</strong>
+                                                <br>
+                                                <small>
+                                                    Avants-projets Enregistrés
+                                                </small>
+                                        </h4>
+                                    </a>
+                               </div>
+                               <div class="themed-background-muted-light">
+                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'eligible');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                <h4 class="text-left compteur">
+                                        <strong class="text-danger">{{ $nombre_de_preprojet_eligible }}</strong>
+                                        <br>
+                                        <small>
+                                           Avant-projets Eligibles
+                                        </small>
+                                </h4>
+                        </a>
+                                </div>
+                                <div class="themed-background-muted-light">
+                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'selectionne');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                    <h4 class="text-left compteur">
+                                            <strong class="text-danger">{{ $nombre_de_preprojet_selectionne }}</strong>
+                                            <br>
+                                            <small>
+                                               Avant-projets préselectionnés par le comité
+                                            </small>
+                                    </h4>
+                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="dash-block">
+                                <div class="dash-block-title">
+                                    <h2 class="dash-compteur">
+                                        Avants-projets Startup
+                                    </h2>
+                                </div>
+                                <div class="themed-background-muted-light">
+                                    <h4 class="text-left compteur">
+                                            <strong class="text-danger">0</strong>
+                                            <br>
+                                            <small>
+                                               Avant-projets Enregistrés
+                                            </small>
+                                    </h4>
+                                    </div>
+                                    <div class="themed-background-muted-light">
+                                        <h4 class="text-left compteur">
+                                                <strong class="text-danger">0</strong>
+                                                <br>
+                                                <small>
+                                                    Avant-projets Eligibles
+                                                </small>
+                                        </h4>
+                                    </div>
+                                    <div class="themed-background-muted-light">
+                                        <h4 class="text-left compteur">
+                                                <strong class="text-danger">0</strong>
+                                                <br>
+                                                <small>
+                                                    Avant-projets préselectionnés par le comité
+                                                </small>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="preprojet_par_region_par_sexe" style="margin-top: 10px;">
+                            test
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-6" id="preprojet_par_region">
 
@@ -84,11 +169,56 @@
                             <div class="col-md-6" id="preprojet_par_secteur_dactivite">
 
                             </div>
+                            
                         </div>
                         <hr>
-                            <div id="preprojet_par_region_par_sexe" style="margin-top: 10px;">
+                            
+                            <div id="preprojet_selectionne_par_region_par_sexe" style="margin-top: 10px;">
                                 test
                             </div>
+                    </div>
+                    <div class="row" id="projets_soumis" style="display: none">
+                        <div class="row">
+                            <div class="col-md-6" id="projet_par_region">
+
+                            </div>
+                            <div class="col-md-6" id="projet_par_secteur_dactivite">
+
+                            </div>
+                        </div>
+                        <hr>
+                            <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
+                                test projets
+                            </div>
+                    </div>
+                    <div class="row" id="financement" style="display: none">
+                        <div class="row">
+                            <div class="col-md-6" id="projet_par_region">
+
+                            </div>
+                            <div class="col-md-6" id="projet_par_secteur_dactivite">
+
+                            </div>
+                        </div>
+                        <hr>
+                            <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
+                                test projets
+                            </div>
+                    </div>
+                    <div class="row" id="impact" style="display: none">
+                        <div class="row">
+                            <div class="col-md-6" id="projet_par_region">
+
+                            </div>
+                            <div class="col-md-6" id="projet_par_secteur_dactivite">
+
+                            </div>
+                        </div>
+                        <hr>
+                            <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
+                                test projets
+                            </div>
+                    </div>
                     </div>
             </div>
         </div>
@@ -96,6 +226,14 @@
 </section>
 @endsection
 @section('script')
+<script>
+    function change_details(page_active_id, autre_page_1, autre_page_2, autre_page_3,){
+        $('#'+page_active_id).show();
+        $('#'+autre_page_1).hide();
+        $('#'+autre_page_2).hide();
+        $('#'+autre_page_3).hide();
+    }
+</script>
 <script language = "JavaScript">
     var url = "{{ route('preprojetpe.par_region_et_par_sexe') }}"
       $.ajax({

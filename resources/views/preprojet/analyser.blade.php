@@ -15,7 +15,7 @@
             </ol>
         </nav>
 @can('valider_leligibilite_fp', Auth::user())
-@if($preprojet->statut==null && $preprojet->eligible==null)
+@if($preprojet->statut==NULL && $preprojet->eligible==NULL)
         <nav>
             <button type="button" class="btn btn-success">
                 <a href="#modal-eligilite-du-preprojet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Eligibilité de l'avant projet</a>

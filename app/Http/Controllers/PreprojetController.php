@@ -869,8 +869,14 @@ public function lister_preprojet_fp_en_traitement(Request $request){
     if($request->type_entreprise=='entreprise_existante'){
         if($request->statut=='a_evaluer'){
             //statuer sur l'éligibilité
+            //dd('je suis la');
             if (Auth::user()->can('lister_avant_projet_a_evaluer_fp')) {
-                        $preprojets= Preprojet::where('statut',NULL)->where('eligible', NULL)->where('region', Auth::user()->zone)->orWhere('zone_daffectation', Auth::user()->zone)->orderBy('updated_at','desc')->get();
+                        $preprojets= Preprojet::where('statut',NULL)->where('eligible',null)
+                                                ->where(function ($query) {
+                                                    $query->where('zone_daffectation', '=', Auth::user()->zone)
+                                                        ->orWhere('region', '=', Auth::user()->zone);
+                                                })
+                                                ->orderBy('updated_at','desc')->get();
                         $type='fp_mpme_existante';
                         $statut='fp_a_evaluer';
                         $titre='Liste des avant-projets a analyser du fonds de partenatiat';   
@@ -1124,6 +1130,8 @@ public function lister_preprojet_soumis_au_comite_fp(Request $request)
     $statut='fp_soumis_au_comite';
     $titre="Liste des avant-projets soumis au comité";
     $preprojets= Preprojet::where('statut','soumis_au_comite')->get();
+   
+
     return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
 
 }

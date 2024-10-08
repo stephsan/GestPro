@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardControllerPE;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ValeurController;
@@ -77,11 +78,6 @@ Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument']
 Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
 Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
 
-
-
-
-
-
 Route::get('/accueil', function () {
     return view('index');
 })->name("accueil");
@@ -133,12 +129,12 @@ Route::group([
 
     Route::get('/dashboard/programme/entreprendre',[DashboardController::class,'dashboard_pe'])->name('dashboard.pe');
     Route::get('/dashboard/fonds/partenariat',[DashboardController::class,'dashboard_fp'])->name('dashboard.fp');
-
     Route::get('/etat/preprojet/par_region', [DashboardController::class, 'avant_projet_par_region'])->name('preprojet.par_region');
     Route::get('/preprojet/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe'])->name('preprojet.par_region_et_par_sexe');
     Route::get('/preprojet/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite'])->name('preprojet.par_secteur_dactivite');
-    Route::get('/etat/preprojetpe/par_region', [DashboardController::class, 'avant_projet_par_region_pe'])->name('preprojetpe.par_region');
-    Route::get('/preprojetpe/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
-    Route::get('/preprojetpe/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite_pe'])->name('preprojetpe.par_secteur_dactivite');
+    Route::get('/etat/preprojetpe/par_region', [DashboardControllerPE::class, 'avant_projet_par_region_pe'])->name('preprojetpe.par_region');
+    Route::get('/preprojetpe/par_region/par_sexe', [DashboardControllerPE::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
+    Route::get('/preprojetpe/par_secteur_dactivite', [DashboardControllerPE::class,'avant_projet_par_secteur_dactivite_pe'])->name('preprojetpe.par_secteur_dactivite');
+    Route::get('/preprojet/selectionne/par_region/par_sexe', [DashboardController::class,'avant_projet_selectionne_par_region_et_par_sexe'])->name('preprojet.selected.par_region_et_par_sexe');
     
 });
