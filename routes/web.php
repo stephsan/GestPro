@@ -120,6 +120,8 @@ Route::group([
     Route::get("/lister/preprojet/PE/traitement", [PreprojetController::class, 'lister_preprojet_pe_en_traitement'])->name("preprojetpe.traitement");
     Route::get("/lister/preprojet/PE/preselectionnes", [PreprojetController::class, 'lister_preprojet_pe_preselectionnes'])->name("preprojetpe.selected");
     Route::get("/completer/preprojet/evaluation/", [PreprojetController::class, 'completer_evaluation_automatique'])->name("preprojetpe.completer_evaluation_automatique");
+
+
     Route::get('preprojet/valider/evaluation/fp',[PreprojetController::class,'valider_evaluation'])->name('preprojet.valider_evaluation');
     Route::get('preprojet/valider/evaluation/pe',[PreprojetController::class,'valider_evaluation_pe'])->name('preprojet.valider_evaluation_pe');
     Route::get('enre/avis/de/lequipe/preprojet/fp',[PreprojetController::class,'save_avis_de_lequipe'])->name('preprojet.save_avis_de_lequipe');
@@ -132,6 +134,11 @@ Route::group([
     Route::get('/dashboard/programme/entreprendre',[DashboardController::class,'dashboard_pe'])->name('dashboard.pe');
     Route::get('/dashboard/fonds/partenariat',[DashboardController::class,'dashboard_fp'])->name('dashboard.fp');
 
+    Route::get('/etat/preprojet/par_region', [DashboardController::class, 'avant_projet_par_region'])->name('preprojet.par_region');
+    Route::get('/preprojet/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe'])->name('preprojet.par_region_et_par_sexe');
+    Route::get('/preprojet/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite'])->name('preprojet.par_secteur_dactivite');
+    Route::get('/etat/preprojetpe/par_region', [DashboardController::class, 'avant_projet_par_region_pe'])->name('preprojetpe.par_region');
+    Route::get('/preprojetpe/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
+    Route::get('/preprojetpe/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite_pe'])->name('preprojetpe.par_secteur_dactivite');
     
-   
 });

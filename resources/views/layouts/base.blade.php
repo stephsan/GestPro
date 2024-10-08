@@ -120,7 +120,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
      @can('acceder_au_dashboard_du_fp', Auth::user())
         <li class="nav-item">
-            <a class="nav-link" href="{{route('dashboard.fp')}}">
+            <a class="nav-link  @yield('dashboard_fp')" href="{{route('dashboard.fp')}}">
                 <i class="bi bi-grid"></i>
                 <span>Tableau de bord FP</span>
             </a>
@@ -128,7 +128,7 @@
     @endcan
     @can('acceder_au_dashboard_du_pe', Auth::user())
         <li class="nav-item">
-            <a class="nav-link" href="{{route('dashboard.pe')}}">
+            <a class="nav-link @yield('dashboard_pe')" href="{{route('dashboard.pe')}}">
                 <i class="bi bi-grid"></i>
                 <span>Tableau de bord PE</span>
             </a>
@@ -467,7 +467,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script> 
-
+<script src={{ asset("js/highcharts.js") }}></script>
     <script>
         $('.alert').delay(3000).slideUp(350);
            // $('.test').('hide')// or fade, css display however you'd like.
