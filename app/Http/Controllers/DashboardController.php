@@ -9,6 +9,10 @@ use App\Models\Preprojet;
 use App\Models\PreprojetPe;
 class DashboardController extends Controller
 {
+  public function __construct()
+    {
+        $this->middleware('auth');
+    }
   public function index(){
     //return redirect()->route('dashboard.pe');
     if(return_role_adequat(env('ID_ROLE_MEMBRE_COMITE_FP'))){

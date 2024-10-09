@@ -62,6 +62,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('lister_avant_projet_selectionne_pe',[SouscriptionPolicy::class,'lister_avant_projet_selectionne_pe']);
         Gate::define('acceder_au_dashboard_du_fp',[DashboardPolicy::class,'acceder_au_dashboard_du_fp']);
         Gate::define('acceder_au_dashboard_du_pe',[DashboardPolicy::class,'acceder_au_dashboard_du_pe']);
+        Gate::define('visualiser_historique_de_traitement',[SouscriptionPolicy::class,'visualiser_historique_de_traitement']);
+
+ 
         
         
        

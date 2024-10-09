@@ -83,11 +83,11 @@
                                 <div class="dash-block">
                                 <div class="dash-block-title">
                                     <h2 class="dash-compteur">
-                                        Avants-projets MPMEs Existantes
+                                        Avants-projets Startups
                                     </h2>
                                 </div>
                                <div class="themed-background-muted-light">
-                                <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                <a href="javascript:void(0)" onclick="graphiquedynamique('startup', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
                                         <h4 class="text-left compteur">
                                                 <strong class="text-danger">{{ $nombre_de_preprojet_soumis }}</strong>
                                                 <br>
@@ -98,7 +98,7 @@
                                     </a>
                                </div>
                                <div class="themed-background-muted-light">
-                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'eligible');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                        <a href="javascript:void(0)" onclick="graphiquedynamique('startup', 'eligible');"  class="widget widget-hover-effect2 themed-background-muted-light">
                                 <h4 class="text-left compteur">
                                         <strong class="text-danger">{{ $nombre_de_preprojet_eligible }}</strong>
                                         <br>
@@ -109,7 +109,7 @@
                         </a>
                                 </div>
                                 <div class="themed-background-muted-light">
-                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'selectionne');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                        <a href="javascript:void(0)" onclick="graphiquedynamique('startup', 'selectionne');"  class="widget widget-hover-effect2 themed-background-muted-light">
                                     <h4 class="text-left compteur">
                                             <strong class="text-danger">{{ $nombre_de_preprojet_selectionne }}</strong>
                                             <br>
@@ -125,7 +125,7 @@
                                 <div class="dash-block">
                                 <div class="dash-block-title">
                                     <h2 class="dash-compteur">
-                                        Avants-projets Startup
+                                        Avants-projets MPME existantes
                                     </h2>
                                 </div>
                                 <div class="themed-background-muted-light">
@@ -172,10 +172,6 @@
                             
                         </div>
                         <hr>
-                            
-                            <div id="preprojet_selectionne_par_region_par_sexe" style="margin-top: 10px;">
-                                test
-                            </div>
                     </div>
                     <div class="row" id="projets_soumis" style="display: none">
                         <div class="row">
@@ -235,11 +231,13 @@
     }
 </script>
 <script language = "JavaScript">
+function graphiquedynamique(type_entreprise, status_projet){
     var url = "{{ route('preprojetpe.par_region_et_par_sexe') }}"
       $.ajax({
                  url: url,
                  type: 'GET',
                  dataType: 'json',
+                 data:{type_entreprise:type_entreprise, statut:status_projet},
                  error:function(data){
                     if (xhr.status == 401) {
                         window.location.href = ''
@@ -287,7 +285,7 @@
                                  categories: status
                             },
                         title: {
-                            text: 'Avant-projets enregistrés par sexe et par région'
+                            text: "Avant-projets " + status_projet + " par sexe et par région"
                         },
                         
                         credits : {
@@ -309,15 +307,13 @@
 
 }
 
-});      
-</script>
-
-<script language = "JavaScript">
-    var url = "{{ route('preprojetpe.par_region') }}"
-      $.ajax({
+});
+var url = "{{ route('preprojetpe.par_region') }}"
+$.ajax({
                  url: url,
                  type: 'GET',
                  dataType: 'json',
+                 data:{type_entreprise:type_entreprise, statut:status_projet},
                  error:function(data){
                     if (xhr.status == 401) {
                         window.location.href = ''
@@ -349,7 +345,7 @@
                                  categories: regions
                             },
                         title: {
-                            text: 'Proportion des Avant-projets enregistrés par région'
+                            text: "Proportion des Avant-projets"+ status_projet +"par région"
                         },
                        
                         credits : {
@@ -375,14 +371,13 @@
 
 }
 
-});      
-</script>
-<script language = "JavaScript">
-    var url = "{{ route('preprojetpe.par_secteur_dactivite') }}"
-      $.ajax({
+});
+var url = "{{ route('preprojetpe.par_secteur_dactivite') }}"
+$.ajax({
                  url: url,
                  type: 'GET',
                  dataType: 'json',
+                 data:{type_entreprise:type_entreprise, statut:status_projet},
                  error:function(data){
                     if (xhr.status == 401) {
                         window.location.href = ''
@@ -399,8 +394,6 @@
                                     y:  parseInt(donnee[i].nombre)} )
                 
                     }
-                    
-                    console.log(donnch);
                     for(var i=0; i<donnee.length; i++)
                             {
                                 secteur_dactivites[i] = donnee[i].secteur_dactivite
@@ -417,7 +410,7 @@
                             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
                         },
                         title: {
-                            text: "Effectif des Avant-projets enregistrés par secteur d'activité"
+                            text: "Effectif des Avant-projets "+ status_projet +" par secteur d'activité"
                         },
                         credits : {
                             enabled: false
@@ -441,7 +434,12 @@
                     });
 
 }
-
-});      
+});
+}      
+</script>
+<script>
+    $(function() {
+        graphiquedynamique('startup', 'soumis');
+    })
 </script>
 @endsection

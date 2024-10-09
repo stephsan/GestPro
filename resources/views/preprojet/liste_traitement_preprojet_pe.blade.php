@@ -68,7 +68,12 @@
                         </td>
                         <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>
                         <td class="text-center">{{ $preprojet->num_projet }}</td>
-                        <td class="text-center">{{ $preprojet->titre_projet }}</td>
+                        <td class="text-center"
+                                @if($preprojet->statut=='evaluation_rejetee')
+                                style="background-color: red"
+                                @elseif($preprojet->statut=='evaluation_validee')
+                                    style="background-color: #497956"
+                            @endif>{{ $preprojet->titre_projet }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->region) }}</td>

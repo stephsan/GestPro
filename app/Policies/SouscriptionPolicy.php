@@ -103,6 +103,9 @@ class SouscriptionPolicy
    public function lister_avant_projet_ineligible_pe(User $user){
       return $this->getPermission($user,24);
    }
+   public function visualiser_historique_de_traitement(User $user){
+      return $this->getPermission($user,30);
+   }
 
     /**
      * Determine whether the user can create models.

@@ -19,6 +19,10 @@ class Preprojet extends Model
     public function evaluations(){
         return $this->hasMany(Evaluation::class,'preprojet_id');
     }
+    public function historiques(){
+        return $this->hasMany(HistoriquePreprojet::class,'preprojet_id');
+    }
+    
     protected static function boot(){
         parent::boot();
         static::creating(function($preprojet){

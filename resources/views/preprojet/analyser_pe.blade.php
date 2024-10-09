@@ -15,7 +15,7 @@
             </ol>
         </nav>
 
-@can('valider_leligibilite_fp', Auth::user())
+@can('valider_leligibilite_pe', Auth::user())
 @if($preprojet->statut==null && $preprojet->eligible==null)
         <nav>
             <button type="button" class="btn btn-success">
@@ -905,6 +905,7 @@
                                                   
                                             </div>
                                             <div class="col-md-6">
+                                        @isset($preprojet->eligible)
                                                 <div class="row">
                                                     <div  id="condanation" class="form-group row">
                                                         <p class="col-md-5 control-label labdetail"><span class="">Eligibilité : </span> </p>
@@ -917,7 +918,8 @@
                                                         </span></p>
                                                     </div>
                                                 </div>
-                                                @isset($preprojet->commentaire_evaluation)
+                                        @endisset
+                                            @isset($preprojet->commentaire_evaluation)
                                                 <div class="row">
                                                     <div  id="condanation" class="form-group row">
                                                         <p class="col-md-6 control-label labdetail"><span class="">Observation sur l'évaluation : </span> </p>

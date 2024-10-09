@@ -14,13 +14,13 @@
                 <li class="breadcrumb-item active text-dark">Visuliser</li>
             </ol>
         </nav>
-    @can('evaluer_souscription', Auth::user())
-        <nav>
-            <button type="button" class="btn btn-success">
-                <a href="#modal-evaluer-avant-projet" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer l'avant projet</a>
-            </button>
-        </nav>
-    @endcan
+@can('visualiser_historique_de_traitement', Auth::user()) 
+    <nav>
+        <button type="button" class="btn btn-success">
+            <a href="#modal-historique-du-traitement" data-toggle="modal"  data-toggle="tooltip" title="Visuliser l'historque du traitement du dossier" class="text-white"><i class="bi bi-plus-square"></i> Voir l'historique</a>
+        </button>
+    </nav>
+ @endcan
        
     </div>
 <section class="section">
@@ -853,8 +853,85 @@
                                                   
                                             </div>
                                             <div class="col-md-6">
-
-                                            </div>
+                                                @isset($preprojet->eligible)
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-5 control-label labdetail"><span class="">Eligibilité : </span> </p>
+                                                                    <p class="col-md-7" >
+                                                                    <span class="valdetail">
+                                                                    @empty($preprojet->eligible)
+                                                                @else
+                                                                   {{ $preprojet->eligible }}
+                                                                 @endempty
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                @endisset
+                                                    @isset($preprojet->commentaire_evaluation)
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-6 control-label labdetail"><span class="">Observation sur l'évaluation : </span> </p>
+                                                                    <p class="col-md-6" >
+                                                                    <span class="valdetail text-danger">
+                                                                        {{ $preprojet->commentaire_evaluation }}
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                        @endisset
+                                                 @isset($preprojet->avis_de_lequipe)
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-5 control-label labdetail"><span class="">Avis de l'équipe : </span> </p>
+                                                                    <p class="col-md-7" >
+                                                                    <span class="valdetail">
+                                                                    @empty($preprojet->avis_de_lequipe)
+                                                                @else
+                                                                   {{ $preprojet->avis_de_lequipe }}
+                                                                 @endempty
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-5 control-label labdetail"><span class="">Commentaire de l'équipe : </span> </p>
+                                                                    <p class="col-md-7" >
+                                                                    <span class="valdetail">
+                                                                    @empty($preprojet->commentaires_de_lequipe)
+                                                                @else
+                                                                   {{ $preprojet->commentaires_de_lequipe }}
+                                                                 @endempty
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                    @endisset
+                                                    @isset($preprojet->decision_du_comite)
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-5 control-label labdetail"><span class="">Décision du comité de sélection : </span> </p>
+                                                                    <p class="col-md-7" >
+                                                                    <span class="valdetail">
+                                                                    @empty($preprojet->decision_du_comite)
+                                                                @else
+                                                                   {{ $preprojet->decision_du_comite }}
+                                                                 @endempty
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div  id="condanation" class="form-group row">
+                                                                <p class="col-md-5 control-label labdetail"><span class="">Observation du comité de sélection : </span> </p>
+                                                                    <p class="col-md-7" >
+                                                                    <span class="valdetail">
+                                                                    @empty($preprojet->commentaire_du_comite)
+                                                                @else
+                                                                   {{ $preprojet->commentaire_du_comite }}
+                                                                 @endempty
+                                                                </span></p>
+                                                            </div>
+                                                        </div>
+                                                    @endisset
+                                                    
+                                                    </div>
                                         </div>
                                  </div>
                                 </div>
@@ -868,68 +945,36 @@
 @endsection
 @section('modal_part')
 
-<div id="modal-evaluer-avant-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-historique-du-traitement" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Evaluer l'avant projet</h2>
+                <h2 class="modal-title col-md-9"><i class="fa fa-pencil"></i> Historique sur le traitement du dossier</h2> <a  style="float: right" type="button" class="btn btn-sm btn-danger col-md-2" data-dismiss="modal"></i> Fermer</a>
             </div>
+        
             <div class="modal-body">
-            <form method="post"  action="{{ route('preprojet_pe.evaluation') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <input type="hidden" name="avant_projet" id="" value="{{ $preprojet->id }}">
-                {{-- <div class="form-group{{ $errors->has('grille_devaluation') ? ' has-error' : '' }}">
-                    <label class="control-label col-md-4" for="grille_devaluation">Joindre la grille d'évaluation <span class="text-danger">*</span></label>
-                    <div class="input-group col-md-6">
-                        <input class="form-control col-md-6" type="file" name="grille_devaluation" id="" accept=".pdf, .jpeg, .png"   placeholder="Charger la grille d'évaluation" required>
-                        <span class="input-group-addon"><i class="gi gi-user"></i></span>
-                    </div>
-                    @if ($errors->has('grille_devaluation'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('grille_devaluation') }}</strong>
-                        </span>
-                        @endif
-                </div> --}}
                 <div class="row">
-                    @foreach ($evaluations as $evaluation )
-                    <div class="col-md-4" >
-                        <div class="form-group row">
-                            <label class="control-label" for="example-username">{{ $evaluation->critere->libelle}}  </label>
-                                <input type="number" id="{{ $evaluation->id}}" name="{{ $evaluation->id}}" max='{{ $evaluation->note}}' min="0" class="form-control" value="{{ $evaluation->note }}" disabled>
-                        </div>
-                        @if ($errors->has('note'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('note') }}</strong>
-                        </span>
-                        @endif
-                    </div>
-                    @endforeach
+                    <table>
+                        <thead>
+                             <th class="col-md-4">Opération</th>
+                             <th class="col-md-4">Utilisateur</th>
+                             <th class="col-md-4">Date de l'opération</th>
+                         </thead> 
+                         <tbody>
+                             @foreach ($preprojet->historiques as $histoire)
+                             <tr>
+                                <td>{{ $histoire->operation }}</td>
+                                <td>{{ $histoire->user->name }} {{ $histoire->user->prenom }}</td>
+                                <td>{{ format_date($histoire->created_at) }} </td>
+                             </tr>
+                                 
+                             @endforeach
+                             <td></td>
+                         </tbody>
+                     </table>  
                 </div>
-               <div class="row">
-                @foreach ($criteres as $critere )
-                <div class="col-md-4" >
-                    <div class="form-group row">
-                        <label class="control-label" for="example-username">{{ $critere->libelle}}  sur {{ $critere->ponderation}} </label>
-                            <input type="number" id="{{ $critere->id}}" name="{{ $critere->id}}" max='{{ $critere->ponderation}}' min="0" class="form-control" placeholder="Evaluer ..." text="Valeur depassé" required onchange="isValid('{{ $critere->id}}')">
-                    </div>
-                    <p id='message_ponderation_depasse' style="background-color:red; display:none">La Note maximal pour ce critère est {{ $critere->ponderation}}</p>
-                    @if ($errors->has('note'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('note') }}</strong>
-                    </span>
-                    @endif
-                </div>  
-            
-                @endforeach
-                </div> 
-                <div class="form-group form-actions">
-                    <div class="col-md-8 col-md-offset-4">
-                        <a  type="button" class="btn btn-sm btn-danger" data-dismiss="modal"></i> Annuler</a>
-                        <button type="submit" class="btn btn-sm btn-success valider_evaluation" ><i class="fa fa-arrow-right"></i> Valider</button>
-                    </div>
-                </div>
-            </form>      
+             
             </div>
             <!-- END Modal Body -->
         </div>
