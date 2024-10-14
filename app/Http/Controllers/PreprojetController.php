@@ -24,6 +24,7 @@ use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 class PreprojetController extends Controller
 {
 
@@ -1138,10 +1139,7 @@ public function lister_preprojet_soumis_au_comite_fp(Request $request)
     $statut='fp_soumis_au_comite';
     $titre="Liste des avant-projets soumis au comité";
     $preprojets= Preprojet::where('statut','affectes_au_comite_de_selection')->get();
-   
-
     return view('preprojet.liste_traitement_preprojet',compact('preprojets','type','statut','titre'));
-
 }
 public function lister_preprojet_soumis_au_comite_pe(Request $request)
 {
@@ -1150,8 +1148,13 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     $titre="Liste des avant-projets soumis au comité pour le programme entreprendre";
     $preprojets= PreprojetPe::where('statut','affectes_au_comite_de_selection')->get();
     return view('preprojet.liste_traitement_preprojet_pe',compact('preprojets','type','statut','titre'));
-
 }
+    public function generer_doc_synthese_comite(Preprojet $preprojet){
+        $evaluations=Evaluation::where('preprojet_fp_id',$preprojet->id)->get();
+        $pdf = PDF::loadView('pdf.synthese_du_dossier_comite', compact('preprojet','evaluations'));
+        return  $pdf->download($preprojet->num_projet.'.pdf');
+    }
+
 
 /*** FIn du bloc  */
 

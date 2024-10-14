@@ -136,5 +136,6 @@ Route::group([
     Route::get('/preprojetpe/par_region/par_sexe', [DashboardControllerPE::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
     Route::get('/preprojetpe/par_secteur_dactivite', [DashboardControllerPE::class,'avant_projet_par_secteur_dactivite_pe'])->name('preprojetpe.par_secteur_dactivite');
     Route::get('/preprojet/selectionne/par_region/par_sexe', [DashboardController::class,'avant_projet_selectionne_par_region_et_par_sexe'])->name('preprojet.selected.par_region_et_par_sexe');
+    Route::get('/preprojet/selectionne/generer/doc_synthese_comite/{preprojet}', [PreprojetController::class,'generer_doc_synthese_comite'])->name('preprojet.generer_doc_synthese_comite');
     
 });

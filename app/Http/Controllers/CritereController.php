@@ -93,9 +93,12 @@ class CritereController extends Controller
      * @param  \App\Models\Critere  $critere
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Critere $critere)
+    
+    public function destroy($id)
     {
-        //
+        $critere = Critere::findOrFail($id);
+        $critere->delete();
+        return redirect()->route('critere.index')->with('success', 'Critere supprimé avec succès');
     }
     public function modifier(Request $request){
         $critere= Critere::find($request->id);

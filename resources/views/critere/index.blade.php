@@ -41,10 +41,10 @@
             $i=0;
           @endphp
       @foreach($criteres as $critere)
-           @php
-              $i++;
-            @endphp
-          <tr>
+                @php
+                    $i++;
+                    @endphp
+                <tr>
                     <td>{{$i}}</td>
                     <td>{{getlibelle($critere->rubrique_id)}}</td>
                     <td>{{$critere->categorie}}</td>
@@ -52,14 +52,22 @@
                     <td>{{$critere->libelle}}</td>
                     <td>{{$critere->ponderation}}</td>
                     <td class="text-center">
+                        @can('gerer_critere', Auth::user())
                             <div class="btn-group">
-                             {{-- @can('role.update', Auth::user()) --}}
                                 <a  href="#modal-edit-grille" onclick="edit_grille({{ $critere->id }});"   data-toggle="modal" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>
-                            {{-- @endcan --}}
-                            @can('role.delete',Auth::user())
-                                <a href="#modal-confirm-grille" onclick="delConfirm({{ $critere->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
-                            @endcan
                             </div>
+                        @endcan
+                            {{-- @endcan --}}
+                           @can('gerer_critere',Auth::user()) 
+                                <div class="btn-group">
+                                    <form id="delete-form-{{ $critere->id }}" action="{{ route('critere.destroy', $critere->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a type="button" onclick="confirmDeletion({{ $critere->id }})" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                                    </form>
+                                </div>
+                            @endcan 
+                            
                     </td>
                 </tr>
             @endforeach
@@ -310,6 +318,14 @@
     </div>
 
 @endsection
+<script>
+    function confirmDeletion(articleId) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce critere ?')) {
+            // Si l'utilisateur confirme, soumettre le formulaire
+            document.getElementById('delete-form-' + articleId).submit();
+        }
+    }
+</script>
     <script>
         function edit_grille(id){
                     var id=id;
@@ -335,6 +351,7 @@
                     });
             }
     </script>
+
     <script>
 
     function detailUser(id){

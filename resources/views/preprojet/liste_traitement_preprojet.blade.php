@@ -82,6 +82,9 @@
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('preprojet.details', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Analyser l'avant projet" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                @if($preprojet->statut=='affectes_au_comite_de_selection')
+                                    <a href="{{ route('preprojet.generer_doc_synthese_comite', $preprojet) }}?type_detail=analyser" data-toggle="tooltip" title="Générer la synthese du comité de l'avant projet" class="btn btn-xs btn-default"><i class="fa fa-print"></i></a>
+                                @endif
                             </div>
                         </td>
                     </tr>
