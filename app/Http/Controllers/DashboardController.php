@@ -35,10 +35,10 @@ class DashboardController extends Controller
   }
   public function dashboard_fp(){
     if (Auth::user()->can('acceder_au_dashboard_du_fp')) {
-      $nombre_de_preprojet_soumis= Preprojet::where('entreprise_id','!=',NULL)->count();
+      $preprojet_soumis= Preprojet::where('entreprise_id','!=',NULL)->get();
       $nombre_de_preprojet_eligible= Preprojet::where('entreprise_id','!=',NULL)->where('eligible','eligible')->count();
       $nombre_de_preprojet_selectionne= Preprojet::where('entreprise_id','!=',NULL)->where('decision_du_comite','favorable')->count();
-      return view('dashboard.dashboard_fp',compact('nombre_de_preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
+      return view('dashboard.dashboard_fp',compact('preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
     }
   }
   public function dashboard_pe(){
@@ -190,6 +190,47 @@ public function avant_projet_par_secteur_dactivite(Request $request){
   }
 
 }
+public function avant_projet_par_guichet(Request $request){
+  if($request->type_entreprise=='mpme'){
+    if($request->statut=='soumis'){
+      $avant_projet_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.guichet');
+                                              })
+                                              ->groupBy('preprojets.guichet','valeurs.libelle')
+                                              ->select('valeurs.libelle as guichet' ,
+                                                      DB::raw("count(preprojets.id) as nombre"))
+                                              ->get();
+    }
+    elseif($request->statut=='eligible'){
+      $avant_projet_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.guichet');
+                                              })
+                                              ->where('preprojets.eligible','eligible')
+                                              ->groupBy('preprojets.guichet','valeurs.libelle')
+                                              ->select('valeurs.libelle as guichet' ,
+                                                      DB::raw("count(preprojets.id) as nombre"))
+                                              ->get();
+    }
+    elseif($request->statut=='selectionne'){
+      $avant_projet_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.guichet');
+                                              })
+                                              ->where('preprojets.decision_du_comite','favorable')
+                                              ->groupBy('preprojets.guichet','valeurs.libelle')
+                                              ->select('valeurs.libelle as guichet' ,
+                                                      DB::raw("count(preprojets.id) as nombre"))
+                                              ->get();
+    }
+         return json_encode($avant_projet_par_guichet);
+  }
+  elseif($request->type_entreprise=='startup'){
+
+  }
+
+}
 public function avant_projet_selectionne_par_region_et_par_sexe(Request $request){
   $avant_projet_soumis_par_region_et_par_sexe = DB::table('preprojets')
                                               ->leftjoin('promoteurs',function($join){
@@ -205,6 +246,51 @@ public function avant_projet_selectionne_par_region_et_par_sexe(Request $request
                                                       DB::raw("sum(CASE WHEN promoteurs.genre=1 THEN 1 else 0 end) as feminin"),)
                                               ->get();
                                   return json_encode($avant_projet_soumis_par_region_et_par_sexe);
+}
+public function avant_projet_par_guichet_par_region(Request $request){
+  if($request->type_entreprise=='mpme'){
+    if($request->statut=='soumis'){
+      $avant_projet_par_region_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.region');
+                                              })
+                                              ->groupBy('preprojets.region','valeurs.libelle')
+                                              ->select('valeurs.libelle as region' ,
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as guichet_1"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as guichet_2"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as guichet_3"),)
+                                              ->get();
+    }
+    elseif($request->statut=='eligible'){
+      $avant_projet_par_region_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.region');
+                                              })
+                                              ->groupBy('preprojets.region','valeurs.libelle')
+                                              ->select('valeurs.libelle as region' ,
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as 10000000"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as 50000000"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as 100000000"),)
+                                              ->get();
+    }
+    elseif($request->statut=='selectionne'){
+      $avant_projet_par_region_par_guichet = DB::table('preprojets')
+                                              ->leftjoin('valeurs',function($join){
+                                                $join->on('valeurs.id','=','preprojets.region');
+                                              })
+                                              ->groupBy('preprojets.region','valeurs.libelle')
+                                              ->select('valeurs.libelle as region' ,
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as 10000000"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as 50000000"),
+                                                      DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as 100000000"),)
+                                              ->get();
+    }
+         return json_encode($avant_projet_par_region_par_guichet);
+  }
+  elseif($request->type_entreprise=='startup'){
+
+  }
+
 }
 
 }
