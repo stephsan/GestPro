@@ -171,6 +171,10 @@
                             </div>
                             
                         </div>
+                        <div class="row" id="map">
+                            test map
+                        </div>
+                        
                         <hr>
                     </div>
                     <div class="row" id="projets_soumis" style="display: none">
@@ -222,6 +226,95 @@
 </section>
 @endsection
 @section('script')
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxZLH7Ulcd_qwMPz1h3FucJksuKFlD4MI&callback=initMap" async></script>
+<script>
+    let map, activeInfoWindow, markers = [];
+
+    /* ----------------------------- Initialize Map ----------------------------- */
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+                lat: 12.2418505,
+                lng: -1.5567604999999958,
+            },
+            zoom: 8
+        });
+        map.addListener("click", function(event) {
+            mapClicked(event);
+        });
+       initMarkers();
+    }
+
+    /* --------------------------- Initialize Markers --------------------------- */
+    function initMarkers() {
+        var url = "{{ route('pe.avant_projet_geopresenation') }}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                error:function(data){alert("Erreur");},
+                success: function (initialMarkers) {
+                    //alert(initialMarkers);
+                    console.log(initialMarkers);
+                    
+                    for (let index = 0; index < initialMarkers.length; index++) {
+                        const markerData = initialMarkers[index];
+                        const lat = parseFloat(markerData.lat);
+                        const lng = parseFloat(markerData.long);
+                        const marker = new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            label: markerData.label,
+                            draggable: markerData.draggable,
+                            map
+                        });
+                        markers.push(marker);
+                        const infowindow = new google.maps.InfoWindow({
+                            content: `<b>${markerData.titre_projet},${markerData.promoteur}</b>`,
+                        });
+                        marker.addListener("click", (event) => {
+                            if(activeInfoWindow) {
+                                activeInfoWindow.close();
+                            }
+                            infowindow.open({
+                                anchor: marker,
+                                shouldFocus: false,
+                                map
+                            });
+                            activeInfoWindow = infowindow;
+                            markerClicked(marker, index);
+                        });
+
+                        marker.addListener("dragend", (event) => {
+                            markerDragEnd(event, index);
+                        });
+                    }
+                            }
+                });
+        
+    }
+
+    /* ------------------------- Handle Map Click Event ------------------------- */
+    function mapClicked(event) {
+        console.log(map);
+        console.log(event.latLng.lat(), event.latLng.lng());
+    }
+
+    /* ------------------------ Handle Marker Click Event ----------------------- */
+    function markerClicked(marker, index) {
+        console.log(map);
+        console.log(marker.position.lat());
+        console.log(marker.position.lng());
+    }
+
+    /* ----------------------- Handle Marker DragEnd Event ---------------------- */
+    function markerDragEnd(event, index) {
+        console.log(map);
+        console.log(event.latLng.lat());
+        console.log(event.latLng.lng());
+    }
+</script>
+
 <script>
     function change_details(page_active_id, autre_page_1, autre_page_2, autre_page_3,){
         $('#'+page_active_id).show();

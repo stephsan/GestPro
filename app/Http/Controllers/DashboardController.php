@@ -292,5 +292,28 @@ public function avant_projet_par_guichet_par_region(Request $request){
   }
 
 }
+public function avant_projet_pe_geopresenation()
+{
+  $avant_projets= PreprojetPe::all();
+  //  $type_entreprise= $request->type_entreprise;
+  //  $forme= $request->valeur_de_forme;
+  //  if($request->statut=='selectionne'){
+  //   $souscriptionsgeo= PreprojetPe::where("aopOuleader",$type_entreprise)->where("decision_du_comite_phase1","selectionnee")->where('participer_a_la_formation',$forme)->get();
+  //  }
+  //  else{
+  //   $souscriptionsgeo= Entreprise::where("aopOuleader",$type_entreprise)->where("decision_du_comite_phase1","selectionnee")->get();
+  //  }
+    $datageo=[];
+        foreach( $avant_projets as $value)
+        {
+           $datageo[] = [
+                          'lat'=>$value->latitude,'long'=>$value->longitude,'titre_projet'=> $value->num_projet,'promoteur'=>$value->promoteur->nom.' '.$value->promoteur->prenom,
+                          'label' => [ 'color' => 'white', 'text' => $value->titre_projet ],
+                          'draggable' => true ];
+                          // 'id'=>$value->id,'denomination'=>$value->titre_projet,'telephone'=>$value->promoteur->telephone_promoteur, 'longitude'=>$value->longitude, 'latitude'=>$value->latitude, 'secteur_dactivite'=> getlibelle($value->secteur_dactivite),'region'=>getlibelle($value->region) );
+        }
+         // dd($datageo);
+        return json_encode($datageo);
+}
 
 }

@@ -565,9 +565,7 @@ $.ajax({
                         },
                         series:donnch
                     });
-
 }
-
 });
 var url = "{{ route('preprojet.par_guichet') }}"
 $.ajax({

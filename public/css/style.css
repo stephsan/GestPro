@@ -650,3 +650,8 @@ div.dt-buttons {
 .themed-background-muted-light {
   background-color: #f9f9f9 !important;
 }
+
+#map {
+  width: 100%;
+  height: 500px;
+}
