@@ -14,7 +14,10 @@ class DashboardController extends Controller
         $this->middleware('auth');
     }
   public function index(){
-    //return redirect()->route('dashboard.pe');
+   if(Auth::user()->isbeneficiary==1){
+        return view('beneficaire.accueil');
+   }
+   else{
     if(return_role_adequat(env('ID_ROLE_MEMBRE_COMITE_FP'))){
         return redirect()->route('preprojet.soumis_au_comite_fp');
     }
@@ -31,7 +34,7 @@ class DashboardController extends Controller
     else{
         return redirect()->route('dashboard.fp');
     }
-      
+  }
   }
   public function dashboard_fp(){
     if (Auth::user()->can('acceder_au_dashboard_du_fp')) {

@@ -13,6 +13,9 @@ use App\Http\Controllers\PromoteurController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\PreprojetController;
 use App\Http\Controllers\CritereController;
+use App\Http\Controllers\ProjetController;
+use App\Http\Controllers\CoachController;
+
 
 use App\Http\Controllers\SouscriptionPEController;
 
@@ -77,6 +80,12 @@ Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument']
 // Route::get("/lister/documents/utliles", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
 Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
 Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
+Route::post('/store/beneficiary/compte', [UserController::class,'storecomptePromoteur'])->name('beneficiary_compte.store');
+route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_conformite_cpt'])->name('verifier_validite_cpt_promo');
+Route::get('beneficiary/project', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
+Route::resource('projet',ProjetController::class);
+
+
 
 Route::get('/accueil', function () {
     return view('index');
@@ -141,5 +150,7 @@ Route::group([
     Route::get('/preprojet/par_guichet', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
     Route::get('/preprojet/par_guichet', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
     Route::get("/dashboard/preprojetpe/geopresentation", [DashboardController::class, 'avant_projet_pe_geopresenation'])->name("pe.avant_projet_geopresenation");
-
+    Route::resource('coach', CoachController::class);
+    Route::get('/scoach/modif/', [CoachController::class, 'modif'])->name('coach.modif');
+    Route::post('/coach/save/modif/', [CoachController::class, 'enremodif'])->name('coach.enremodif');
 });

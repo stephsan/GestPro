@@ -9,7 +9,7 @@ use App\Models\Contact;
 class SouscriptionPEController extends Controller
 {
     function create_personne(Request $request){
-        return redirect()->back();
+        //return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $occupation_professionnelle_actuelles =Valeur::where("parametre_id",env('PARAMETRE_OCCUPATION_PROFESSIONNELLE'))->get();

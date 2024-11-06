@@ -151,6 +151,8 @@
           <li><a class="nav-link scrollto " href="{{ route('login') }}">Se Connecter</a></li> --}}
           
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          <li><a  data-toggle="modal" data-target="#modal-create-compte" href="#">Créer un compte</a></li>
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->

@@ -57,7 +57,7 @@ class PromoteurController extends Controller
      */
     public function create()
     {
-        return redirect()->back();
+        //return redirect()->back();
         $regions=Valeur::where('parametre_id',env('PARAMETRE_ID_REGION'))->get();
         $niveau_instructions=Valeur::where("parametre_id", env('PARAMETRE_NIVEAU_D_INSTRUCTION'))->get();
         $nb_annee_experience=Valeur::where("parametre_id", env('PARAMETRE_TRANCHE_EXPERIENCE'))->get();
@@ -76,7 +76,7 @@ class PromoteurController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->back();
+        //return redirect()->back();
         $type_entreprise= $request->type_entreprise;
         $programme= $request->programme;
         // dd( $type_entreprise.''.$programme);
@@ -135,7 +135,7 @@ class PromoteurController extends Controller
             'niveau_instruction' => $request->niveau_instruction,
             'autre_niveau_dinstruction' => $request->autre_niveau_instruction,
             'numero_du_proche'=> $request->numero_du_proche,
-            // 'domaine_formation'=> $request->domaine_formation,
+            'domaine_formation'=> $request->domaine_formation,
             //'nombre_annee_experience'=> $request->nombre_annee_experience,
             'precision_residence' => $request->precision_residence,
             'formation_en_rapport_avec_activite' => $request->formation_activite,
@@ -212,7 +212,6 @@ class PromoteurController extends Controller
         else{
           
            $entreprises= Entreprise::where('promoteur_id', $promoteur->id)->where('decision_du_comite_phase1', "selectionnee")->where('participer_a_la_formation',1)->get();
-            //dd($entreprises);
            $data=[];
             foreach( $entreprises as $value)
             {

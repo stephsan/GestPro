@@ -58,7 +58,7 @@
         <a href="#" class="logo d-flex align-items-center">
             <!--<img src="{{asset('img/logo-dgi-final.png')}}" alt="Logo">-->
             <!--<img src="{{asset('img/armoirie_bf.png')}}" alt="Logo">-->
-            <span class="d-none d-lg-block custom-text-success p-size18">ECOTEC-BF</span>
+            <span class="d-none d-lg-block custom-text-success p-size18">Espace Bénéficiaire</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn text-success"></i>
     </div><!-- End Logo -->
@@ -118,14 +118,20 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-     @can('acceder_au_dashboard_du_fp', Auth::user())
+    
         <li class="nav-item">
             <a class="nav-link  @yield('dashboard_fp')" href="{{route('dashboard.fp')}}">
                 <i class="bi bi-grid"></i>
-                <span>Tableau de bord FP</span>
+                <span>Mon Profil</span>
             </a>
         </li>
-    @endcan
+        <li class="nav-item">
+            <a class="nav-link  @yield('project')" href="{{route('projet.create')}}">
+                <i class="bi bi-grid"></i>
+                <span>Mon projet</span>
+            </a>
+        </li>
+   
     @can('acceder_au_dashboard_du_pe', Auth::user())
         <li class="nav-item">
             <a class="nav-link @yield('dashboard_pe')" href="{{route('dashboard.pe')}}">
@@ -375,11 +381,6 @@
                             <i class="bi bi-circle"></i><span>Documents</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('coach.index') }}" class="nav-link @yield('coach')">
-                            <i class="bi bi-circle"></i><span>Coachs</span>
-                        </a>
-                    </li>
             @endcan
       @can('gerer_user', Auth::user())
                     <li>
@@ -473,11 +474,14 @@
 <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script> 
 <script src={{ asset("js/highcharts.js") }}></script>
+<script src={{ asset("js/highcharts.js") }}></script>
+<script src="{{ asset('js/js-brave/pages/formsWizard.js') }}"></script>
+<script src="{{ asset('js/js-brave/mon.js') }}"></script>
+<script>$(function(){ FormsWizard.init(); });</script>
     <script>
         $('.alert').delay(3000).slideUp(350);
            // $('.test').('hide')// or fade, css display however you'd like.
     </script>
-    {{-- <script src="{{ asset('js/js-brave/app.js') }}"></script> --}}
     <script>
 
         $(function() {

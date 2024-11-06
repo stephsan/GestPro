@@ -155,7 +155,7 @@ public function creation_pe(Request $request)
      */
     public function store(Request $request)
     {
-        return redirect()->back();
+        //return redirect()->back();
         $promoteur=Promoteur::where("code_promoteur",$request->code_promoteur)->first();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
@@ -264,7 +264,6 @@ return view("fond_partenariat.validateStep1", compact("programme","type_entrepri
 }
 public function genereRecpisse(Request $request)
 {
-    
     $programme=$request->programme;
     $promoteur= Promoteur::where("slug", $request->promoteur)->first();
     if($request->programme=='FP'){

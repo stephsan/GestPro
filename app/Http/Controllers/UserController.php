@@ -8,6 +8,10 @@ use App\Models\Promotrice;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Valeur;
+use App\Models\PreprojetPe;
+use App\Models\Preprojet;
+use App\Models\Promoteur;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReinitialiseMail;
@@ -25,8 +29,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //User::find(1)->roles;
-       // dd(User::find(1)->roles);
+        
      if (Auth::user()->can('gerer_user')) {
         $users= User::orderBy('updated_at', 'desc')->get();
         return view('users.index', compact("users"));
@@ -62,6 +65,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function store_beneficiary_compte(Request $request){
+
+    }   
+
     public function store(Request $request)
     {
      if (Auth::user()->can('gerer_user')) {
@@ -84,12 +91,10 @@ class UserController extends Controller
             'email' => $request['email'],
             'structure_represente'=>$structure_represente,
             'firstcon' => 1,
-            //'banque_id'=>$request['banque'],
             'password' => bcrypt('ecotec@2024')
         ]);
         $user->roles()->sync($request->roles);
        // flash("Utilisateur ajouté avec succes !!!")->success();
-
         return redirect()->route("users.index");
     }
      else{
@@ -216,17 +221,24 @@ public function updateuser(Request $request, User $user)
       
 }
 public function verifier_conformite_cpt(Request $request){ 
-    $entreprises=Entreprise::where('code_promoteur',$request->code_promoteur)->where("participer_a_la_formation",1)->where("decision_du_comite_phase1","selectionnee")->get();
-    $user=User::where("code_promoteur",$request->code_promoteur)->first();
-   // dd($entreprises);
-    if(!$entreprises || $user){
+    $promoteur=Promoteur::where('code_promoteur',$request->code_promoteur)->first();
+    if($promoteur){
+        $preprojets= Preprojet::where('promoteur_id', $promoteur->id)->where('decision_du_comite','favorable')->get();
+        $preprojet_pes= PreprojetPe::where('promoteur_id', $promoteur->id)->where('decision_du_comite','favorable')->get();
+        $user=User::where("login",$request->code_promoteur)->first();
+        if((!$preprojets && !$preprojet_pes) || $user){
+            return 2;
+        }
+        elseif((count($preprojet_pes)>0)|| (count($preprojets)>0)){
+            return 1;
+        }else{
+            return 0;
+        }
+    }else{
         return 2;
     }
-    elseif(count($entreprises)>0){
-        return 1;
-    }else{
-        return 0;
-    }
+    
+   
 
 }
 public function storecomptePromoteur(Request $request){
@@ -234,7 +246,7 @@ public function storecomptePromoteur(Request $request){
         'code_promoteur'=>'unique:users|max:255',
         'password' => 'required|confirmed|min:6'
     ]);
-    $promoteur=Promotrice::where('code_promoteur',$request->code_promoteur)->first();
+    $promoteur=Promoteur::where('code_promoteur',$request->code_promoteur)->first();
     if(isset($request['code_promoteur'], $request['email'])){
         $user= User::create([
             "name"=>$promoteur['nom'],
@@ -242,18 +254,19 @@ public function storecomptePromoteur(Request $request){
             'prenom'=> $promoteur['prenom'],
             'telephone'=> $request ['telephone'],
             'email' => $request['email'],
-            'code_promoteur' => $request['code_promoteur'],
+            'isbeneficiary' => 1,
+            'login' => $request['code_promoteur'],
             'password' => bcrypt($request['password'])
         ]);
     }
     if($user){
         return redirect()->back();
-        flash("Votre compte à été créé avec success !!!")->success();
+        //flash("Votre compte à été créé avec success !!!")->success();
 
     }
     else{
         return redirect()->back();
-        flash("Desolé votre compte n'a pas été créé. Bien vouloir vérifier la confirmation de mot de passe!!!")->error();
+        //flash("Desolé votre compte n'a pas été créé. Bien vouloir vérifier la confirmation de mot de passe!!!")->error();
 
     }
    

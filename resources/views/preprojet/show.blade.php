@@ -838,7 +838,7 @@
                                                         @empty($preprojet->entreprise->formalise)
                                                             Informations non disponible
                                                         @endempty
-                                                        @if($preprojet->entreprise->formalise=1)
+                                                        @if($preprojet->entreprise->formalise==1)
                                                             Oui
                                                         @else
                                                             Non
@@ -846,7 +846,7 @@
                                                     </span>
                                                 </span>
                                                 </div>
-                                                @if($preprojet->entreprise->formalise=1)
+                                                @if($preprojet->entreprise->formalise==1)
                                                 <div  class="form-group ">
                                                     <span class="col-md-5 control-label labdetail"> <span class="labdetail">Numero RCCM: </span> </span>
                                                     <span class="col-md-6" >

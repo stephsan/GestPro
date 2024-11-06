@@ -138,7 +138,7 @@ class PreprojetController extends Controller
      */
 
      function store_preprojet_pe(Request $request){
-        return redirect()->back();
+        //return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
         $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
@@ -636,7 +636,7 @@ class PreprojetController extends Controller
         return redirect()->back();
     }
     public function store_preprojet(Request $request){
-        return redirect()->back();
+        //return redirect()->back();
         $type_entreprise=$request->type_entreprise;
         $programme=$request->programme;
        // dd($type_entreprise);
@@ -848,12 +848,7 @@ elseif($preprojet->entreprise_id==null){
                 foreach($preprojets as $preprojet){
                     ($preprojet->promoteur->situation_residence==2)?($note_situation_residence=5):($note_situation_residence=0);
                     if($preprojet->entreprise->formalise==1){
-                        if($preprojet->entreprise->forme_juridique=19){
-                            $note_forme_juridique=3;
-                        }
-                        else{
-                            $note_forme_juridique=5;
-                        }
+                        $note_forme_juridique=5;
                     }
                     else{
                         $note_forme_juridique=0;

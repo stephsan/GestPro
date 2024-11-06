@@ -333,7 +333,7 @@
                      <div class="text-center" style="margin-top:10px">
                       <a  data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a> 
                       {{-- <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existant</a>  --}}
-                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup" @disabled(true)  class="btn btn-success" >Souscrire en Startup</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=PE&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a>
                   </div>
               </ol>
          </p>
@@ -369,7 +369,7 @@
               <ol>
                   <img src="{{ asset('img/Resume_FP_en Image.png') }}" alt="" width="100%">
                      <div class="text-center" style="margin-top:10px">
-                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" @disabled(true) >Souscrire en MPME Existante</a>
+                      <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=MPMEExistant"  class="btn btn-success" >Souscrire en MPME Existante</a>
                       <a data-toggle="modal" data-target="#modal-souscription-noOk" href="#" class="btn btn-success" @disabled(true) >Souscrire en Startup</a>
                       {{-- <a href="{{ route('fp.create.personne') }}?programme=FP&&type_entreprise=startup"  class="btn btn-success" >Souscrire en Startup</a> --}}
                   </div>
@@ -427,8 +427,52 @@
       </div>
   </div>
 
-
-
+  <div id="modal-create-compte"class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg" style="padding:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: right !important;">&times;</button>
+                <h3 class="modal-title"><i class="gi gi-pen" ></i>Creér un compte bénéficiaire</h3>
+            </div>
+          <div class="modal-body">
+            <form  id="form-validation" action="{{route("beneficiary_compte.store")}}" method="post">
+              @csrf
+              <fieldset>
+                  <legend></legend>
+              <p style="background-color:red; display:none" id="alert_pass">Bien vouloir vérifier la conformité du mot de passe</p>
+                  <div class="form-group">
+                      <label class="control-label" for="user_name">Renseigner le code promoteur:</label>
+                          <input type="text" id="code_promoteur_cpt_promo" name="code_promoteur" class="form-control" onkeyup="afficher_le_formulaire_cpt_promoteur();">
+                      <p id="code_incorrect" style="color:red; display:none"> Code incorrect ou compte déja créer avec ce code. Bien vouloir verifier </p>
+                  </div>
+              </fieldset>
+          <fieldset class="create_compte_promoteur" style="display: none">
+              <div class="form-group">
+                  <label class="control-label" for="user_name">Email :</label>
+                      <input type="email" id="email" name="email" class="form-control" >
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="user-settings-password">Mot de Passe</label>
+                      <input type="password" id="val_password_promo" name="password" class="form-control" placeholder="SVP entrez un mot de passe complexe">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="user-settings-repassword">Confirmer le Nouveau Mot de Passe</label>
+                      <input type="password" id="val_confirm_password_promo" name="password_confirmation" class="form-control" onchange="verifiedpass();" placeholder="Et confirmer le ...">
+              </div>
+          </fieldset>
+              <div class="form-group create_compte_promoteur" >
+                  <div class="col-xs-12 text-right">
+                      <button type="button" class="btn btn-sm btn-warning" data-dismiss="modal">Annuler</button>
+                      <button type="submit" id="save_compte" class="btn btn-sm btn-success">Enregistrer</button>
+                  </div>
+              </div>
+         
+          </form>
+      </div>
+         
+        </div>
+    </div>
+  </div>
  {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="{{asset('frontend/plugins/jquery/jquery.min.js')}}"></script> --}}
@@ -484,6 +528,29 @@
   $(document).ready(function() {
     $('.montant').prop('required',false);;
   })
+</script>
+<script>
+  function afficher_le_formulaire_cpt_promoteur(){
+    var code_promoteur = $('#code_promoteur_cpt_promo').val();
+            var url= "{{ route('verifier_validite_cpt_promo') }}"
+        $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {code_promoteur: code_promoteur},
+                    dataType: 'json',
+                    error:function(data){alert("Erreur");},
+                    success: function(data) {
+                        if(data==true){
+                            $('.create_compte_promoteur').show();
+                            $('#code_incorrect').hide();
+                        }else{
+                            $('.create_compte_promoteur').hide();
+                            $('#code_incorrect').show();
+                        }
+                       
+                    }
+            });
+}
 </script>
   <script type="text/javascript"> 
     function refresh(){
