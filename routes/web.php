@@ -153,4 +153,7 @@ Route::group([
     Route::resource('coach', CoachController::class);
     Route::get('/scoach/modif/', [CoachController::class, 'modif'])->name('coach.modif');
     Route::post('/coach/save/modif/', [CoachController::class, 'enremodif'])->name('coach.enremodif');
+    Route::post("simple-excel/import",  [PreprojetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation');
+    Route::post("evaluationPe/import",  [PreprojetController::class, "chargerEvaluationPe"])->name('excel.chargerEvaluationPe');
+    Route::get('/preprojet/evaluation/automatiques', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
 });

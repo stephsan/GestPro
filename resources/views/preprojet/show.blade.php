@@ -1000,22 +1000,22 @@
                                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                    @foreach ($evaluations as $evaluation )
-                                                        <div class="row">
-                                                            <div  id="condanation" class="form-group row">
-                                                                <p class="col-md-7 control-label labdetail"><span class="">{{ $evaluation->critere->libelle }} : </span> </p>
-                                                                    <p class="col-md-5" >
-                                                                    <span class="valdetail">
-                                                                    @empty($evaluation->note)
-                                                                    0/{{ $evaluation->critere->ponderation }}
-                                                                @else
-                                                                        {{$evaluation->note}}/{{ $evaluation->critere->ponderation }}
-                                                                    @endempty
-                                                                </span></p>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    @endforeach
+                                                @foreach ($all_evaluations  as $evaluation )
+                                                <div class="row">
+                                                    <div  id="condanation" class="form-group row">
+                                                        <p class="col-md-7 control-label labdetail"><span class="">{{ $evaluation->critere->libelle }} : </span> </p>
+                                                            <p class="col-md-5" >
+                                                            <span class="valdetail">
+                                                            @empty($evaluation->note)
+                                                            0/{{ $evaluation->critere->ponderation }}
+                                                        @else
+                                                                {{$evaluation->note}}/{{ $evaluation->critere->ponderation }}
+                                                            @endempty
+                                                        </span></p>
+                                                    </div>
+                                                </div>
+                                                
+                                            @endforeach
                                                     <div class="row">
                                                         <div  id="condanation" class="form-group row">
                                                             <p class="col-md-7 control-label labdetail"><span class="">Total : </span> </p>

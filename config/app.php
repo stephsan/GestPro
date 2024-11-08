@@ -164,6 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         //MercurySeries\Flashy\FlashyServiceProvider::class,
         /*
          * Package Service Providers...
@@ -179,8 +180,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-        
-
     ],
 
     /*
@@ -196,6 +195,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         "PDF" => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //'Flashy' => MercurySeries\Flashy\Flashy::class,
     ])->toArray(),
 

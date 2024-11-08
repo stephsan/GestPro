@@ -15,7 +15,11 @@
             </ol>
         </nav>
 
-        
+        <nav>
+            <button type="button" class="btn btn-success">
+                <a href="#modal-import-evaluation" data-toggle="modal"  data-toggle="tooltip" title="Importer les notes d'évaluation" class="text-white"><i class="bi bi-plus-square"></i> Importer les note d'évaluation</a>
+            </button>
+        </nav>
     </div><!-- End Page Title -->
 
 <section class="section">
@@ -96,7 +100,25 @@
 </div></div></div></section>
 @endsection
 @section('modal_part')
-
+<div id="modal-import-evaluation" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-pencil"></i> Importer les notes de l'évaluation</h2>
+            </div>
+            <div class="modal-body">
+                <p>Sélectionnez un fichier Excel (.xlsx) pour importer les notes d'évaluation.<br><strong>Les colonnes : </strong></p>
+                <form method="POST" action="{{ route('excel.chargerEvaluation') }}" enctype="multipart/form-data" >
+                    @csrf
+                    <input type="file" name="fichier" required>
+                    <button type="submit" >Importer</button>
+                </form>   
+            </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
 
 @endsection
 <script>

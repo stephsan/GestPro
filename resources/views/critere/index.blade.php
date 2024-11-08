@@ -28,6 +28,7 @@
         <thead>
                 <tr>
                     <th>numéro</th>
+                    <th>id</th>
                     <th>Rubrique</th>
                     <th>categorie</th>
                     <th>Type entreprise</th>
@@ -46,6 +47,7 @@
                     @endphp
                 <tr>
                     <td>{{$i}}</td>
+                    <td>{{$critere->id}}</td>
                     <td>{{getlibelle($critere->rubrique_id)}}</td>
                     <td>{{$critere->categorie}}</td>
                     <td>{{$critere->type_entreprise}}</td>

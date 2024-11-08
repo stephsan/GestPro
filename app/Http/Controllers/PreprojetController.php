@@ -24,6 +24,8 @@ use App\Mail\recepisseMail;
 use App\Mail\resumeMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Spatie\SimpleExcel\SimpleExcelWriter;
+use Spatie\SimpleExcel\SimpleExcelReader;
 use PDF;
 class PreprojetController extends Controller
 {
@@ -57,12 +59,12 @@ class PreprojetController extends Controller
             'user_id' =>Auth::user()->id,
         ]);
     }
-    function createEvaluation_pe($idprojet,$indicateur,$note ){
+    function createEvaluation_pe($idprojet,$indicateur,$note,$type_evaluation  ){
         $evaluation=Evaluation::where('preprojet_pe_id',$idprojet)->where('critere_id',$indicateur)->get();
         if(count($evaluation)==0){
            Evaluation::create([
                "preprojet_pe_id"=>$idprojet,
-               "type_evaluation"=>'automatique',
+               "type_evaluation"=>$type_evaluation ,
                "note"=>$note,
                "critere_id"=> $indicateur
            ]);
@@ -283,14 +285,14 @@ class PreprojetController extends Controller
                                 $note_experience_promoteur=5;
                             }
                             
-                            $this->createEvaluation_pe($preprojet->id,1, $note_genre);
-                            $this->createEvaluation_pe($preprojet->id,2, $note_handicap);
-                            $this->createEvaluation_pe($preprojet->id,14, $note_experience_promoteur);
-                            $this->createEvaluation_pe($preprojet->id,16, $note_creation_emplois);
-                            $this->createEvaluation_pe($preprojet->id,19, $note_etude_technique_de_faisabilite);
-                            $this->createEvaluation_pe($preprojet->id,22, $note_site);
-                            $this->createEvaluation_pe($preprojet->id,21, $note_recherche_de_financement_envisage);
-                            $this->createEvaluation_pe($preprojet->id,20, $note_prototype_existe);
+                            $this->createEvaluation_pe($preprojet->id,1, $note_genre,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,2, $note_handicap ,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,14, $note_experience_promoteur,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,16, $note_creation_emplois,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,19, $note_etude_technique_de_faisabilite,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,22, $note_site,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,21, $note_recherche_de_financement_envisage,'automatique');
+                            $this->createEvaluation_pe($preprojet->id,20, $note_prototype_existe,'automatique');
 
                             if ($request->hasFile('doc_projet')) {
                                 $file = $request->file('doc_projet');
@@ -367,7 +369,7 @@ class PreprojetController extends Controller
         }
        
            else
-        return view('preprojet.show',compact('sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
+        return view('preprojet.show',compact('all_evaluations','sources_dapprovisionnements','evaluations','criteres','projet_innovations','effectif_permanent','effectif_temporaire','chiffre_daffaires','preprojet','piecejointes'));
         
     }
     public function afficher_details_pe(PreprojetPe $preprojet, Request $request){
@@ -384,6 +386,7 @@ class PreprojetController extends Controller
         //$evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
         $evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->where('type_evaluation','automatique')->get();
         $all_evaluations=Evaluation::where('preprojet_pe_id',$preprojet->id)->get();
+       // dd($all_evaluations);
         $id_criteres=[];
         $i=0;
         foreach($evaluations as $evaluation)
@@ -845,8 +848,42 @@ elseif($preprojet->entreprise_id==null){
 
         public function completer_evaluation_automatique(Request $request){
                 $preprojets=Preprojet::all();
+                //$note_respect_du_code_de_financement=0;
                 foreach($preprojets as $preprojet){
                     ($preprojet->promoteur->situation_residence==2)?($note_situation_residence=5):($note_situation_residence=0);
+                    if(($preprojet->subvention_souhaite !=0 )&&($preprojet->cout_total !=0 )){
+                        $taux= $preprojet->subvention_souhaite/$preprojet->cout_total*100;
+                        //dd($taux);
+                    }else{
+                        $taux=0;
+                    }
+                    // petit projet Max inferieur ou egale a 65 pourc de valeur du projet
+                    // projet standard standard projet Max inferieur ou egale a 50 pourc de valeur du projet
+                    // transformation verte  projet Max inferieur ou egale a 65 pourc de valeur du projet sans exeder 100 millions
+                    if($preprojet->guichet==7165){
+                        if($preprojet->subvention_souhaite >10000000){
+                            $note_respect_du_code_de_financement=0;
+                        }
+                        elseif(($preprojet->subvention_souhaite < 10000000)||($preprojet->subvention_souhaite == 10000000)){
+                            ($taux>65)?$note_respect_du_code_de_financement=0:$note_respect_du_code_de_financement=5;
+                        }
+                    }
+                    elseif($preprojet->guichet==7166){
+                        if($preprojet->subvention_souhaite >50000000){
+                            $note_respect_du_code_de_financement=0;
+                        }
+                        elseif(($preprojet->subvention_souhaite < 50000000)||($preprojet->subvention_souhaite == 50000000)){
+                            ($taux>50)?$note_respect_du_code_de_financement=0:$note_respect_du_code_de_financement=5;
+                        }
+                    }
+                    elseif($preprojet->guichet==7167){
+                        if($preprojet->subvention_souhaite >100000000){
+                            $note_respect_du_code_de_financement=0;
+                        }
+                        elseif(($preprojet->subvention_souhaite < 100000000)||($preprojet->subvention_souhaite == 100000000)){
+                            ($taux>50)?$note_respect_du_code_de_financement=0:$note_respect_du_code_de_financement=5;
+                        }
+                    }
                     if($preprojet->entreprise->formalise==1){
                         $note_forme_juridique=5;
                     }
@@ -854,7 +891,8 @@ elseif($preprojet->entreprise_id==null){
                         $note_forme_juridique=0;
                     }
                     $this->createEvaluation_fp($preprojet->id,3, $note_situation_residence,'automatique');
-                    //$this->createEvaluation_fp($preprojet->id,13, $note_forme_juridique,'automatique');
+                    $this->createEvaluation_fp($preprojet->id,13, $note_forme_juridique,'automatique');
+                    $this->createEvaluation_fp($preprojet->id,12, $note_respect_du_code_de_financement,'automatique');
                 }
                 return redirect()->back()->with('success','Evaluation complémentaire éffectuée avec success');
         }
@@ -1185,5 +1223,126 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     public function destroy($id)
     {
         //
+    }
+    public function chargerEvaluation(Request $request){
+      
+        // 1. Validation du fichier uploadé. Extension ".xlsx" autorisée
+        $this->validate($request, [
+            'fichier' => 'bail|required|file|mimes:xlsx'
+        ]);
+    
+        // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
+        $fichier = $request->fichier->move(public_path(), $request->fichier->hashName());
+    
+        // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
+        $reader = SimpleExcelReader::create($fichier);
+         // On récupère le contenu (les lignes) du fichier
+        $rows = $reader->getRows();
+    
+    $ids=[];
+    $i=0;
+    foreach($rows as $row){
+        $datas[]= array('num_dossier'=>$row['num_dossier'], '4'=>$row['4'],'5'=>$row['5'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'9'=>$row['9'],'10'=>$row['10'],'11'=>$row['11'],'15'=>$row['15'],'18'=>$row['18']);
+    
+    }
+            foreach($datas as $data){
+                $preprojet=Preprojet::where('num_projet',$data['num_dossier'])->first();
+                 $this->createEvaluation_fp($preprojet->id,4,(int) $data['4'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,5, (int) $data['5'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,6,(int) $data['6'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,7,(int) $data['7'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,8,(int) $data['8'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,9,(int) $data['9'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,10,(int) $data['10'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,11,(int) $data['11'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,18,(int) $data['18'],'humain' );
+                 $this->createEvaluation_fp($preprojet->id,15,(int) $data['15'],'humain' );
+                $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
+                 $preprojet->update([
+                    'note_totale'=>$note_totale,
+                    'statut'=>'evalue'
+                ]);
+                
+    }
+    
+        // $rows est une Illuminate\Support\LazyCollection
+    
+        // 4. On insère toutes les lignes dans la base de données
+        
+        $status = TRUE;
+    
+        // Si toutes les lignes sont insérées
+        if ($status) {
+    
+            // 5. On supprime le fichier uploadé
+            $reader->close(); // On ferme le $reader
+            return back()->withMsg("Importation réussie !");
+    
+        } else { abort(500); }
+    
+    }
+    public function chargerEvaluationPe(Request $request){
+        // 1. Validation du fichier uploadé. Extension ".xlsx" autorisée
+        $this->validate($request, [
+            'fichier' => 'bail|required|file|mimes:xlsx'
+        ]);
+    
+        // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
+        $fichier = $request->fichier->move(public_path(), $request->fichier->hashName());
+    
+        // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
+        $reader = SimpleExcelReader::create($fichier);
+         // On récupère le contenu (les lignes) du fichier
+        $rows = $reader->getRows();
+    
+    $ids=[];
+    $i=0;
+    foreach($rows as $row){
+        $datas[]= array('num_dossier'=>$row['num_dossier'], '4'=>$row['4'],'35'=>$row['35'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'27'=>$row['27'],'17'=>$row['17'],'13'=>$row['13'],'15'=>$row['15'],'28'=>$row['28'],'29'=>$row['29'],'30'=>$row['30'],'31'=>$row['31'],'32'=>$row['32'],'33'=>$row['33'],'34'=>$row['34']);
+    
+    }
+            foreach($datas as $data){
+                $preprojet=PreprojetPe::where('num_projet',$data['num_dossier'])->first();
+                 $this->createEvaluation_pe($preprojet->id,4,(int) $data['4'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,35, (int) $data['35'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,6,(int) $data['6'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,7,(int) $data['7'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,8,(int) $data['8'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,27,(int) $data['27'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,17,(int) $data['17'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,13,(int) $data['13'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,28,(int) $data['28'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,15,(int) $data['15'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,29,(int) $data['29'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,30,(int) $data['30'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,31,(int) $data['31'],'humain' );
+
+                 $this->createEvaluation_pe($preprojet->id,32,(int) $data['32'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,33,(int) $data['33'],'humain' );
+                 $this->createEvaluation_pe($preprojet->id,34,(int) $data['34'],'humain' );
+
+                $note_totale=Evaluation::where('preprojet_pe_id',$preprojet->id)->sum('note');
+                 $preprojet->update([
+                    'note_totale'=>$note_totale,
+                    'statut'=>'evalue'
+                ]);
+                
+    }
+    
+        // $rows est une Illuminate\Support\LazyCollection
+    
+        // 4. On insère toutes les lignes dans la base de données
+        
+        $status = TRUE;
+    
+        // Si toutes les lignes sont insérées
+        if ($status) {
+    
+            // 5. On supprime le fichier uploadé
+            $reader->close(); // On ferme le $reader
+            return back()->withMsg("Importation réussie !");
+    
+        } else { abort(500); }
+    
     }
 }
