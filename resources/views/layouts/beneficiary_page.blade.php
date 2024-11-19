@@ -58,7 +58,7 @@
         <a href="#" class="logo d-flex align-items-center">
             <!--<img src="{{asset('img/logo-dgi-final.png')}}" alt="Logo">-->
             <!--<img src="{{asset('img/armoirie_bf.png')}}" alt="Logo">-->
-            <span class="d-none d-lg-block custom-text-success p-size18">Espace Bénéficiaire</span>
+            <span class="d-none d-lg-block custom-text-success p-size18">{{ Auth::user()->name }}  {{ Auth::user()->prenom }}</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn text-success"></i>
     </div><!-- End Logo -->
@@ -120,7 +120,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
     
         <li class="nav-item">
-            <a class="nav-link  @yield('dashboard_fp')" href="{{route('dashboard.fp')}}">
+            <a class="nav-link  @yield('profil_beneficiaire')" href="{{route('beneficiaire.profil')}}">
                 <i class="bi bi-grid"></i>
                 <span>Mon Profil</span>
             </a>

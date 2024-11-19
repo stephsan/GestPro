@@ -15,7 +15,7 @@ use App\Http\Controllers\PreprojetController;
 use App\Http\Controllers\CritereController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\CoachController;
-
+use App\Http\Controllers\BeneficiaireController;
 
 use App\Http\Controllers\SouscriptionPEController;
 
@@ -79,10 +79,23 @@ Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telech
 Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
 // Route::get("/lister/documents/utliles", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
 Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
-Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
+Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocs');
 Route::post('/store/beneficiary/compte', [UserController::class,'storecomptePromoteur'])->name('beneficiary_compte.store');
+Route::get('/profile/beneficiary', [BeneficiaireController::class,'get_my_data'])->name('beneficiaire.profil');
+
+Route::get('/pca/modif',[ProjetController::class, 'pca_modif'])->name('pca.modif');
+Route::post('/pca/modifier',[ProjetController::class, 'pca_modifier'])->name('pca.modifier');
+Route::get('/piecejointe/modif',[ProjetController::class, 'modif_piecej'])->name('piece.modif');
+Route::post('/piecejointe/modifier',[ProjetController::class, 'modifier_piecej'])->name('piecejointe.modifier');
+Route::get('/investissment',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
+Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
+Route::post('add/investissement', [ProjetController::class, 'add_investissement'])->name('add.investissement'); 
+Route::post("/projet/add/piecejointe/",[ProjetController::class,'add_piecej_to_projet'])->name('add.piecetoprojet');
+
+
 route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_conformite_cpt'])->name('verifier_validite_cpt_promo');
-Route::get('beneficiary/project', [DocumentController::class,'telecharger'])->name('telechargerpiecejointe');
+ Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
+// Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::resource('projet',ProjetController::class);
 
 

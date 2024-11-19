@@ -20,9 +20,9 @@ return new class extends Migration
             $table->bigInteger('montant');
             $table->bigInteger('apport_perso');
             $table->bigInteger('subvention_demandee');
-            $table->bigInteger('apport_perso_valide');
-            $table->bigInteger('subvention_demandee_valide');
-            $table->string('statut',100);
+            $table->bigInteger('apport_perso_valide')->nullable();
+            $table->bigInteger('subvention_demandee_valide')->nullable();
+            $table->string('statut',100)->nullable();
             $table->timestamps();
         });
     }

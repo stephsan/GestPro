@@ -712,8 +712,6 @@ class PreprojetController extends Controller
             $promoteur->update([
                 "suscription_etape"=>3,
             ]);
-            
-        
         $innovations=$request->innovation_du_projets;
         if($innovations){
             foreach($innovations as $innovation){
@@ -893,6 +891,10 @@ elseif($preprojet->entreprise_id==null){
                     $this->createEvaluation_fp($preprojet->id,3, $note_situation_residence,'automatique');
                     $this->createEvaluation_fp($preprojet->id,13, $note_forme_juridique,'automatique');
                     $this->createEvaluation_fp($preprojet->id,12, $note_respect_du_code_de_financement,'automatique');
+                    $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
+                    $preprojet->update([
+                        'note_totale'=>$note_totale
+                    ]);
                 }
                 return redirect()->back()->with('success','Evaluation complémentaire éffectuée avec success');
         }
@@ -1242,26 +1244,49 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     $ids=[];
     $i=0;
     foreach($rows as $row){
-        $datas[]= array('num_dossier'=>$row['num_dossier'], '4'=>$row['4'],'5'=>$row['5'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'9'=>$row['9'],'10'=>$row['10'],'11'=>$row['11'],'15'=>$row['15'],'18'=>$row['18']);
+        $datas[]= array('num_dossier'=>$row['num_dossier'],'statut'=>$row['STATUT'],'observation'=>$row['MOTIF DU REJET'], '4'=>$row['4'],'5'=>$row['5'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'9'=>$row['9'],'10'=>$row['10'],'11'=>$row['11'],'15'=>$row['15'],'18'=>$row['18'],'decision_comite'=>$row['decision_comite'],'observation_decision_du_comite'=>$row['observation_decision_du_comite']);
     
     }
             foreach($datas as $data){
+
                 $preprojet=Preprojet::where('num_projet',$data['num_dossier'])->first();
-                 $this->createEvaluation_fp($preprojet->id,4,(int) $data['4'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,5, (int) $data['5'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,6,(int) $data['6'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,7,(int) $data['7'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,8,(int) $data['8'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,9,(int) $data['9'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,10,(int) $data['10'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,11,(int) $data['11'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,18,(int) $data['18'],'humain' );
-                 $this->createEvaluation_fp($preprojet->id,15,(int) $data['15'],'humain' );
-                $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
-                 $preprojet->update([
-                    'note_totale'=>$note_totale,
-                    'statut'=>'evalue'
-                ]);
+                if($data['statut']=='Eligible'){
+                    $eligible= 'eligible';
+                    $this->createEvaluation_fp($preprojet->id,4,(int) $data['4'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,5, (int) $data['5'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,6,(int) $data['6'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,7,(int) $data['7'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,8,(int) $data['8'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,9,(int) $data['9'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,10,(int) $data['10'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,11,(int) $data['11'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,18,(int) $data['18'],'humain' );
+                    $this->createEvaluation_fp($preprojet->id,15,(int) $data['15'],'humain' );
+                   $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
+                    $preprojet->update([
+                       'note_totale'=>$note_totale,
+                       'statut'=>'traite_par_le_comite',
+                       'eligible'=>$eligible,
+                       'commentaire_eligibilité'=>$data['observation'],
+                       'decision_du_comite'=>$data['decision_comite'],
+                       'commentaire_du_comite'=>$data['observation_decision_du_comite'],
+
+                   ]);
+                    
+
+                }
+                elseif($data['statut']=='Non-éligible'){
+                    $eligible= 'ineligible';
+                    $preprojet->update([
+                        'eligible'=>$eligible,
+                        'statut'=>'traite_par_le_comite',
+                        'commentaire_eligibilité'=>$data['observation'],
+                    ]);
+                }
+        $this->create_historique_preprojet_traitement($preprojet->id,"Valider l'évaluation");
+
+
+                
                 
     }
     
@@ -1299,7 +1324,6 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     $i=0;
     foreach($rows as $row){
         $datas[]= array('num_dossier'=>$row['num_dossier'], '4'=>$row['4'],'35'=>$row['35'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'27'=>$row['27'],'17'=>$row['17'],'13'=>$row['13'],'15'=>$row['15'],'28'=>$row['28'],'29'=>$row['29'],'30'=>$row['30'],'31'=>$row['31'],'32'=>$row['32'],'33'=>$row['33'],'34'=>$row['34']);
-    
     }
             foreach($datas as $data){
                 $preprojet=PreprojetPe::where('num_projet',$data['num_dossier'])->first();
@@ -1324,7 +1348,9 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
                 $note_totale=Evaluation::where('preprojet_pe_id',$preprojet->id)->sum('note');
                  $preprojet->update([
                     'note_totale'=>$note_totale,
-                    'statut'=>'evalue'
+                    'statut'=>'evalue',                
+                    'eligible'=>$request->avis,
+                    'commentaire_eligibilité'=>$request->observation,
                 ]);
                 
     }

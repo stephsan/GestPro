@@ -17,12 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->unique();
             $table->integer('coach_id')->nullable();
+            
             $table->integer('zone_affectation')->nullable();
             $table->string('statut')->nullable();
             $table->text('motif_du_rejet_de_lanalyse')->nullable();
             $table->text('observations')->nullable();
-            $table->integer("entreprise_id");
+            $table->integer("preprojet_id");
             $table->string("titre_du_projet");
+            $table->bigInteger('montant_demande')->nullable();
             $table->text("objectifs");
             $table->text("activites_menees");
             $table->text("atouts_promoteur");

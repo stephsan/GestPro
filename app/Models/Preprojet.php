@@ -9,10 +9,12 @@ class Preprojet extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function projet(){
+        return $this->belongsTo(projet::class,'preprojet_id');
+    }
     public function entreprise(){
         return $this->belongsTo(Entreprise::class);
     }
-
     public function effectif_previsionnels(){
         return $this->hasMany(Infoeffectifentreprise::class,'preprojet_id');
     }

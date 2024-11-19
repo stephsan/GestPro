@@ -485,14 +485,14 @@
                     dom: 'Bftip',
                     buttons: [
                 
-                // {
-                //     extend: 'pdf',
-                //     text: 'Telecharger en pdf'
-                // },
-                // {
-                //     extend: 'excel',
-                //     text: 'Telecharger en excel'
-                // },
+                 {
+                     extend: 'pdf',
+                     text: 'Telecharger en pdf'
+                 },
+                 {
+                     extend: 'excel',
+                     text: 'Telecharger en excel'
+                 },
                 
             ]
 });

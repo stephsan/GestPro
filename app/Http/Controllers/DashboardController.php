@@ -15,7 +15,7 @@ class DashboardController extends Controller
     }
   public function index(){
    if(Auth::user()->isbeneficiary==1){
-        return view('beneficaire.accueil');
+        return redirect()->route('beneficiaire.profil');
    }
    else{
     if(return_role_adequat(env('ID_ROLE_MEMBRE_COMITE_FP'))){
@@ -41,6 +41,7 @@ class DashboardController extends Controller
       $preprojet_soumis= Preprojet::where('entreprise_id','!=',NULL)->get();
       $nombre_de_preprojet_eligible= Preprojet::where('entreprise_id','!=',NULL)->where('eligible','eligible')->count();
       $nombre_de_preprojet_selectionne= Preprojet::where('entreprise_id','!=',NULL)->where('decision_du_comite','favorable')->count();
+     // dd($nombre_de_preprojet_selectionne);
       return view('dashboard.dashboard_fp',compact('preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
     }
   }

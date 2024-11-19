@@ -12,6 +12,7 @@ use App\Models\Projet;
 use App\Models\InvestissementProjet;
 use App\Models\Infoentreprise;
 use App\Models\Journal;
+use App\Models\Preprojet;
 use App\Models\Promotrice;
 
 use Illuminate\Support\Facades\Storage;
@@ -439,6 +440,20 @@ $nombre_de_beneficiaire_ayant_evolue= DB::table('impacts')
 
     }
 }
+
+if(!function_exists('return_taux_subvention_du_preprojet')){ 
+    function return_taux_subvention_du_preprojet($preprojet_id){
+        $preprojet= Preprojet::find($preprojet_id);
+        if(($preprojet->subvention_souhaite !=0 )&&($preprojet->cout_total !=0 )){
+            $taux= $preprojet->subvention_souhaite/$preprojet->cout_total*100;
+            
+        }else{
+            $taux=0;
+        }
+        return $taux;
+    }
+}
+
 if(!function_exists('int2str')){              
     function int2str($a)
     {

@@ -21,7 +21,7 @@
                             <td>{{ getlibelle($doc->categorie_id) }}</td>
                             <td class="titre_doc">{{ $doc->titre }}</td>
                             <td>
-                                <a href="{{ route('telechargerpiecejointe',$doc)}}"title="télécharger" class="btn btn-md btn-success"  target="_blank"><i class="fa fa-download"></i> </a>
+                                <a href="{{ route('telechargerdocument',$doc)}}"title="télécharger" class="btn btn-md btn-success"  target="_blank"><i class="fa fa-download"></i> </a>
                             </td>
                         </tr>
                         

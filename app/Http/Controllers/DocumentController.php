@@ -103,7 +103,7 @@ class DocumentController extends Controller
                 return view('document.document_utiles',compact('docs'));
         }
         public function telecharger(Document $document){
-            //$piecejointe= Docunement::where('id', $id)->first();
+           // dd($document);
             return $path = Storage::download($document->url_doc);
         }
     /**
