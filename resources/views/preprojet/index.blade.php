@@ -14,8 +14,6 @@
                 <li class="breadcrumb-item active text-dark">Lister</li>
             </ol>
         </nav>
-
-        
     </div><!-- End Page Title -->
 
 <section class="section">
