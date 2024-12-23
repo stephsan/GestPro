@@ -1006,10 +1006,16 @@
                                                         <p class="col-md-7 control-label labdetail"><span class="">{{ $evaluation->critere->libelle }} : </span> </p>
                                                             <p class="col-md-5" >
                                                             <span class="valdetail">
-                                                            @empty($evaluation->note)
-                                                            0/{{ $evaluation->critere->ponderation }}
+                                                                @empty($evaluation->note)
+                                                                @if($evaluation->note_eval)
+                                                                        {{$evaluation->note_eval}}/{{ $evaluation->critere->ponderation }}
+                                                                @else
+                                                                    0/{{ $evaluation->critere->ponderation }}
+                                                                @endif
                                                         @else
-                                                                {{$evaluation->note}}/{{ $evaluation->critere->ponderation }}
+                                                                
+                                                                    {{$evaluation->note}}/{{ $evaluation->critere->ponderation }}
+                                                                
                                                             @endempty
                                                         </span></p>
                                                     </div>

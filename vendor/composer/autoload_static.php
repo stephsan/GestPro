@@ -691,6 +691,7 @@ class ComposerStaticInit9a4913df48d16945f93c7a0c81571182
         'App\\Actions\\Jetstream\\DeleteUser' => __DIR__ . '/../..' . '/app/Actions/Jetstream/DeleteUser.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\BeneficiaireController' => __DIR__ . '/../..' . '/app/Http/Controllers/BeneficiaireController.php',
         'App\\Http\\Controllers\\CoachController' => __DIR__ . '/../..' . '/app/Http/Controllers/CoachController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\CritereController' => __DIR__ . '/../..' . '/app/Http/Controllers/CritereController.php',

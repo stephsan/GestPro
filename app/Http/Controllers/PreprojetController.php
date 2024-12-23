@@ -45,6 +45,26 @@ class PreprojetController extends Controller
         ]);
      }  
     }
+    function createEvaluation_fp_2($idprojet,$indicateur,$note,$type_evaluation ){
+        $evaluation=Evaluation::where('preprojet_fp_id',$idprojet)->where('critere_id',$indicateur)->get();
+        if(count($evaluation)==0){
+           Evaluation::create([
+               "preprojet_fp_id"=>$idprojet,
+               "type_evaluation"=>$type_evaluation,
+               "note"=>0,
+               "note_eval"=>$note,
+               "critere_id"=> $indicateur
+           ]);
+        }  
+        else{
+            $evaluation=Evaluation::where('preprojet_fp_id',$idprojet)->where('critere_id',$indicateur)->first();
+            $evaluation->update([
+                "note"=>0,
+                "note_eval"=>$note,
+            ]);
+            
+        }
+       }
     function create_historique_preprojet_traitement($preproje_id,$operation){
         HistoriquePreprojet::create([
             'preprojet_id'=>$preproje_id,
@@ -68,6 +88,27 @@ class PreprojetController extends Controller
                "note"=>$note,
                "critere_id"=> $indicateur
            ]);
+        }
+           
+       }
+       function createEvaluation_pe_2($idprojet,$indicateur,$note,$type_evaluation  ){
+        $evaluation=Evaluation::where('preprojet_pe_id',$idprojet)->where('critere_id',$indicateur)->get();
+        
+        if(count($evaluation)==0){
+           Evaluation::create([
+               "preprojet_pe_id"=>$idprojet,
+               "type_evaluation"=>$type_evaluation ,
+               "note_eval"=>$note,
+               "critere_id"=> $indicateur
+           ]);
+        }
+        else{
+            $evaluation=Evaluation::where('preprojet_pe_id',$idprojet)->where('critere_id',$indicateur)->first();
+            $evaluation->update([
+                "note"=>0,
+                "note_eval"=>$note,
+            ]);
+
         }
            
        }
@@ -891,7 +932,7 @@ elseif($preprojet->entreprise_id==null){
                     $this->createEvaluation_fp($preprojet->id,3, $note_situation_residence,'automatique');
                     $this->createEvaluation_fp($preprojet->id,13, $note_forme_juridique,'automatique');
                     $this->createEvaluation_fp($preprojet->id,12, $note_respect_du_code_de_financement,'automatique');
-                    $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
+                    $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note')+Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note_eval');
                     $preprojet->update([
                         'note_totale'=>$note_totale
                     ]);
@@ -1242,26 +1283,25 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     $j=[];
     foreach($rows as $row){
         $datas[]= array('num_dossier'=>$row['num_dossier'],'statut'=>$row['STATUT'],'observation'=>$row['MOTIF DU REJET'], '4'=>$row['4'],'5'=>$row['5'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'9'=>$row['9'],'10'=>$row['10'],'11'=>$row['11'],'15'=>$row['15'],'18'=>$row['18'],'decision_comite'=>$row['decision_comite'],'observation_decision_du_comite'=>$row['observation_decision_du_comite']);
-    
     }
             foreach($datas as $data){
                 $preprojet=Preprojet::where('num_projet',$data['num_dossier'])->first();
             if($preprojet){
                 if($data['statut']=='Eligible'){
                     $eligible= 'eligible';
-                    $this->createEvaluation_fp($preprojet->id,4,(int) $data['4'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,5, (int) $data['5'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,6,(int) $data['6'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,7,(int) $data['7'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,8,(int) $data['8'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,9,(int) $data['9'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,10,(int) $data['10'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,11,(int) $data['11'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,18,(int) $data['18'],'humain' );
-                    $this->createEvaluation_fp($preprojet->id,15,(int) $data['15'],'humain' );
-                   $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note');
+                    $this->createEvaluation_fp_2($preprojet->id,4,(float) $data['4'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,5, (float) $data['5'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,6,(float) $data['6'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,7,(float) $data['7'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,8,(float) $data['8'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,9,(float) $data['9'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,10,(float) $data['10'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,11,(float) $data['11'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,18,(float) $data['18'],'humain' );
+                    $this->createEvaluation_fp_2($preprojet->id,15,(float) $data['15'],'humain' );
+                   $note_totale=Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note')+ Evaluation::where('preprojet_fp_id',$preprojet->id)->sum('note_eval');
                     $preprojet->update([
-                       'note_totale'=>$note_totale,
+                       'note_totale2'=>$note_totale,
                        'statut'=>'traite_par_le_comite',
                        'eligible'=>$eligible,
                        'commentaire_eligibilité'=>$data['observation'],
@@ -1335,23 +1375,23 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
           
         if($preprojet){
             if($data['statut']=='ELIGIBLE'){
-                $this->createEvaluation_pe($preprojet->id,4,(int) $data['4'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,35, (int) $data['35'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,6,(int) $data['6'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,7,(int) $data['7'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,8,(int) $data['8'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,27,(int) $data['27'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,17,(int) $data['17'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,13,(int) $data['13'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,28,(int) $data['28'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,15,(int) $data['15'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,29,(int) $data['29'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,30,(int) $data['30'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,31,(int) $data['31'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,32,(int) $data['32'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,33,(int) $data['33'],'humain' );
-                $this->createEvaluation_pe($preprojet->id,34,(int) $data['34'],'humain' );
-                $note_totale=Evaluation::where('preprojet_pe_id',$preprojet->id)->sum('note');
+                $this->createEvaluation_pe_2($preprojet->id,4,(int) $data['4'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,35, (int) $data['35'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,6,(int) $data['6'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,7,(int) $data['7'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,8,(int) $data['8'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,27,(int) $data['27'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,17,(int) $data['17'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,13,(int) $data['13'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,28,(int) $data['28'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,15,(int) $data['15'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,29,(int) $data['29'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,30,(int) $data['30'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,31,(int) $data['31'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,32,(int) $data['32'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,33,(int) $data['33'],'humain' );
+                $this->createEvaluation_pe_2($preprojet->id,34,(int) $data['34'],'humain' );
+                $note_totale=Evaluation::where('preprojet_pe_id',$preprojet->id)->sum('note')+ Evaluation::where('preprojet_pe_id',$preprojet->id)->sum('note_eval');
                 $preprojet->update([
                    'note_totale'=>$note_totale,
                    'statut'=>'traite_par_le_comite',              
