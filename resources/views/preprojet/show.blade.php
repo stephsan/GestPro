@@ -1043,13 +1043,13 @@
                                                         </span></p>
                                                     </div>
                                                 </div>
-                                                @isset($preprojet->commentaire_evaluation)
+                                                @isset($preprojet->commentaire_eligibilité)
                                                 <div class="row">
                                                     <div  id="condanation" class="form-group row">
                                                         <p class="col-md-5 control-label labdetail"><span class="">Observation sur l'évaluation : </span> </p>
                                                             <p class="col-md-7" >
                                                             <span class="valdetail text-danger">
-                                                                {{ $preprojet->commentaire_evaluation }}
+                                                                {{ $preprojet->commentaire_eligibilité }}
                                                         </span></p>
                                                     </div>
                                                 </div>

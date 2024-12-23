@@ -354,6 +354,13 @@
                 </a>
             </li>
         @endcan
+        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
+                    <i class="bi bi-circle"></i><span>Projets soumis</span>
+                </a>
+            </li>
+        @endcan
         </ul>
     </li>
 @endcan

@@ -953,10 +953,6 @@ public function lister_preprojet_fp_en_traitement(Request $request){
             if (Auth::user()->can('lister_avant_projet_ineligible')) {
                 if(Auth::user()->zone!=100){
                     $preprojets= Preprojet::where(function ($query) {
-                        $query->where('statut', '=', NULL)
-                              ->orWhere('statut', '=', 'evaluation_rejetee');
-                                })
-                                ->where(function ($query) {
                                     $query->where('zone_daffectation', '=', Auth::user()->zone)
                                         ->orWhere('region', '=', Auth::user()->zone);
                                 })
@@ -1243,13 +1239,14 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
     
     $ids=[];
     $i=0;
+    $j=[];
     foreach($rows as $row){
         $datas[]= array('num_dossier'=>$row['num_dossier'],'statut'=>$row['STATUT'],'observation'=>$row['MOTIF DU REJET'], '4'=>$row['4'],'5'=>$row['5'],'6'=>$row['6'],'7'=>$row['7'],'8'=>$row['8'],'9'=>$row['9'],'10'=>$row['10'],'11'=>$row['11'],'15'=>$row['15'],'18'=>$row['18'],'decision_comite'=>$row['decision_comite'],'observation_decision_du_comite'=>$row['observation_decision_du_comite']);
     
     }
             foreach($datas as $data){
-
                 $preprojet=Preprojet::where('num_projet',$data['num_dossier'])->first();
+            if($preprojet){
                 if($data['statut']=='Eligible'){
                     $eligible= 'eligible';
                     $this->createEvaluation_fp($preprojet->id,4,(int) $data['4'],'humain' );
@@ -1270,7 +1267,6 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
                        'commentaire_eligibilité'=>$data['observation'],
                        'decision_du_comite'=>$data['decision_comite'],
                        'commentaire_du_comite'=>$data['observation_decision_du_comite'],
-
                    ]);
                     
 
@@ -1283,17 +1279,25 @@ public function lister_preprojet_soumis_au_comite_pe(Request $request)
                         'commentaire_eligibilité'=>$data['observation'],
                     ]);
                 }
-        $this->create_historique_preprojet_traitement($preprojet->id,"Valider l'évaluation");
+                $this->create_historique_preprojet_traitement($preprojet->id,"Valider l'évaluation");
 
+            }
 
+            else{
+                $j=$data['num_dossier'];
+
+            }
                 
+
+
+    
                 
     }
     
         // $rows est une Illuminate\Support\LazyCollection
     
         // 4. On insère toutes les lignes dans la base de données
-        
+        dd($data);
         $status = TRUE;
     
         // Si toutes les lignes sont insérées

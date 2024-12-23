@@ -20,6 +20,16 @@
                     <div class="card-body"style="margin-top:20px;">
                         <div class="row">
                         <div class="col-md-5">
+                            <div  id="condanation" class="form-group row">
+                                <p class="col-md-4 control-label labdetail"><span class="">Guichet choisi: </span> </p>
+                                    <p class="col-md-8" >
+                                    <span class="valdetail">
+                                    @empty($projet->preprojet->guichet)
+                                                        Informations non disponible
+                                                        @endempty
+                                         {{getlibelle($projet->preprojet->guichet)}}
+                                </span></p>
+                            </div>
                           <div  id="condanation" class="form-group row">
                               <p class="col-md-4 control-label labdetail"><span class="">Titre du projet: </span> </p>
                                   <p class="col-md-8" >
@@ -274,6 +284,7 @@
                    
             <div class="row">
                 <input type="hidden" id="pca_id" name="pca_id">
+                <input type="hidden" name="guichet" id="guichet" value={{ $preprojet->guichet }}>
                 <div class="form-group col-md-6">
                     <label class=" control-label" for="example-chosen">Selectionner le redacteur du PCA<span class="text-danger">*</span></label>
                         <select id="coach_u" name="coach"  value="{{old("coach")}}"  class="form-control" data-placeholder="Selectionner le coach ayant appuyer à l'elaboration du PCA .." style="width: 80%;" required>
@@ -337,7 +348,7 @@
     </div>
 </div>
 <div id="modal-modif-invest" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
@@ -348,9 +359,10 @@
                     {{ csrf_field() }}
                     <input type="hidden" id='invest_id' name="invest_id" value="">
             <div class="row">
-                <div class="form-group col-md-3" style="margin-left: 15px;">
-                    <label class="control-label " for="example-chosen">Categorie d'investissement<span class="text-danger">*</span></label>
-                        <select id="categorie_invest" name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
+                <p style="color:brown; display:none;" class="message_respect_code_de_financement" >Code de financement non respecté</p>
+                <div class="form-group col-md-3">
+                    <label class="control-label" for="example-chosen">Catégorie<span class="text-danger">*</span></label>
+                        <select id="categorie_invest" name="designation" class="form-control" onchange="afficher();" data-placeholder='' style="width: 100%;" required>
                             <option></option>
                            @foreach ($categorie_investissments as $categorie_investissment)
                             <option value="{{ $categorie_investissment->id}}">{{ getlibelle($categorie_investissment->id)}}</option>
@@ -374,7 +386,7 @@
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-3" style="margin-left:0px;">
                     <label class="control-label" for="name">Subvention demandée  : <span class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input id="subvention" type="text" class="form-control" name="subvention" placeholder="Cout de l'investissement" value="{{ old('subvention') }}" required autofocus onChange="deux_somme_complementaire('subvention','apport_perso','cout')">
+                            <input id="subvention" type="text" class="form-control" name="subvention" placeholder="Cout de l'investissement" value="{{ old('subvention') }}" required autofocus onChange="controle_code_investissement('subvention','apport_perso','cout')">
                             <span class="input-group-addon"><i class="gi gi-user"></i></span>
                         @if ($errors->has('designation'))
                         <span class="help-block">
@@ -633,9 +645,8 @@ alert("The text has been changed.");
     }
     }
     if(not_good==1){
-      var message="Cette ligne d'investissement ne respecte pas le code d'investissement de votre guichet!!!"
-      document.getElementById("alertMessage").textContent = message;
-      $('#modal-non-respect-code-de-financement').modal('show');
+      $('.message_respect_code_de_financement').show();
+     //$('#modal-non-respect-code-de-financement').modal('show');
       $("#tester").prop('disabled', true);
       $("#"+montant1).val(' ');
       $("#"+somme).val(' ');

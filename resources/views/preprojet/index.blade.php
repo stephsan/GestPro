@@ -30,6 +30,8 @@
                     <th class="text-center" >Guichet</th>
                     <th class="text-center">Nom & prenom </th>
                     <th class="text-center">Sexe </th>
+                    <th class="text-center">Handicapé</th>
+                    <th class="text-center">PDI</th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center">Contact </th>
                     <th class="text-center">Titre du projet</th>
@@ -54,6 +56,7 @@
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->guichet) }}</td>
                         <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
+                        
                         <td class="text-center">
                             @empty($preprojet->promoteur->genre)
                                         Informations non disponible
@@ -62,6 +65,27 @@
                                         Féminin
                                     @else
                                         Masculin
+                                    @endif
+                        </td>
+                        
+                        <td class="text-center">
+                            @empty($preprojet->promoteur->avec_handicape)
+                                        Informations non disponible
+                                    @endempty
+                                    @if($preprojet->promoteur->avec_handicape==1)
+                                        Oui
+                                    @else
+                                        Non
+                                    @endif
+                        </td>
+                        <td class="text-center">
+                            @empty($preprojet->promoteur->situation_residence)
+                                        Informations non disponible
+                                    @endempty
+                                    @if($preprojet->promoteur->situation_residence==1)
+                                        Non
+                                    @else
+                                        Oui
                                     @endif
                         </td>
                         <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>

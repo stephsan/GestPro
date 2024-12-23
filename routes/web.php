@@ -97,7 +97,7 @@ route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_confor
  Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
 // Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::resource('projet',ProjetController::class);
-
+Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
 
 
 Route::get('/accueil', function () {

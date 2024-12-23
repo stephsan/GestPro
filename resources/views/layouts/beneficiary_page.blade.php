@@ -524,7 +524,7 @@ function activerbtn(id_btn,id_champ){
     $(document).ready(function() {
       $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     })
- </script>
+</script>
 @yield('script')
 <script>
 
