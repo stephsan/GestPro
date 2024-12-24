@@ -350,7 +350,7 @@
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.selected') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_selectionne_par_le_comite') ">
-                    <i class="bi bi-circle"></i><span>Avant-projets sélectionnés</span>
+                    <i class="bi bi-circle"></i><span>Avant-projets Préselectionnés</span>
                 </a>
             </li>
         @endcan
@@ -358,6 +358,27 @@
             <li>
                 <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
                     <i class="bi bi-circle"></i><span>Projets soumis</span>
+                </a>
+            </li>
+        @endcan
+        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_soumis') ">
+                    <i class="bi bi-circle"></i><span>Projets Analysés</span>
+                </a>
+            </li>
+        @endcan
+        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
+                    <i class="bi bi-circle"></i><span>Projets soumis au comité</span>
+                </a>
+            </li>
+        @endcan
+        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
+                    <i class="bi bi-circle"></i><span>Décision du comité</span>
                 </a>
             </li>
         @endcan
@@ -378,6 +399,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('grille.index') }}" class="nav-link @yield('grille')">
+                            <i class="bi bi-circle"></i><span>Grille PCA</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('documents.index') }}" class="nav-link @yield('document')">
                             <i class="bi bi-circle"></i><span>Documents</span>
                         </a>
@@ -388,6 +414,7 @@
                         </a>
                     </li>
             @endcan
+    
       @can('gerer_user', Auth::user())
                     <li>
                         <a href="{{ route('users.index') }}" class="nav-link @yield('user')">

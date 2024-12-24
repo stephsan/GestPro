@@ -16,7 +16,7 @@ use App\Http\Controllers\CritereController;
 use App\Http\Controllers\ProjetController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\BeneficiaireController;
-
+use App\Http\Controllers\GrilleController;
 use App\Http\Controllers\SouscriptionPEController;
 
 /*
@@ -97,7 +97,7 @@ route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_confor
  Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
 // Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::resource('projet',ProjetController::class);
-Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
+
 
 
 Route::get('/accueil', function () {
@@ -169,4 +169,14 @@ Route::group([
     Route::post("simple-excel/import",  [PreprojetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation');
     Route::post("evaluationPe/import",  [PreprojetController::class, "chargerEvaluationPe"])->name('excel.chargerEvaluationPe');
     Route::get('/preprojet/evaluation/automatiques', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
+    Route::resource('grille', GrilleController::class);
+    Route::get('gril/modif',[GrilleController::class, 'modifier'] )->name('grille.modif');
+    Route::post('gri/store_modif',[GrilleController::class, 'modifierstore'] )->name('grille.storemodif');
+    Route::post('pca_eval/store',[ProjetController::class, 'storeaval'] )->name('pca.evaluation');
+    Route::get('/pca/analyse/{projet}',[ProjetController::class, 'analyser'])->name('pca.analyse');
+    Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
+    Route::get('/pca/valider/analyse', [ProjetController::class, 'valider_analyse'])->name('pca.valider_analyse');
+    Route::get('/pca/avis_chefdentenne', [ProjetController::class, 'pca_save_avis_chefdantenne'])->name('pca.save_avis_chefdantenne');
+
+
 });

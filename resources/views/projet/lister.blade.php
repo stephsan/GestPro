@@ -60,7 +60,7 @@
                         <td class="text-center">{{ format_prix($projet->investissements->sum('apport_perso')) }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                {{-- <a href="{{ route('projet.details', $preprojet) }}?type_detail=visualiser" data-toggle="tooltip" title="Visualiser" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a> --}}
+                                <a href="{{ route('pca.analyse', $projet) }}" data-toggle="tooltip" title="Analyser le PCA" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                             </div>
                         </td>
                     </tr>

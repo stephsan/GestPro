@@ -1027,9 +1027,9 @@
                                                             <p class="col-md-7 control-label labdetail"><span class="">Total : </span> </p>
                                                                 <p class="col-md-5" >
                                                                 <span class="valdetail">
-                                                                @empty($preprojet->note_totale)
+                                                                @empty($preprojet->note_totale2)
                                                             @else
-                                                               {{ $preprojet->note_totale }}
+                                                               {{ $preprojet->note_totale2 }}
                                                              @endempty
                                                             </span></p>
                                                         </div>

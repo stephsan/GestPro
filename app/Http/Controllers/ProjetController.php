@@ -9,6 +9,8 @@ use App\Models\Promoteur;
 use App\Models\Valeur;
 use App\Models\Piecejointe;
 use Illuminate\Http\Request;
+use App\Models\GrilleEvalPca;
+use App\Models\EvaluationPCA;
 use App\Models\InvestissementProjet;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,13 +38,25 @@ class ProjetController extends Controller
                 $type_entreprise='fp_mpme_existante';
             }
             else{
-                $projets = Projet::whereIn('statut',['soumis','analyse'])->where('avis_chefdezone',null)->whereIn('type_entreprise',['leader','aop'])->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['soumis','analyse'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_startup';
             }
             $texte= 'soumis';
             $page='projet_soumis';
         }
         return view('projet.lister',compact('projets','type_entreprise','texte','page'));
+    }
+    public function analyser(Projet $projet)
+    {
+        $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE")])->orderBy('updated_at', 'desc')->get();
+    if($projet->preprojet->entreprise_id!=null){
+        $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
+    }
+    else{
+        $criteres= GrilleEvalPca::where('categorie','startup')->get();
+    }
+    //dd($projet);
+        return view("projet.analyse", compact('projet', 'piecejointes', 'criteres'));
     }
 
     /**
@@ -173,7 +187,7 @@ class ProjetController extends Controller
                 $file = $request->file('devis_des_investissements');
                 $extension=$file->getClientOriginalExtension();
                 $fileName = $preprojet->code_promoteur.'_'.'devis_des_investissements'.'.'.$extension;
-                $emplacement='public/'.$year.'/'.'devis_des_investissement_ala_soumission/'.$anne_en_cours.'/'; 
+                $emplacement='public/'.$year.'/'.'devis_des_investissement_ala_soumission/'; 
                 $urldevis_des_investissements= $request['devis_des_investissements']->storeAs($emplacement, $fileName);
                 Piecejointe::create([
                     'type_piece'=>env("VALEUR_ID_DOCUMENT_DEVIS"),
@@ -342,6 +356,72 @@ elseif($piecejointe->type_piece==env('VALEUR_ID_DOCUMENT_ATTESTATION')){
     }
 return redirect()->back();
 }
+public function storeaval(Request $request){
+    if (Auth::user()->can('lister_avant_projet_selectionnes_fp')) {
+        $year=date("Y");
+        $projet= Projet::find( $request->projet);
+        if ($request->hasFile('grille_devaluation')) {
+            $file = $request->file('grille_devaluation');
+            $extension=$file->getClientOriginalExtension();
+            $fileName = $projet->preprojet->num_projet.'_'.'fiche_devaluation'.'.'.$extension;
+            $emplacement='public/'.$year.'/'.'grilleEval'; 
+            $urlpiece= $request['grille_devaluation']->storeAs($emplacement, $fileName);
+          $pj=  Piecejointe::create([
+              'type_piece'=> env("VALEUR_ID_DOCUMENT_GRILLEEVAL"),
+                'preprojet_fp_id'=>$projet->preprojet->id,
+                'url'=>$urlpiece,
+            ]);
+        }
+    
+    if($pj){
+    
+        if($projet->preprojet->entreprise_id!=null){
+            $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
+        }
+        else{
+            $criteres= GrilleEvalPca::where('categorie','Startup')->get();
+        }
+        foreach($criteres as $critere){
+            $note= $critere->id;
+        //S'assurer de l'unicité de l'evaluation par projet et par critere
+        $nombre_devaluation_du_projet = EvaluationPca::where(['projet_id'=>$request->projet,'grilleeval_id'=> $critere->id,])->count();
+        if($nombre_devaluation_du_projet==0){
+            EvaluationPca::create([
+                'projet_id'=> $request->projet,
+                'grilleeval_id'=> $critere->id,
+                'note'=> $request->$note
+        ]);
+        }        
+        }
+        
+        $projet->update([
+            'statut'=>'analyse',
+            //'motif_du_rejet_de_lanalyse'=>''
+         ]);
+         
+         return redirect()->back()->with('success','Le Dossier a été évalué avec success');
+    }
+    else{
+       
+        return redirect()->back()->with('error',"Bien vouloir joindre la grille d'evaluation !!!");
+    }
+    }
+    else{
+        
+        return redirect()->back()->with('error',"Vous n'avez pas ce droit d'acces bien vouloir contacter l'administrateur !!!");
+    }
+    
+    }
+    public function pca_save_avis_chefdantenne(Request $request){
+        $projet= Projet::find($request->projet_id);
+            $projet->update([
+                'avis_chefdezone'=>$request->avis,
+                'observation_chefdezone'=>$request->observation,
+            ]);
+        return redirect()->back()->with('success',"L'avis du chef d'antenne a été enregistré avec success");
+            
+       
+    }
     /**
      * Display the specified resource.
      *

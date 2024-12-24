@@ -18,6 +18,12 @@ class Projet extends Model
     public function investissementvalides(){
         return $this->hasMany(InvestissementProjet::class)->where('statut', 'valide');
     }
+    public function coach(){
+        return $this->belongsTo(Coach::class, 'coach_id');
+    }
+    public function evaluations(){
+        return $this->hasMany(EvaluationPca::class);
+    }
     protected static function boot(){
         parent::boot();
         static::creating(function($projet){
