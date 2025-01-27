@@ -24,11 +24,24 @@
             </button>
         </nav>
     @endif
-    @if($projet->statut =='analyse')
+    @if($projet->statut =='evalué')
     <nav>
         <button type="button" class="btn btn-success">
-            <a href="#modal-avis-chefdezone-pca" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe technique" class="text-white"><i class="bi bi-plus-square"></i> Avis de l'équipe technique </a>
+            <a href="#modal-avis-chefdezone-pca" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe technique" class="text-white"><i class="bi bi-plus-square"></i> Avis du chef d'antenne </a>
         </button>
+    </nav>
+@endif
+@if($projet->statut =='analysé')
+    <nav>
+        <button type="button" class="btn btn-danger">
+            {{-- <a href="#rejetter_lanalyse" data-toggle="modal" onclick="recupererprojet_id({{$projet->id}})" class="btn btn-danger"><span></span>Rejetter l'analyse</a>  --}}
+
+            <a href="#modal-rejet-de-lanalyse" data-toggle="modal"  data-toggle="tooltip" title="Rejeter l'analyse du plan d'affaire" class="text-white"><i class="bi bi-plus-square"></i> Rejetter l'analyse </a>
+        </button>
+        <button type="button" class="btn btn-success">
+            <a href="#modal-avis-equipe-fp" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe de fonds de partenariat" class="text-white"><i class="bi bi-plus-square"></i> Avis de l'équipe FP </a>
+        </button>
+        
     </nav>
 @endif
 @endcan
@@ -42,7 +55,7 @@
         <div class="col-lg-12">
 <div class="card">
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-7" style="margin-left:15px;">
     @if ($projet->motif_du_rejet_de_lanalyse)
         <div class="form-group row" >
             <div class="col-md-4">
@@ -316,6 +329,23 @@
 </section>
 @endsection
 @section('modal_part')
+<div id="modal-rejet-de-lanalyse" class="modal fade" aria-labelledby="alertModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="padding:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="gi gi-pen" ></i>Rejeter l'analyse du Plan d'affaire</h3>
+            </div>
+            <div id="alertMessage" class="alert alert-warning" role="alert">
+                <p style="color: red;">Voulez-vous rejeter l'analyse du plan d'affaire</p>
+            </div>
+          <div class="modal-footer">
+            <button type="button"class="btn btn-sm btn-success" onclick="rejeter_lanalyse_du_pca();" data-dismiss="modal">Confirmer</button>
+            <button type="button"class="btn btn-sm btn-danger" onclick="$('#modal-rejet-de-lanalyse').modal('hide')" data-dismiss="modal">Fermer</button>
+          </div>
+            </div>
+            
+        </div>
+ </div>
 <div id="modal-evaluer-pca" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -373,7 +403,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-check"></i> Avis de l'équipe Technique</h2>
+                <h2 class="modal-title"><i class="fa fa-check"></i> Avis du chef d'antenne</h2>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="projet_id"  id='projet_chef_de_zone' value="{{ $projet->id }}">
@@ -395,195 +425,25 @@
         </div>
     </div>
 </div>
-{{-- <div id="modal-valider-investissment" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div id="modal-avis-equipe-fp" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i></h2>
+                <h2 class="modal-title"><i class="fa fa-check"></i> Avis de l'équipe fonds de partenariat</h2>
             </div>
             <div class="modal-body">
-        <form method="post"  action="{{route('save.ivestissement_valide')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <input type="hidden" id='invest_id' name="invest_id" value="">
-                <div class="form-group col-md-3" >
-                    <label class="control-label " for="example-chosen">Categorie d'investissement<span class="text-danger">*</span></label>
-                        <select id="categorie_invest"  name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
-                            <option></option>
-                           @foreach ($categorie_investissments as $categorie_investissment)
-                            <option value="{{ $categorie_investissment->id}}"
-                                >{{ getlibelle($categorie_investissment->id)}}</option>
-                           @endforeach
-                        </select>
-                </div>
-                 <div class="col-md-3" >
-                    <div class="form-group">
-                        <label class="control-label" for="example-username"> Montant</label>
-                            <input type="text" id="montant_invest" name="cout"  min="0" class="form-control" placeholder="Evaluer ..." text="Valeur depassé" required >
-                    </div>
-                    @if ($errors->has('cout'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('cout') }}</strong>
-                    </span>
-                    @endif
-                </div> 
-                <div class="col-md-3" >
-                    <div class="form-group">
-                        <label class="control-label" for="example-username">Subvention accordée</label>
-                            <input type="text" id="subvention" name="subvention"  class="form-control" placeholder="Evaluer ..." text="Valeur depassé"  onChange="deux_somme_complementaire('subvention','apport_perso','montant_invest')" required >
-                    </div>
-                    @if ($errors->has('note'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('note') }}</strong>
-                    </span>
-                    @endif
-                </div> 
-                <div class="col-md-3" >
-                    <div class="form-group">
-                        <label class="control-label" for="example-username">Apport personnel</label>
-                            <input type="text" id="apport_perso" name="apport_perso" class="form-control" placeholder="Evaluer ..."  required >
-                    </div>
-                    @if ($errors->has('note'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('note') }}</strong>
-                    </span>
-                    @endif
-                </div> 
-                <div class="form-group form-actions">
-                    <div class="col-md-8 col-md-offset-4">
-                        <a href="#" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Annuler</a>
-                        <button type="submit" class="btn btn-sm btn-success " ><i class="fa fa-arrow-right"></i> Valider</button>
-                    </div>
-                </div>
-            </form>      
-            </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>
-<div id="modal-add-fiche_danalyse" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Joindre la fiche d'analyse</h2>
-            </div>
-            <div class="modal-body">
-            <form method="post"  action="{{ route('save.fiche_danalyse') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <input type="hidden" name="entreprise" id="" value="{{ $projet->entreprise->id }}">
-                <input type="hidden" name="projet" id="" value="{{ $projet->id }}">
+                <input type="hidden" name="projet_id"  id='projet_equipe_fp' value="{{ $projet->id }}">
+                <input type="hidden" name=""  id='champ_avis_equipe_fp'>
 
-                <div class="form-group{{ $errors->has('fiche_danalyse') ? ' has-error' : '' }} col-md-6" style="margin-left:10px;">
-                    <label class="control-label" for="listedepresence">Joindre la fiche d'analyse <span class="text-danger">*</span></label>
-                        <input class="form-control docsize"  type="file" name="fiche_danalyse" id="fiche_danalyse" accept=".pdf, .jpeg, .png"  onchange="VerifyUploadSizeIsOK('fiche_danalyse');" placeholder="Charger la fiche d'analyse">
-                    @if ($errors->has('fiche_danalyse'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('fiche_danalyse') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class="form-group form-actions">
-                    <div class="col-md-8 col-md-offset-4">
-                        <button type="submit" class="btn btn-sm btn-success soumettre_facture" ><i class="fa fa-arrow-right"></i> Enregistrer</button>
-                        <a href="#" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Annuler</a>
-                    </div>
-                </div>
-            </form>      
-            </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>
-<div id="valider_lanalyse" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Confirmation</h2>
-            </div>
-            <div class="modal-body">
-                       <input type="hidden" name="projet_id" id="projet_id">
-                        <p>Voulez-vous Confirmer l'analyse de ce dossier ?</p>
-                    <div class="form-group form-actions">
-                        <div class="text-right">
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn btn-sm btn-primary" onclick="statuer_sur_lanalyse_du_pca();">OUI</button>
-                        </div>
-                    </div>
-            </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>
-<div id="rejetter_investissement" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" >
-        <div class="modal-content" style="margin-left:50px">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Rejetter la ligne d'investissement</h2>
-            </div>
-            <div class="modal-body" style="padding-left:50px">
-        <form method="post"  action="{{route('rejeter.investissement')}}" class="form-horizontal form-bordered">
-                    {{ csrf_field() }}
-                <div class="row">
-                    <input type="hidden" name="invest_id" id="invest_id_rejet">
-                <p style="color: red">Voulez-vous rejetter cette ligne d'investissment ??</p>
-                </div>
-                    <div class="form-group form-actions">
-                        <div class="text-right">
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
-                            <button type="submit" class="btn btn-sm btn-primary" >rejeter</button>
-                        </div>
-                    </div>
-    </form>
-            </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>
-<div id="rejetter_lanalyse" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Rejet de l'analyse du PCA</h2>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <input type="hidden" name="projet_id" id="projet_id">
-                    <label for="raison_du_rejet">Motif du rejet <span class="text-danger">* </span>: </label><textarea name="raison_du_rejet" id="raison_du_rejet" cols="60" rows="10" placeholder="Renseigner le motif du rejet de l'analyse du PCA"></textarea>
-                </div>
-                    <div class="form-group form-actions">
-                        <div class="text-right">
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
-                            <button type="button" class="btn btn-sm btn-primary" onclick="statuer_sur_lanalyse_du_pca();">rejeter</button>
-                        </div>
-                    </div>
-            </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>
- 
-<div id="modal-decision-comite-pca" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-check"></i> Decision du comité</h2>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" name="projet_id"  id='projet_comite' value="{{ $projet->id }}">
-                <input type="hidden" name="champ_decision_comite"  id='champ_decision_comite' >
                 <div class="form-group">
                   <label for="">Entrez les observations :</label>
-                  <textarea id="observation" name="observation" placeholder="Observation" id="" cols="60" rows="10" onchange="activerbtn('btn_desactive','observation')" aria-describedby="helpId"></textarea>
+                  <textarea id="observation_equipe_fp" name="observation" placeholder="Observation"  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_equipe_fp')" aria-describedby="helpId"></textarea>
                 </div>
             <div class="form-group form-actions">
                 <div class="text-right">
-                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_decision_comite('selectionné');" disabled>Selectionné</button>
-                    <button class="btn btn-md btn-danger btn_desactive" onclick="save_decision_comite('rejeté');" disabled>Rejeté</button>
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_avis_equipe_fp('favorable');" disabled>Favorable</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="save_avis_equipe_fp('defavorable');" disabled>Defavorable</button>
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
@@ -591,35 +451,7 @@
             <!-- END Modal Body -->
         </div>
     </div>
-</div> 
- 
-
-<div id="modal-avis-ugp" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-check"></i> Avis du chef de projet</h2>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" name="projet_id"  id='projet_avis_ugp' value="{{ $projet->id }}">
-                <input type="hidden" name="avitype"  id='champ_avis_chef_projet' >
-                <div class="form-group">
-                  <label for="">Entrez les observations :</label>
-                  <textarea id="observation_avis_ugp" name="observation" placeholder="Observation"  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_avis_ugp')" aria-describedby="helpId"></textarea>
-                </div>
-            <div class="form-group form-actions">
-                <div class="text-right">
-                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_avis_ugp('favorable');" disabled>Favorable</button>
-                    <button class="btn btn-md btn-danger btn_desactive"   onclick="save_avis_ugp('defavorable');" disabled>Defavorable</button>
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
-                </div>
-            </div>
-        </div>
-            <!-- END Modal Body -->
-        </div>
-    </div>
-</div>  --}}
+</div>
 @endsection
  <script>
     function setTypeavis(type, champ){
@@ -651,6 +483,33 @@ function save_pca_chefdezone(avis){
                 url: url,
                 type:'GET',
                 data: {projet_id: projet_id, observation:observation, avis:avis,type:type} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+    function save_avis_equipe_fp(avis){
+        var projet_id= $("#projet_chef_de_zone").val();
+       // var type = $("#champ_avis_chef_zone").val();
+        var observation= $("#observation_equipe_fp").val();
+        var url = "{{ route('pca.save_avis_equipe_fp') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {projet_id: projet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+    function rejeter_lanalyse_du_pca(){
+        var url = "{{ route('pca.rejeter_lanalyse_pa') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+               // data: {projet_id: projet_id, observation:observation, avis:avis} ,
                 error:function(){alert('error');},
                 success:function(){
                     window.location=document.referrer;

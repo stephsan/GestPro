@@ -250,7 +250,7 @@ alert("The text has been changed.");
     var valsomme= $("#"+somme).val();
     var not_good=0;
     var taux_subvention= valmontant1/valsomme*100;
-   // alert(taux_subvention);
+   //alert(taux_subvention);
     var guichet= $("#guichet").val();
     if(guichet=='7165'){
         if(taux_subvention>65 ){

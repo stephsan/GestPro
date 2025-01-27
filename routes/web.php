@@ -177,6 +177,10 @@ Route::group([
     Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
     Route::get('/pca/valider/analyse', [ProjetController::class, 'valider_analyse'])->name('pca.valider_analyse');
     Route::get('/pca/avis_chefdentenne', [ProjetController::class, 'pca_save_avis_chefdantenne'])->name('pca.save_avis_chefdantenne');
+    Route::get('/pca/avis_equipe_fp', [ProjetController::class, 'pca_save_avis_equipe_fp'])->name('pca.save_avis_equipe_fp');
+    Route::get('/pca/rejeter_lanalyse_du_pa', [ProjetController::class, 'rejeter_lanalyse_pa'])->name('pca.rejeter_lanalyse_pa');
+    
+
 
 
 });

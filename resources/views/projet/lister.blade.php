@@ -10,7 +10,7 @@
         <h1 class="text-success">Plan d'affaire</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item text-dark">Liste des Plan d'affaire {{ $type_entreprise }}</li>
+                <li class="breadcrumb-item text-dark">{{ $texte }}</li>
                 <li class="breadcrumb-item active text-dark">Lister</li>
             </ol>
         </nav>
@@ -36,6 +36,7 @@
                     <th class="text-center">Montant du projet</th>
                     <th class="text-center">Subvention Solicitée</th>
                     <th class="text-center">Apport personnel</th>
+                    <th class="text-center">Statut</th>
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -58,6 +59,8 @@
                         <td class="text-center">{{ format_prix($projet->montant_demande) }}</td>
                         <td class="text-center">{{ format_prix($projet->investissements->sum('subvention_demandee')) }}</td>
                         <td class="text-center">{{ format_prix($projet->investissements->sum('apport_perso')) }}</td>
+                        <td class="text-center">{{ $projet->statut }}</td>
+
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ route('pca.analyse', $projet) }}" data-toggle="tooltip" title="Analyser le PCA" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>

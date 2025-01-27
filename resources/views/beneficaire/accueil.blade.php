@@ -327,6 +327,18 @@
                                                   {{ $preprojet->num_projet }}
                                             </span></span>
                                         </div>
+                                       
+                                        <div  class="form-group ">
+                                            <span class="col-md-5 control-label labdetail"> <span class="labdetail">Guichet : </span> </span>
+                                            <span class="col-md-6" >
+                                            <span class="valdetail">
+                                                @empty($preprojet->guichet)
+                                                    Informations non disponible
+                                                @endempty
+                                                {{ getlibelle($preprojet->guichet) }}
+                                            </span>
+                                        </span>
+                                        </div>
                                         <div  class="form-group ">
                                             <span class="col-md-5 control-label labdetail"> <span class="labdetail">Titre du projet : </span> </span>
                                             <span class="col-md-6" >

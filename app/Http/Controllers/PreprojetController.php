@@ -945,8 +945,6 @@ elseif($preprojet->entreprise_id==null){
 public function lister_preprojet_fp_en_traitement(Request $request){
     if($request->type_entreprise=='entreprise_existante'){
         if($request->statut=='a_evaluer'){
-            //statuer sur l'éligibilité
-            //dd('je suis la');
             if (Auth::user()->can('lister_avant_projet_a_evaluer_fp')) {
                         $preprojets= Preprojet::where('statut',NULL)->where('eligible',null)
                                                 ->where(function ($query) {
@@ -967,10 +965,6 @@ public function lister_preprojet_fp_en_traitement(Request $request){
             if (Auth::user()->can('lister_avant_projet_a_evaluer_fp')) {
                 if(Auth::user()->zone!=100){
                     $preprojets= Preprojet::where(function ($query) {
-                        $query->where('statut', '=', NULL)
-                              ->orWhere('statut', '=', 'evaluation_rejetee');
-                                })
-                                ->where(function ($query) {
                                     $query->where('zone_daffectation', '=', Auth::user()->zone)
                                         ->orWhere('region', '=', Auth::user()->zone);
                                 })
@@ -1016,7 +1010,7 @@ public function lister_preprojet_fp_en_traitement(Request $request){
         }
         elseif($request->statut=='evalues'){
             if (Auth::user()->can('lister_avant_projet_evalues_fp')) {
-                $preprojets= Preprojet::whereIn('statut',['evalue','evaluation_validee'])->orderBy('updated_at','desc')->get();
+                $preprojets= Preprojet::where('note_totale2','!=',null)->orderBy('updated_at','desc')->get();
                 $type='fp_mpme_existante';
                 $statut='fp_evalues';
                 $titre="Liste des avant-projets en attente de l'avis de l'équipe";

@@ -34,6 +34,8 @@
                     <th class="text-center">Contact </th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
+                    
+
                     <th class="text-center" >Secteur d'activité</th>
                     <th class="text-center" >Maillon d'activite</th>
                     <th class="text-center" >Region du projet</th>
@@ -66,6 +68,8 @@
                                 style="background-color: #497956"
                         @endif
                         class="text-center">{{ $preprojet->titre_projet }}</td>
+                        <td class="text-center">{{ $preprojet->note_totale2 }}</td>
+
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->region) }}</td>

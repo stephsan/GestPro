@@ -354,6 +354,7 @@
                 </a>
             </li>
         @endcan
+
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
                 <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
@@ -363,21 +364,21 @@
         @endcan
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
-                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_soumis') ">
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_analyse') ">
                     <i class="bi bi-circle"></i><span>Projets Analysés</span>
                 </a>
             </li>
         @endcan
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
-                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis_au_comite_de_selection" class="nav-link @yield('projet_comite_de_selection') ">
                     <i class="bi bi-circle"></i><span>Projets soumis au comité</span>
                 </a>
             </li>
         @endcan
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
-                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('decision_du_comite') ">
                     <i class="bi bi-circle"></i><span>Décision du comité</span>
                 </a>
             </li>

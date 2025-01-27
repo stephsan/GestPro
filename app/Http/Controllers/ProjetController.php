@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function supprimer_doublon_de_pj($preprojet_id, $type_doc){
         $priece_a_supprimer= Piecejointe::where(['type_piece'=>$type_doc, 'preprojet_fp_id'=>$preprojet_id])->first();
         if($priece_a_supprimer){
@@ -34,15 +38,39 @@ class ProjetController extends Controller
     public function lister(Request $request){
         if($request->statut=='soumis'){
             if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['soumis','analyse'])->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['soumis','evalué'])->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_mpme_existante';
             }
             else{
-                $projets = Projet::whereIn('statut',['soumis','analyse'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['soumis','evalué'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_startup';
             }
             $texte= 'soumis';
             $page='projet_soumis';
+        }
+        elseif($request->statut=='analyse'){
+            if($request->type_entreprise=='mpme'){
+                $projets = Projet::whereIn('statut',['analysé'])->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_mpme_existante';
+            }
+            else{
+                $projets = Projet::whereIn('statut',['analysé'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_startup';
+            }
+            $texte= "Projets analyse par le chef d'antenne";
+            $page='projet_analyse';
+        }
+        elseif($request->statut=='soumis_au_comite_de_selection'){
+            if($request->type_entreprise=='mpme'){
+                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_mpme_existante';
+            }
+            else{
+                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_startup';
+            }
+            $texte= "Projets analyse par le chef d'antenne";
+            $page='projet_analyse';
         }
         return view('projet.lister',compact('projets','type_entreprise','texte','page'));
     }
@@ -55,8 +83,10 @@ class ProjetController extends Controller
     else{
         $criteres= GrilleEvalPca::where('categorie','startup')->get();
     }
-    //dd($projet);
         return view("projet.analyse", compact('projet', 'piecejointes', 'criteres'));
+    }
+    public function rejeter_lanalyse_pa(){
+
     }
 
     /**
@@ -374,7 +404,6 @@ public function storeaval(Request $request){
         }
     
     if($pj){
-    
         if($projet->preprojet->entreprise_id!=null){
             $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
         }
@@ -395,7 +424,7 @@ public function storeaval(Request $request){
         }
         
         $projet->update([
-            'statut'=>'analyse',
+            'statut'=>'evalué',
             //'motif_du_rejet_de_lanalyse'=>''
          ]);
          
@@ -415,11 +444,23 @@ public function storeaval(Request $request){
     public function pca_save_avis_chefdantenne(Request $request){
         $projet= Projet::find($request->projet_id);
             $projet->update([
-                'avis_chefdezone'=>$request->avis,
-                'observation_chefdezone'=>$request->observation,
+                'avis_chefdantenne'=>$request->avis,
+                'observation_chefdantenne'=>$request->observation,
+                'statut'=>'analysé',
             ]);
         return redirect()->back()->with('success',"L'avis du chef d'antenne a été enregistré avec success");
             
+       
+    }
+    public function pca_save_avis_equipe_fp(Request $request){
+
+        $projet= Projet::find($request->projet_id);
+            $projet->update([
+                'avis_equipe_fp'=>$request->avis,
+                'observation_equipe_fp'=>$request->observation,
+                'statut'=>'soumis_au_comite_de_selection',
+            ]);
+        return redirect()->back()->with('success',"L'avis de l'équipe du fond de partenariat a été enregistré avec success");
        
     }
     /**
