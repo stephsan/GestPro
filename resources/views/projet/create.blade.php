@@ -5,7 +5,6 @@
 @endsection
 @section('project', 'active')
 @section('content')
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -90,9 +89,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3>Plan  d'investissement de la premiere phase du projet</h3>
+                            <h3>Plan  d'investissement du projet</h3>
                             <div class="row" style="text-weight:bold;">
-                                <span class="col-md-2">Categorie</span>
+                                <span class="col-md-2">Categorie d'investissement</span>
                                 <span class="col-md-3">Coût</span>
                                 <span class="col-md-3">Subvention</span>
                                 <span class="col-md-3">Contrepartie</span>
@@ -118,7 +117,7 @@
                                 <div class="col-md-12">
                                     <h2>Joindre les documents</h2>
                                     <div class="form-group{{ $errors->has('plan_de_continute') ? ' has-error' : '' }}">
-                                        <label class="control-label col-md-4" for="plan_de_continute">Plan de Continuité des Activités  <span class="text-danger">*</span></label>
+                                        <label class="control-label col-md-4" for="plan_de_continute">Le plan d'affaires  <span class="text-danger">*</span></label>
                                         <div class="input-group col-md-8">
                                             <input class="form-control col-md-6" type="file" name="plan_de_continute" id="plan_de_continute" accept=".pdf, .jpeg, .png"   placeholder="Joindre le plan de continuité des activité" required  onchange="VerifyUploadSizeIsOK('plan_de_continute');" >
                                             <span class="input-group-addon"><i class="gi gi-file"></i></span>
@@ -131,7 +130,7 @@
                                             @endif
                                     </div>
                                     <div class="form-group{{ $errors->has('synthese_plan_de_continute') ? ' has-error' : '' }}">
-                                        <label class="control-label col-md-4" for="synthese_plan_de_continute">Synthèse du plan de continuité  <span class="text-danger">*</span></label>
+                                        <label class="control-label col-md-4" for="synthese_plan_de_continute">La synthèse du plan d'affaires  <span class="text-danger">*</span></label>
                                         <div class="input-group col-md-8">
                                             <input class="form-control col-md-6" type="file" name="synthese_plan_de_continute" id="synthese_plan_de_continute" accept=".pdf, .jpeg, .png"   placeholder="Joindre la synthèse du plan de continuité des activité" required onchange="VerifyUploadSizeIsOK('synthese_plan_de_continute');">
                                             <span class="input-group-addon"><i class="gi gi-file"></i></span>

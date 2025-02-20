@@ -169,7 +169,7 @@
                   <tbody id="tbadys">
                   @foreach($projet->investissements as $investissment)
                   <tr >
-                      @if ($projet->statut!='selectionné')
+                      @if (!($projet->statut =='selectionné' || $projet->statut =='rejeté'))
                           <td>
                               <a href="#modal-modif-invest" data-toggle="modal"  onclick="edit_investissement({{ $investissment->id }});" >{{getlibelle($investissment->designation)}}</a>
                           </td>
@@ -215,7 +215,7 @@
                                               <td>
                                               {{ $key + 1 }}
                                               </td>
-                                              @if ($projet->statut !='selectionné')
+                                              @if (!($projet->statut =='selectionné' || $projet->statut =='rejeté'))
                                               <td>
                                                   <a href="#modal-modif-pj" data-toggle="modal"  onclick="edit_piecejointe({{ $piecejointe->id }});" > {{getlibelle($piecejointe->type_piece)}} </a>
                                               </td>
@@ -224,8 +224,6 @@
                                                    {{getlibelle($piecejointe->type_piece)}} 
                                               </td>
                                               @endif
-                                              
-                                                  
                                       <td>
                                           <a href="{{ route('telechargerpiecejointe',$piecejointe->id)}}"title="télécharger" class="btn btn-xs btn-default"  target="_blank"><i class="fa fa-download"></i> </a>
                                           {{-- <a href="{{ route('detaildocument',$piecejointe->id)}}"title="Visualiser le document" class="btn btn-xs btn-default" ><i class="fa fa-eye"></i> </a> --}}
@@ -422,11 +420,11 @@
     </div>
 </div>
 <div id="modal-add-invest" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Ajouter une nouvelle ligne d'investissement sur le premier appui</h2>
+                <h2 class="modal-title"><i class="fa fa-pencil"></i> Ajouter une nouvelle ligne d'investissement</h2>
             </div>
             <div class="modal-body">
                 <form id="form-validation" method="POST"  action="{{route('add.investissement')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
@@ -435,7 +433,7 @@
                     <input type="hidden" id='' name="appui" value=1 >
 
             <div class="row">
-                <div class="form-group col-md-3" style="margin-left: 15px;">
+                <div class="form-group col-md-3" style="margin-left: 10px;">
                     <label class="control-label" for="example-chosen">Catégorie d'investissement<span class="text-danger">*</span></label>
                         <select id="categorie_invest_add" name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
                             <option></option>
@@ -454,12 +452,10 @@
                             <strong>{{ $errors->first('cout') }}</strong>
                         </span>
                         @endif
-
                     </div>
-
                 </div>
                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-3" style="margin-left:0px;">
-                    <label class="control-label" for="name">Subvention demandée  : <span class="text-danger">*</span></label>
+                    <label class="control-label" for="name">Subvention demandée : <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <input id="subvention_add" type="text" class="form-control" name="subvention" placeholder="Cout de l'investissement" value="{{ old('subvention') }}" required autofocus onChange="deux_somme_complementaire('subvention_add','apport_perso_add','cout_add')">
                             <span class="input-group-addon"><i class="gi gi-user"></i></span>
@@ -470,7 +466,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }} col-md-3" style="margin-left:0px;">
+                <div class="form-group{{ $errors->has('name') ? 'has-error' : '' }} col-md-2" >
                     <label class="control-label" for="name">Apport personnel : <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <input id="apport_perso_add" type="text" class="form-control" name="apport_perso" placeholder="Cout de l'investissement" value="{{ old('apport_perso') }}" required autofocus onChange="verifier_montant('montant','devi_id','facture_id_fictif')">
@@ -497,7 +493,7 @@
     </div>
 </div>
 <div id="modal-add-piece" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
@@ -517,7 +513,7 @@
                            @endforeach
                         </select>
                 </div>  
-                <div class="form-group{{ $errors->has('piece_file') ? ' has-error' : '' }} col-md-8" style="margin-left:10px;">
+                <div class="form-group{{ $errors->has('piece_file') ? ' has-error' : '' }} col-md-6" style="margin-left:10px;">
                     <label  class="control-label"  class="control-label" for="piece_file">Joindre la nouvelle piece jointe <span class="text-danger">*</span></label>
                     <div class="input-group col-md-8">
                         <input class="form-control docsize"  type="file" name="piece_file" id="piece_file" accept=".pdf, .jpeg, .png"   onchange="VerifyUploadSizeIsOK('piece_file');" placeholder="Charger la nouvelle piece" required>

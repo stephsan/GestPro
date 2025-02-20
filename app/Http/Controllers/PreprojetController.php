@@ -1013,7 +1013,7 @@ public function lister_preprojet_fp_en_traitement(Request $request){
                 $preprojets= Preprojet::where('note_totale2','!=',null)->orderBy('updated_at','desc')->get();
                 $type='fp_mpme_existante';
                 $statut='fp_evalues';
-                $titre="Liste des avant-projets en attente de l'avis de l'équipe";
+                $titre="Liste des avant-projets évalués par l'équipe projet";
             }
             else{
                 return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');

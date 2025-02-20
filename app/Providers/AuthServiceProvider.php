@@ -4,6 +4,7 @@ namespace App\Providers;
 use App\Policies\ParametrePolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
+use App\Policies\ProjetPolicy;
 use App\Policies\ValeurPolicy;
 use App\Policies\SouscriptionPolicy;
 use App\Policies\DashboardPolicy;
@@ -64,10 +65,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('acceder_au_dashboard_du_pe',[DashboardPolicy::class,'acceder_au_dashboard_du_pe']);
         Gate::define('visualiser_historique_de_traitement',[SouscriptionPolicy::class,'visualiser_historique_de_traitement']);
 
- 
-        
-        
-       
+        Gate::define('lister_les_projets_soumis',[ProjetPolicy::class,'lister_les_projets_soumis']);
+        Gate::define('lister_projet_aanalyse_chef_dantenne',[ProjetPolicy::class,'lister_projet_aanalyse_chef_dantenne']);
+        Gate::define('lister_projet_analyse_par_chef_dantenne',[ProjetPolicy::class,'lister_projet_analyse_par_chef_dantenne']);
+        Gate::define('lister_projet_soumis_au_comite',[ProjetPolicy::class,'lister_projet_soumis_au_comite']);
+        Gate::define('lister_decision_comite_projet',[ProjetPolicy::class,'lister_decision_comite_projet']);
+        Gate::define('verdict_du_comite_plan_daffaire',[ProjetPolicy::class,'verdict_du_comite_plan_daffaire']);
 
     
     }

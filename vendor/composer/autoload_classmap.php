@@ -87,7 +87,7 @@ return array(
     'App\\Policies\\DocumentPolicy' => $baseDir . '/app/Policies/DocumentPolicy.php',
     'App\\Policies\\FacturePolicy' => $baseDir . '/app/Policies/FacturePolicy.php',
     'App\\Policies\\ParametrePolicy' => $baseDir . '/app/Policies/ParametrePolicy.php',
-    'App\\Policies\\PresatatairePolicy' => $baseDir . '/app/Policies/PresatatairePolicy.php',
+    'App\\Policies\\PrestatairePolicy' => $baseDir . '/app/Policies/PrestatairePolicy.php',
     'App\\Policies\\ProjetPolicy' => $baseDir . '/app/Policies/ProjetPolicy.php',
     'App\\Policies\\RolePolicy' => $baseDir . '/app/Policies/RolePolicy.php',
     'App\\Policies\\SouscriptionPolicy' => $baseDir . '/app/Policies/SouscriptionPolicy.php',

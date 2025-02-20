@@ -764,7 +764,7 @@ class ComposerStaticInit9a4913df48d16945f93c7a0c81571182
         'App\\Policies\\DocumentPolicy' => __DIR__ . '/../..' . '/app/Policies/DocumentPolicy.php',
         'App\\Policies\\FacturePolicy' => __DIR__ . '/../..' . '/app/Policies/FacturePolicy.php',
         'App\\Policies\\ParametrePolicy' => __DIR__ . '/../..' . '/app/Policies/ParametrePolicy.php',
-        'App\\Policies\\PresatatairePolicy' => __DIR__ . '/../..' . '/app/Policies/PresatatairePolicy.php',
+        'App\\Policies\\PrestatairePolicy' => __DIR__ . '/../..' . '/app/Policies/PrestatairePolicy.php',
         'App\\Policies\\ProjetPolicy' => __DIR__ . '/../..' . '/app/Policies/ProjetPolicy.php',
         'App\\Policies\\RolePolicy' => __DIR__ . '/../..' . '/app/Policies/RolePolicy.php',
         'App\\Policies\\SouscriptionPolicy' => __DIR__ . '/../..' . '/app/Policies/SouscriptionPolicy.php',

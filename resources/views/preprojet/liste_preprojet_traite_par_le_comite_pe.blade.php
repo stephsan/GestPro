@@ -34,7 +34,7 @@
                     <th class="text-center">Contact </th>
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
-                    
+                    <th class="text-center" >Note</th>
 
                     <th class="text-center" >Secteur d'activité</th>
                     <th class="text-center" >Maillon d'activite</th>
@@ -109,7 +109,6 @@
 <script>
     
     function delConfirm(id){
-            //alert(id);
             document.getElementById("id_table").setAttribute("value", id);
 
     }

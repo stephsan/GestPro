@@ -16,7 +16,7 @@
         </nav>
 <div class="row">
 <div class="col-md-6 offset-md-3">
-@can('lister_avant_projet_selectionnes_fp', Auth::user())
+@can('lister_les_projets_soumis', Auth::user())
     @if($projet->statut =='soumis')
         <nav>
             <button type="button" class="btn btn-success">
@@ -31,20 +31,30 @@
         </button>
     </nav>
 @endif
-@if($projet->statut =='analysé')
+@can('valider_levaluation_de_lavant_projet_fp', Auth::user())
+    @if($projet->statut =='analysé')
     <nav>
         <button type="button" class="btn btn-danger">
-            {{-- <a href="#rejetter_lanalyse" data-toggle="modal" onclick="recupererprojet_id({{$projet->id}})" class="btn btn-danger"><span></span>Rejetter l'analyse</a>  --}}
-
-            <a href="#modal-rejet-de-lanalyse" data-toggle="modal"  data-toggle="tooltip" title="Rejeter l'analyse du plan d'affaire" class="text-white"><i class="bi bi-plus-square"></i> Rejetter l'analyse </a>
+        <a href="#modal-rejet-de-lanalyse" data-toggle="modal"  data-toggle="tooltip" title="Rejeter l'analyse du plan d'affaire" class="text-white"><i class="bi bi-plus-square"></i> Rejetter l'analyse </a>
         </button>
         <button type="button" class="btn btn-success">
             <a href="#modal-avis-equipe-fp" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe de fonds de partenariat" class="text-white"><i class="bi bi-plus-square"></i> Avis de l'équipe FP </a>
         </button>
-        
     </nav>
-@endif
+    @endif
 @endcan
+
+@endcan
+@can('valider_la_decision_du_comite',Auth::user())
+    @if($projet->statut =='soumis_au_comite_de_selection')
+    <nav>
+        <button type="button" class="btn btn-success">
+            <a href="#modal-decision-comite-de-selection" data-toggle="modal"  data-toggle="tooltip" title="Décision du comité de sélection" class="text-white"><i class="bi bi-plus-square"></i> Décision du comité de sélection </a>
+        </button>
+    </nav>
+    @endif
+@endcan
+
 </div>
 
 </div>
@@ -183,38 +193,38 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-6 row">
+        <div class="col-md-4">
             <label>Avis Chef de Zone:</label>
             </div>
             <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->avis_chefdezone}}</label>
+            <label class="fb"> {{$projet->avis_chefdantenne}}</label>
             </div>
         </div>
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-6 row">
+        <div class="col-md-4">
             <label>Observation chef de Zone:</label>
             </div>
             <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->observation_chefdezone}}</label>
+            <label class="fb"> {{$projet->observation_chefdantenne}}</label>
             </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-6 row">
+        <div class="col-md-4">
             <label>Avis UGP:</label>
             </div>
             <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->avis_ugp}}</label>
+            <label class="fb"> {{$projet->avis_equipe_fp}}</label>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-6">
+    <div class="col-md-6 row">
+        <div class="col-md-4">
             <label>Observation UGP:</label>
             </div>
             <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->observation_ugp}}</label>
+            <label class="fb"> {{$projet->observation_equipe_fp}}</label>
         </div>
     </div>
 @if($projet->liste_dattente_observations)
@@ -276,10 +286,10 @@
                     {{format_prix($investissement->subvention_demandee_valide)}}
                 </td>
     <td>
-    @can('donne_verdict_du_comite_pca', Auth::user())
-        @if ($projet->statut=='a_affecter_au_membre_du_comite' && ($investissement->statut==null))
+    @can('verdict_du_comite_plan_daffaire', Auth::user())
+        @if ($projet->statut=='soumis_au_comite_de_selection' && ($investissement->statut==null))
             <a  href="#rejetter_investissement" data-toggle="modal"title="Rejetter la ligne- d'investissement"  onclick="edit_investissemnt_by_comite({{ $investissement->id }});" class="btn btn-md btn-danger" ><i class="fa fa-times"></i> </a>
-            <a href="#modal-valider-investissment" data-toggle="modal" title="Valider la ligne d'investissement" onclick="edit_investissemnt_by_comite({{ $investissement->id }});" class="btn btn-md btn-success" ><i class="hi hi-ok"></i> </a>
+            <a href="#modal-valider-investissement" data-toggle="modal" title="Valider la ligne d'investissement" onclick="edit_investissemnt_by_comite({{ $investissement->id }});" class="btn btn-md btn-success" ><i class="fa fa-check"></i> </a>
         @endif
     @endcan
 </td>
@@ -329,6 +339,98 @@
 </section>
 @endsection
 @section('modal_part')
+<div id="modal-valider-investissement" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> Valider la ligne d'investissement</h2>
+            </div>
+            <div class="modal-body">
+        <form method="post"  action="{{route('investissement.valide')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden" id='invest_id' name="invest_id" value="">
+            <div class="row">
+                <div class="form-group col-md-3" >
+                    <label class="control-label " for="example-chosen">Categorie d'investissement<span class="text-danger">*</span></label>
+                        <select id="categorie_invest"  name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
+                            <option></option>
+                           @foreach ($categorie_investissements as $categorie_investissment)
+                            <option value="{{ $categorie_investissment->id}}"
+                                >{{ getlibelle($categorie_investissment->id)}}</option>
+                           @endforeach
+                        </select>
+                </div>
+                 <div class="col-md-3" >
+                    <div class="form-group">
+                        <label class="control-label" for="example-username"> Montant</label>
+                            <input type="text" id="montant_invest" name="cout"  min="0" class="form-control" placeholder="Montant ..." text="Valeur depassé" required >
+                    </div>
+                    @if ($errors->has('cout'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('cout') }}</strong>
+                    </span>
+                    @endif
+                </div> 
+                <div class="col-md-3" >
+                    <div class="form-group">
+                        <label class="control-label" for="example-username">Subvention accordée</label>
+                            <input type="text" id="subvention" name="subvention"  class="form-control" placeholder="Evaluer ..." text="Valeur depassé"  onChange="deux_somme_complementaire('subvention','apport_perso','montant_invest')" required >
+                    </div>
+                    @if ($errors->has('note'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('note') }}</strong>
+                    </span>
+                    @endif
+                </div> 
+                <div class="col-md-3" >
+                    <div class="form-group">
+                        <label class="control-label" for="example-username">Apport personnel</label>
+                            <input type="text" id="apport_perso" name="apport_perso" class="form-control" placeholder="Evaluer ..."  required >
+                    </div>
+                    @if ($errors->has('note'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('note') }}</strong>
+                    </span>
+                    @endif
+                </div>
+            </div>
+                 
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-4">
+                        <a href="#" class="btn btn-sm btn-warning"><i class="fa fa-repeat"></i> Annuler</a>
+                        <button type="submit" class="btn btn-sm btn-success " ><i class="fa fa-arrow-right"></i> Valider</button>
+                    </div>
+                </div>
+            </form>      
+            </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
+<div id="rejetter_investissement" class="modal fade" aria-labelledby="alertModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="padding:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa fa-times" ></i> Rejeter la ligne d'investissement</h3>
+            </div>
+            <form method="post"  action="{{route('rejeter.investissement')}}" class="form-horizontal form-bordered">
+                {{ csrf_field() }}
+            <div class="row">
+                <input type="hidden" name="invest_id" id="invest_id_rejet">
+            <p style="color: red; font-size:22px;">Voulez-vous rejetter cette ligne d'investissement ??</p>
+            </div>
+                <div class="form-group form-actions">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-md btn-success" >Confirmer</button>
+                    </div>
+                </div>
+        </form>
+            </div>
+            
+        </div>
+ </div>
 <div id="modal-rejet-de-lanalyse" class="modal fade" aria-labelledby="alertModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document" style="padding:15px;">
         <div class="modal-content">
@@ -425,17 +527,41 @@
         </div>
     </div>
 </div>
-<div id="modal-avis-equipe-fp" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-decision-comite-de-selection" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i> Décision du comité de sélection</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="projet_id"  id='projet_comite' value="{{ $projet->id }}">
+                <input type="hidden" name="" id='champ_avis_comite'>
+                <div class="form-group">
+                  <label for="">Entrez les observations :</label>
+                  <textarea id="observation_comite" name="observation" placeholder="Observation"  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_equipe_fp')" aria-describedby="helpId"></textarea>
+                </div>
+            <div class="form-group form-actions">
+                <div class="text-right">
+                    <button  class="btn btn-md btn-success btn_desactive" onclick="save_decision_comite('selectionné');" disabled>Favorable</button>
+                    <button class="btn btn-md btn-danger btn_desactive"   onclick="save_decision_comite('rejeté');" disabled>Défavorable</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
+<div id="modal-avis-equipe-fp" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
             <div class="modal-header text-center">
                 <h2 class="modal-title"><i class="fa fa-check"></i> Avis de l'équipe fonds de partenariat</h2>
             </div>
             <div class="modal-body">
                 <input type="hidden" name="projet_id"  id='projet_equipe_fp' value="{{ $projet->id }}">
                 <input type="hidden" name=""  id='champ_avis_equipe_fp'>
-
                 <div class="form-group">
                   <label for="">Entrez les observations :</label>
                   <textarea id="observation_equipe_fp" name="observation" placeholder="Observation"  cols="60" rows="10" onchange="activerbtn('btn_desactive','observation_equipe_fp')" aria-describedby="helpId"></textarea>
@@ -448,7 +574,6 @@
                 </div>
             </div>
         </div>
-            <!-- END Modal Body -->
         </div>
     </div>
 </div>
@@ -474,6 +599,22 @@
         }
              
 }
+function save_decision_comite(avis){
+        var projet_id= $("#projet_comite").val();
+        var observation= $("#observation").val();
+        //var type= $("#champ_decision_comite").val();
+        var url = "{{ route('plan_daffaire.save_decision_du_comite') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {projet_id: projet_id, observation:observation, avis:avis} ,
+                error:function(){alert('error');},
+                success:function(){
+                    $('#modal-confirm-rejet').hide();
+                    location.reload();
+                }
+            });
+    }
 function save_pca_chefdezone(avis){
         var projet_id= $("#projet_chef_de_zone").val();
         var type = $("#champ_avis_chef_zone").val();
@@ -517,7 +658,7 @@ function save_pca_chefdezone(avis){
             });
     }
  </script>
- {{-- <script>
+ <script>
         function edit_investissemnt_by_comite(id){
                     var id=id;
                     var url = "{{ route('investissement.modif') }}";
@@ -540,6 +681,8 @@ function save_pca_chefdezone(avis){
                         }
                     });
             }
+ </script>
+ {{-- <script>
          function recupererprojet_id(id_projet){
             //alert(id_projet);
             document.getElementById("projet_id").setAttribute("value", id_projet);

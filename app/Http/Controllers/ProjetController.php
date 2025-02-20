@@ -26,6 +26,87 @@ class ProjetController extends Controller
             $priece_a_supprimer->delete();
         }
     }
+public function valider_investissement(Request $request)
+{
+    $invest= InvestissementProjet::find($request->invest_id);
+    $projet= $invest->projet;
+    $preprojet= $projet->preprojet;
+    $montant_investissement_total = $projet->investissements->sum('montant_valide') + $request->cout;
+    $subvention_demandee_valide_total = $projet->investissements->sum('subvention_demandee_valide') + $request->cout;
+    $taux_subvention=$subvention_demandee_valide_total/ $montant_investissement_total*100;
+    //Verification du code de financement suivant le guichet
+    if((($preprojet->guichet==7165 ) && $taux_subvention >65 && $subvention_demandee_valide_total> 10000000) || (($preprojet->guichet==7166 ) && $taux_subvention >50  && $subvention_demandee_valide_total > 50000000 ) || (($preprojet->guichet==7167 ) && $taux_subvention >65 && $subvention_demandee_valide_total> 100000000)  )
+    {
+        return redirect()->back()->with('success', "Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
+    }
+    else{
+    $invest->update([
+        'designation'=> $request->designation,
+        'montant_valide'=> reformater_montant2($request->cout),
+        'apport_perso_valide'=> reformater_montant2($request->apport_perso),
+        'subvention_demandee_valide'=> reformater_montant2($request->subvention),
+        'statut' => 'validé'
+    ]);
+    return redirect()->back()->with('success',"Lignes d'investissement validée avec success !!!");
+}
+}
+public function rejetter_investissement(Request $request){
+    $invest= InvestissementProjet::find($request->invest_id);
+    $invest->update([
+        'statut' => 'rejeté',
+        'montant_valide'=> 0,
+        'apport_perso_valide'=> 0,
+        'subvention_demandee_valide'=> 0,
+    ]);
+    return redirect()->back();
+}
+
+public function savedecisioncomite(Request $request){
+   
+    $projet=Projet::find($request->projet_id);
+    $preprojet= $projet->preprojet;
+    $montant_investissement_total = $projet->investissements->sum('montant_valide') + $request->cout;
+    $subvention_demandee_valide_total = $projet->investissements->sum('subvention_demandee_valide') + $request->cout;
+    $taux_subvention=$subvention_demandee_valide_total/ $montant_investissement_total*100;
+    //Verification du code de financement suivant le guichet
+    if((($preprojet->guichet==7165 ) && $taux_subvention >65 && $subvention_demandee_valide_total> 10000000) || (($preprojet->guichet==7166 ) && $taux_subvention >50  && $subvention_demandee_valide_total > 50000000 ) || (($preprojet->guichet==7167 ) && $taux_subvention >65 && $subvention_demandee_valide_total> 100000000)  )
+    {
+        return redirect()->back()->with('success', "Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
+    }
+ 
+else{ 
+        if($request->avis=='selectionné'){
+            foreach($projet->appui1_investissements as $investissement){
+                if($investissement->statut==null){
+                    $investissement->update([
+                        'statut'=>'validé',
+                        'montant_valide'=>$investissement->montant,
+                        'apport_perso_valide'=> $investissement->apport_perso,
+                        'subvention_demandee_valide'=> $investissement->subvention_demandee,
+                    ]);
+                }
+            }
+        }
+        elseif($request->avis =='rejeté'){
+            foreach($projet->appui1_investissements as $investissement){
+                if($investissement->statut==null){
+                    $investissement->update([
+                        'statut'=>'rejeté',
+                        
+                    ]);
+                }
+            }
+        }
+        $projet->update([
+            'statut'=>$request->avis,
+            'date_session_comite'=>now(),
+            'observations'=>$request->observation,
+            'montant_accorde'=>$projet->investissementvalides->sum('montant_valide')
+        ]);
+    
+}
+
+}
     /**
      * Display a listing of the resource.
      *
@@ -37,8 +118,9 @@ class ProjetController extends Controller
     }
     public function lister(Request $request){
         if($request->statut=='soumis'){
+    if (Auth::user()->can('lister_les_projets_soumis')) {
             if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['soumis','evalué'])->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_mpme_existante';
             }
             else{
@@ -48,7 +130,31 @@ class ProjetController extends Controller
             $texte= 'soumis';
             $page='projet_soumis';
         }
+        else{
+            return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+        }
+        }
+        elseif($request->statut=='soumis_a_lanalyse_chef_dantenne'){
+        if (Auth::user()->can('lister_projet_aanalyse_chef_dantenne')) {
+            if($request->type_entreprise=='mpme'){
+                $projets = Projet::whereIn('statut',['soumis','evalué'])
+                                        ->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_mpme_existante';
+            }
+            else{
+                $projets = Projet::whereIn('statut',['soumis','evalué'])
+                                    ->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $type_entreprise='fp_startup';
+            }
+            $texte= "Projets a analyser par le chef d'antenne";
+            $page='projet_a_analyse';
+            }
+            else{
+                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+            }
+        }
         elseif($request->statut=='analyse'){
+        if (Auth::user()->can('lister_projet_analyse_par_chef_dantenne')) {
             if($request->type_entreprise=='mpme'){
                 $projets = Projet::whereIn('statut',['analysé'])->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_mpme_existante';
@@ -59,8 +165,13 @@ class ProjetController extends Controller
             }
             $texte= "Projets analyse par le chef d'antenne";
             $page='projet_analyse';
+            }
+            else{
+                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+            }
         }
         elseif($request->statut=='soumis_au_comite_de_selection'){
+        if (Auth::user()->can('lister_projet_soumis_au_comite')) {
             if($request->type_entreprise=='mpme'){
                 $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_mpme_existante';
@@ -69,13 +180,36 @@ class ProjetController extends Controller
                 $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_startup';
             }
-            $texte= "Projets analyse par le chef d'antenne";
-            $page='projet_analyse';
+            $texte= "Projets soumis a l'analyse du comité de sélection" ;
+            $page='projet_comite_de_selection';
         }
+        else{
+            return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+        }
+        }
+        elseif($request->statut=='decision_du_comite'){
+            if (Auth::user()->can('lister_projet_soumis_au_comite')) {
+                if($request->type_entreprise=='mpme'){
+                    $projets = Projet::whereIn('statut',['selectionné','rejeté'])->orderBy('updated_at', 'desc')->get();
+                    $type_entreprise='fp_mpme_existante';
+                }
+                else{
+                    $projets = Projet::whereIn('statut',['selectionné','rejeté'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                    $type_entreprise='fp_startup';
+                }
+                $texte= "Projets analysés par le comité de sélection" ;
+                $page='decision_comite_de_selection';
+            }
+            else{
+                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+            }
+            }
         return view('projet.lister',compact('projets','type_entreprise','texte','page'));
+        
     }
     public function analyser(Projet $projet)
     {
+        $categorie_investissements=Valeur::where('parametre_id', 38)->get();
         $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE")])->orderBy('updated_at', 'desc')->get();
     if($projet->preprojet->entreprise_id!=null){
         $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
@@ -83,7 +217,7 @@ class ProjetController extends Controller
     else{
         $criteres= GrilleEvalPca::where('categorie','startup')->get();
     }
-        return view("projet.analyse", compact('projet', 'piecejointes', 'criteres'));
+        return view("projet.analyse", compact('categorie_investissements','projet', 'piecejointes', 'criteres'));
     }
     public function rejeter_lanalyse_pa(){
 
@@ -104,14 +238,10 @@ class ProjetController extends Controller
         $preprojet = Preprojet::where('promoteur_id', $promoteur->id)->where('decision_du_comite','favorable')->first();
         $projet = Projet::where('preprojet_id', $preprojet->id)->first();
             if($projet){
-            $projet_piecejointes=Piecejointe::where("preprojet_fp_id",$preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"),env("VALEUR_ID_DOCUMENT_ATTESTATION"), env("VALEUR_ID_FICHE_DANALYSE")])->orderBy('updated_at', 'desc')->get();
-           // dd($projet_piecejointes);
+            $projet_piecejointes=Piecejointe::where("preprojet_fp_id",$preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"),env("VALEUR_ID_DOCUMENT_ATTESTATION")])->orderBy('updated_at', 'desc')->get();
                 return view('projet.myprojet',compact('projet_type_pieces','coachs','preprojet','projet','projet_piecejointes','categorie_investissments'));
-
             }else{
                 return view('projet.create',compact('coachs','promoteur','preprojet','categorie_investissments'));
-
-
             }
        
 
@@ -147,7 +277,7 @@ class ProjetController extends Controller
    if((($preprojet->guichet==7165 ) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
         {
             flash("Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet))->error();
-            return redirect()->back();
+            return redirect()->back()->with("success","Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
         }
     else{
             ($preprojet->region_affectation == null )?($zone= $preprojet->region):($zone=$preprojet->region_affectation );
@@ -278,6 +408,7 @@ public function pca_modifier(Request $request){
         return redirect()->back();
 }
 
+
 public function invest_modif(Request $request){
     $investissement= InvestissementProjet::find($request->id);
     $data = array(
@@ -316,10 +447,17 @@ public function invest_modifier(Request $request){
 }
 public function add_investissement(Request $request){
     $projet= Projet::find($request->projet_id);
-      
+    $preprojet=$projet->preprojet;
+    $montant_total= $projet->investissements->sum('montant') + reformater_montant2($request->cout);
+    $subvention_total= $projet->investissements->sum('subvention_demandee') + reformater_montant2($request->subvention);
+    $taux_subvention=$subvention_total/$montant_total*100;
+    if((($preprojet->guichet==7165) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
+        {
+            return redirect()->back()->with('error','Bien vouloir respecter le code de financement du guichet'.' '.getlibelle($preprojet->guichet));
+        }
+    else{
         InvestissementProjet::create([
             'projet_id'=>$request->projet_id,
-            'appui'=>$request->appui,
             'designation'=>$request->designation,
             'montant'=>reformater_montant2($request->cout),
             'subvention_demandee'=>reformater_montant2($request->subvention),
@@ -328,9 +466,8 @@ public function add_investissement(Request $request){
         $projet->update([
             'montant_demande' => $projet->investissements->sum('montant')
         ]);
-        flash("La ligne d'investissement a été ajoutée avec success !!!")->success();
-        return redirect()->back();
-    // }
+        return redirect()->back()->with('success',"La ligne d'investissement a été ajoutée avec success !!!");
+     }
     }
 public function modif_piecej(Request $request){
     $piecejointe= Piecejointe::find($request->id);
@@ -422,7 +559,7 @@ public function storeaval(Request $request){
         ]);
         }        
         }
-        
+
         $projet->update([
             'statut'=>'evalué',
             //'motif_du_rejet_de_lanalyse'=>''

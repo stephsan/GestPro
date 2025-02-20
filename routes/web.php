@@ -18,6 +18,7 @@ use App\Http\Controllers\CoachController;
 use App\Http\Controllers\BeneficiaireController;
 use App\Http\Controllers\GrilleController;
 use App\Http\Controllers\SouscriptionPEController;
+use App\Http\Controllers\PlainteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,8 +88,9 @@ Route::get('/pca/modif',[ProjetController::class, 'pca_modif'])->name('pca.modif
 Route::post('/pca/modifier',[ProjetController::class, 'pca_modifier'])->name('pca.modifier');
 Route::get('/piecejointe/modif',[ProjetController::class, 'modif_piecej'])->name('piece.modif');
 Route::post('/piecejointe/modifier',[ProjetController::class, 'modifier_piecej'])->name('piecejointe.modifier');
-Route::get('/investissment',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
+Route::get('/investissement',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
 Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
+
 Route::post('add/investissement', [ProjetController::class, 'add_investissement'])->name('add.investissement'); 
 Route::post("/projet/add/piecejointe/",[ProjetController::class,'add_piecej_to_projet'])->name('add.piecetoprojet');
 
@@ -97,7 +99,8 @@ route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_confor
  Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
 // Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::resource('projet',ProjetController::class);
-
+Route::get('/plainte/description', [PlainteController::class, 'accueil'])->name('plainte.accueil');
+Route::post('/plainte/storage', [PlainteController::class, 'store'])->name('plainte.store');
 
 
 Route::get('/accueil', function () {
@@ -172,14 +175,18 @@ Route::group([
     Route::resource('grille', GrilleController::class);
     Route::get('gril/modif',[GrilleController::class, 'modifier'] )->name('grille.modif');
     Route::post('gri/store_modif',[GrilleController::class, 'modifierstore'] )->name('grille.storemodif');
-    Route::post('pca_eval/store',[ProjetController::class, 'storeaval'] )->name('pca.evaluation');
-    Route::get('/pca/analyse/{projet}',[ProjetController::class, 'analyser'])->name('pca.analyse');
+    Route::post('pa_eval/store',[ProjetController::class, 'storeaval'] )->name('pca.evaluation');
+    Route::get('/pa/analyse/{projet}',[ProjetController::class, 'analyser'])->name('pca.analyse');
     Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
-    Route::get('/pca/valider/analyse', [ProjetController::class, 'valider_analyse'])->name('pca.valider_analyse');
-    Route::get('/pca/avis_chefdentenne', [ProjetController::class, 'pca_save_avis_chefdantenne'])->name('pca.save_avis_chefdantenne');
-    Route::get('/pca/avis_equipe_fp', [ProjetController::class, 'pca_save_avis_equipe_fp'])->name('pca.save_avis_equipe_fp');
-    Route::get('/pca/rejeter_lanalyse_du_pa', [ProjetController::class, 'rejeter_lanalyse_pa'])->name('pca.rejeter_lanalyse_pa');
-    
+    Route::get('/pa/valider/analyse', [ProjetController::class, 'valider_analyse'])->name('pca.valider_analyse');
+    Route::get('/pa/avis_chefdentenne', [ProjetController::class, 'pca_save_avis_chefdantenne'])->name('pca.save_avis_chefdantenne');
+    Route::get('/pa/avis_equipe_fp', [ProjetController::class, 'pca_save_avis_equipe_fp'])->name('pca.save_avis_equipe_fp');
+    Route::get('/pa/rejeter_lanalyse_du_pa', [ProjetController::class, 'rejeter_lanalyse_pa'])->name('pca.rejeter_lanalyse_pa');
+    Route::post('/valider/ligne_investissement/',[ProjetController::class,'valider_investissement'])->name('investissement.valide');
+    Route::post('/rejetter/investissements', [ProjetController::class, 'rejetter_investissement'])->name('rejeter.investissement');
+    Route::get('/pa/save/decision_du_comite', [ProjetController::class, 'savedecisioncomite'])->name('plan_daffaire.save_decision_du_comite');
+    // Route::get('/investissment',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
+    // Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
 
 
 

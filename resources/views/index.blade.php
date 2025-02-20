@@ -5,34 +5,8 @@
   <div class="row"  data-aos="zoom-out">
      <img src="{{ asset('/img/banniere.jpeg') }}"  alt="">
   </div>
-    {{-- <div class="container" data-aos="zoom-out" data-aos-delay="100">
-    </div> --}}
   </section><!-- End Hero -->
-    <!-- ======= Featured Services Section ======= -->
-    {{-- <section id="services" class="services">
-      <div class="container" data-aos="fade-up">
-
-        <div class="row">
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4><a href="">Programme entreprendre </a></h4>
-              <p>Renforcer les capacités des PME et l’adoption des technologies</p>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bx-file"></i></div>
-              <h4><a href="">Fonds de partenariat </a></h4>
-              <p>Améliorer l’accès des PME au financement et aux investissements verts </p>
-            </div>
-          </div>
-        </div>
-
-
-      </div>
-    </section> --}}
+   
     <section id="featured-services" class="featured-services">
       <div class="container" data-aos="fade-up">
       <div class="section-title">

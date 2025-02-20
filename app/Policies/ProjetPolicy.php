@@ -22,21 +22,37 @@ class ProjetPolicy
     {
         return $this->getPermission($user, 46);
     }
-    public function verdict_du_comite_pca(User $user)
+    public function verdict_du_comite_plan_daffaire(User $user)
     {
-        return $this->getPermission($user, 45);
+        return $this->getPermission($user, 36);
     } 
     public function lister_pca_chef_de_zone(User $user)
     {
         return $this->getPermission($user, 43);
     } 
-    public function create(User $user)
+    public function lister_les_projets_soumis(User $user)
     {
-        return $this->getPermission($user,34);
+        return $this->getPermission($user, 31);
+    }
+    public function lister_projet_aanalyse_chef_dantenne(User $user)
+    {
+        return $this->getPermission($user, 32);
+    }
+    public function lister_projet_analyse_par_chef_dantenne(User $user)
+    {
+        return $this->getPermission($user, 33);
+    }
+    public function lister_projet_soumis_au_comite(User $user)
+    {
+        return $this->getPermission($user, 34);
+    }
+    public function lister_decision_comite_projet(User $user)
+    {
+        return $this->getPermission($user,35);
     }
     public function update(User $user)
     {
-        return $this->getPermission($user,36);
+        return $this->getPermission($user,56);
     }
     public function lister_chef_de_projet(User $user)
     {

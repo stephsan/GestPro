@@ -104,7 +104,7 @@
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
-                        </form>
+                    </form>
                 </li>
 
                 </ul><!-- End Profile Dropdown Items -->
@@ -305,6 +305,7 @@
         </a>
         <ul id="fp_mpme_existante" class="nav-content collapse  @yield('fp_mpme_existante')"
             data-bs-parent="#sidebar-nav">
+            <p>Avant-Projets</p>
          @can('lister_souscription_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.lister_fp') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_enregistre') ">
@@ -340,13 +341,13 @@
                 </a>
             </li>
         @endcan
-        @can('lister_avant_projet_soumis_au_comite_fp', Auth::user())
+        {{-- @can('lister_avant_projet_soumis_au_comite_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.traitement') }}?type_entreprise=entreprise_existante&statut=soumis_au_comite" class="nav-link @yield('fp_soumis_au_comite') ">
                     <i class="bi bi-circle"></i><span>Avant-projets soumis au comité</span>
                 </a>
             </li>
-        @endcan
+        @endcan --}}
         @can('lister_avant_projet_selectionnes_fp', Auth::user())
             <li>
                 <a href="{{ route('preprojet.selected') }}?type_entreprise=entreprise_existante" class="nav-link @yield('fp_selectionne_par_le_comite') ">
@@ -354,31 +355,39 @@
                 </a>
             </li>
         @endcan
-
-        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+        <p>Projets</p>
+        @can('lister_les_projets_soumis', Auth::user())
             <li>
                 <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('projet_soumis') ">
                     <i class="bi bi-circle"></i><span>Projets soumis</span>
                 </a>
             </li>
         @endcan
-        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+
+        @can('lister_projet_aanalyse_chef_dantenne', Auth::user())
             <li>
-                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_analyse') ">
-                    <i class="bi bi-circle"></i><span>Projets Analysés</span>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis_a_lanalyse_chef_dantenne" class="nav-link @yield('projet_a_analyse') ">
+                    <i class="bi bi-circle"></i><span>Projets a analyser</span>
                 </a>
             </li>
         @endcan
-        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+        @can('lister_projet_analyse_par_chef_dantenne', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_analyse') ">
+                    <i class="bi bi-circle"></i><span>Projets analysés</span>
+                </a>
+            </li>
+        @endcan
+        @can('lister_projet_soumis_au_comite', Auth::user())
             <li>
                 <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis_au_comite_de_selection" class="nav-link @yield('projet_comite_de_selection') ">
                     <i class="bi bi-circle"></i><span>Projets soumis au comité</span>
                 </a>
             </li>
         @endcan
-        @can('lister_avant_projet_selectionnes_fp', Auth::user())
+        @can('lister_decision_comite_projet', Auth::user())
             <li>
-                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=soumis" class="nav-link @yield('decision_du_comite') ">
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=decision_du_comite" class="nav-link @yield('decision_comite_de_selection') ">
                     <i class="bi bi-circle"></i><span>Décision du comité</span>
                 </a>
             </li>
@@ -393,7 +402,7 @@
                 </a>
                 <ul id="ca" class="nav-content collapse @yield('administration')"
                     data-bs-parent="#sidebar-nav">
-            @can('gerer_critere', Auth::user())
+                @can('gerer_critere', Auth::user())
                     <li>
                         <a href="{{ route('critere.index') }}" class="nav-link @yield('critere')">
                             <i class="bi bi-circle"></i><span>Criteres</span>
@@ -442,13 +451,14 @@
                             <i class="bi bi-circle"></i><span>Valeurs</span>
                         </a>
                     </li>
-
+                    @endcan
+                  
                 </ul>
-            </li>
+        </li>
+@endcan
             <!-- End Forms Nav -->
-        @endcan
-        @endcan
-    </ul>
+        
+</ul>
 
 </aside><!-- End Sidebar-->
 

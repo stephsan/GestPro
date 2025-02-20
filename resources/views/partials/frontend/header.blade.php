@@ -99,33 +99,12 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto @yield('accueil')" href="{{route('index')}}">Accueil</a></li>
-          <li><a class="nav-link scrollto " data-toggle="modal"  data-target="#modal-comment-souscrire" href="#modal-comment-souscrire">Comment Postuler</a></li>
+          {{-- <li><a class="nav-link scrollto " data-toggle="modal"  data-target="#modal-comment-souscrire" href="#modal-comment-souscrire">Comment Postuler</a></li> --}}
           {{-- <button type="button"  class="btn-get-started scrollto" data-toggle="modal" class="btn-get-started scrollto" data-target="#modal-choix-option"> Programme Entreprendre</button> --}}
           {{-- <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-entreprendre" href="#">Programme Entreprendre</a></li>
           <li><a class="nav-link scrollto" data-toggle="modal" data-target="#modal-programme-fond-de-partenariat" href="#">Fonds de Partenariat</a></li> --}}
           <li><a class="nav-link scrollto @yield('document')" href="{{ route('documents.public') }}">Documents</a></li>
-          {{-- <li class="dropdown"><a href="#"><span>Documents</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Flyers</a></li>
-                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription fonds de partenariat">Formulaire type</a></li>
-                </ul>
-              </li>
-              <li class="dropdown"><a href="#"><span>Programme Entreprendre</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a data-toggle="modal" data-target="#modal-programme-entreprendre-startup" href="#">Flyers</a></li>
-                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription au programme entreprendre">Formulaire type</a></li>
-                </ul>
-              </li>
-              <li class="dropdown"><a href="#"><span>Sauvegarde environnementale</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a data-toggle="modal" data-target="#modal-fond-partenariat-startup" href="#">Doc1</a></li>
-                  <li><a  href={{ asset('/img/docs/formulaire_type_souscription_FP.pdf') }} download="Formulaire de souscription fonds de partenariat">Doc2</a></li>
-                </ul>
-              </li>
-            </ul>
-          </li> --}}
+          
          <li class="dropdown"><a href="#"><span>Poursuivre</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li class="dropdown"><a href="#"><span>Fond de partenariat</span> <i class="bi bi-chevron-right"></i></a>
@@ -147,17 +126,18 @@
               </li>
             </ul>
           </li>
-          {{-- <li><a class="nav-link scrollto " href="#portfolio">Créer un compte</a></li>
-          <li><a class="nav-link scrollto " href="{{ route('login') }}">Se Connecter</a></li> --}}
-          
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        
+          <li><a class="nav-link scrollto" href="#contact">Contacts</a></li>
+         
+
+        @if(auth()->guest())
           <li><a  data-toggle="modal" data-target="#modal-create-compte" href="#">Créer un compte</a></li>
           <li><a class="getstarted scrollto" href="{{ route('login') }}" >Se Connecter</a></li>
-
+        @endif
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
+      <a class="btn btn-danger elementor-button" href="{{ route('plainte.accueil') }}">DEPOSER UNE PLAINTE</a>
     </div>
   </header><!-- End Header -->
 <!-- ======= Hero Section ======= -->
