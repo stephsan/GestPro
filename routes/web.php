@@ -99,8 +99,12 @@ route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_confor
  Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
 // Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
 Route::resource('projet',ProjetController::class);
-Route::get('/plainte/description', [PlainteController::class, 'accueil'])->name('plainte.accueil');
+Route::get('/plainte/create', [PlainteController::class, 'accueil'])->name('plainte.accueil');
 Route::post('/plainte/storage', [PlainteController::class, 'store'])->name('plainte.store');
+Route::get('/generate/accuse_de_plainte/{plainte}', [PlainteController::class, 'generer_laccuse_de_plainte'])->name('plainte.generate_accuse');
+Route::get('/lister/plaintes',[PlainteController::class, 'lister'])->name('plainte.liste');
+Route::get('plainte/details/{plainte}',[PlainteController::class, 'details'] )->name('plainte.details');
+Route::post('qualifier/plainte/',[PlainteController::class, 'qualifier'] )->name('plainte.qualifier');
 
 
 Route::get('/accueil', function () {

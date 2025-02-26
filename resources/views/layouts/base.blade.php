@@ -154,6 +154,43 @@
                 </ul>
             </li><!-- End Components Nav -->
        @endcan
+       <hr>
+       <li class="nav-item">
+           <a class="nav-link collapsed" data-bs-target="#plaintes" data-bs-toggle="collapse" href="#">
+               <i class="bi-currency-exchange"></i><span>Plaintes</span><i class="bi bi-chevron-down ms-auto"></i>
+           </a>
+           <ul id="plaintes" class="nav-content collapse  @yield('plaintes')"
+               data-bs-parent="#sidebar-nav">
+           @can('lister_souscription_pe', Auth::user())
+               <li>
+                   <a href="{{ route('plainte.liste') }}?type=save" class="nav-link @yield('plainte_enregistre') ">
+                       <i class="bi bi-circle"></i><span>Plaintes enregistrées</span>
+                   </a>
+               </li>
+           @endcan
+           @can('lister_avant_projet_a_evaluer_pe', Auth::user())
+               <li>
+                   <a href="{{ route('plainte.liste') }}?type=en_cours" class="nav-link @yield('plainte_en_cours') ">
+                       <i class="bi bi-circle"></i><span>Plaintes en cours</span>
+                   </a>
+               </li>
+           @endcan
+           @can('lister_avant_projet_a_evaluer_pe', Auth::user())
+               <li>
+                   <a href="{{ route('plainte.liste') }}?type=resolue" class="nav-link @yield('plainte_resolus') ">
+                       <i class="bi bi-circle"></i><span>Plaintes résolues</span>
+                   </a>
+               </li>
+           @endcan
+           @can('lister_avant_projet_ineligible_pe', Auth::user())
+               <li>
+                   <a href="{{ route('plainte.liste') }}?type=archives" class="nav-link @yield('plainte_archives') ">
+                       <i class="bi bi-circle"></i><span>Plaintes NR et archivées</span>
+                   </a>
+               </li>
+           @endcan
+           </ul>
+       </li>
 @can('lister_souscription_pe', Auth::user())
 <p>Programme Entreprendre</p>
 <hr>

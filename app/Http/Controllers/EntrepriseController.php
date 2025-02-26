@@ -135,7 +135,6 @@ public function creation_pe(Request $request)
     $guichets=Valeur::where('parametre_id',49 )->get();
     $innovation_du_projets=Valeur::where('parametre_id',44 )->get();
     $difficultes=Valeur::where('parametre_id',47 )->get();
-
     $indicateur_previsionel_du_projets=Valeur::where('parametre_id',46 )->whereIn('id',[7155])->get();
     $futur_annees=Valeur::where('parametre_id',17 )->get();
     $entreprise=$request->entreprise;

@@ -19,7 +19,7 @@ class ParametreController extends Controller
         return view('parametres.index', compact('parametres'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+       
         return redirect()->back();
     }
     }
@@ -36,8 +36,8 @@ class ParametreController extends Controller
         return view('parametres.create', compact('parametres'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
-        return redirect()->back();
+        
+        return redirect()->back()->with('error',"Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!");
     }
     }
 
@@ -88,7 +88,7 @@ class ParametreController extends Controller
         return view('parametres.edit', compact('parametre', 'params'));
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+        //flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
     }
@@ -107,11 +107,11 @@ class ParametreController extends Controller
         $parametre->description = $request->description;
         $parametre->parametre_id = $request->parent;
         $parametre->save();
-        flash("Parametre modifié avec succes !!!")->success();
-        return redirect(route('parametres.index'));
+      //  flash("Parametre modifié avec succes !!!")->success();
+        return redirect(route('parametres.index'))->with('success',"Parametre modifié avec succes !!!");
     }
     else{
-        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
+       // flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
         return redirect()->back();
     }
     }

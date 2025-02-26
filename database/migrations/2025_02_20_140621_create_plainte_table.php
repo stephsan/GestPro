@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('plaintes', function (Blueprint $table) {
             $table->id();
+            $table->string('num_plainte',100);
             $table->string('nom',30);
             $table->string('prenom',50);
             $table->string('telephone',60);

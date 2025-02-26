@@ -7,10 +7,10 @@
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1 class="text-success">Souscription</h1>
+        <h1 class="text-success">Plaintes</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item text-dark">Programme Entreprendre {{ $type }}</li>
+                <li class="breadcrumb-item text-dark">Plaintes</li>
                 <li class="breadcrumb-item active text-dark">Lister</li>
             </ol>
         </nav>
@@ -28,22 +28,12 @@
 <table class="table liste ">
             <thead>
                 <tr>
-                    <th class="text-center">Numéro</th>
-                    <th class="text-center">Nom & prenom </th>
+                    <th class="text-center">N</th>
+                    <th class="text-center">Numéro de la plainte</th>
+                    <th class="text-center">Nom & prenom du plaignant</th>
                     <th class="text-center">Sexe </th>
+                    <th class="text-center">Localités </th>
                     <th class="text-center">Contacts </th>
-                    <th class="text-center">Numéro dossier</th>
-                    <th class="text-center" >Titre du projet</th>
-                    <th class="text-center" >Secteur d'activité</th>
-                    <th class="text-center" >Maillon d'activite</th>
-                    <th class="text-center" >Region</th>
-                    <th class="text-center" >Province</th>
-                    <th class="text-center" >Commune</th>
-                    <th class="text-center" >secteur</th>
-                    <th class="text-center">Autres besoins </th>
-
-                    {{-- <th class="text-center" >Cout total du projet</th>
-                    <th class="text-center" >Subvention Sollicitée</th> --}}
                     <th class="text-center">Actions</th>
                 </tr>
             </thead>
@@ -51,40 +41,29 @@
                 @php
                   $i=0;
                 @endphp
-                @foreach ($preprojets as $preprojet)
+                @foreach ($plaintes as $plainte)
                         @php
                            $i++;
                         @endphp
                     <tr>
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
-                        <td class="text-center">{{ $preprojet->promoteur->nom }} {{ $preprojet->promoteur->prenom }} </td>
+                        <td class="text-center">{{ $plainte->num_plainte }} </td>
+                        <td class="text-center">{{ $plainte->nom }} {{ $plainte->prenom }} </td>
                         <td class="text-center">
-                            @empty($preprojet->promoteur->genre)
+                            @empty($plainte->sexe)
                                         Informations non disponible
                                     @endempty
-                                    @if($preprojet->promoteur->genre==1)
-                                        Féminin
-                                    @else
+                                    @if($plainte->sexe==1)
                                         Masculin
+                                    @else
+                                        Féminin
                                     @endif
                         </td>
-                        <td class="text-center">{{ $preprojet->promoteur->telephone_promoteur }}/{{ $preprojet->promoteur->mobile_promoteur }}</td>
-                        <td class="text-center">{{ $preprojet->num_projet }}</td>
-                        <td class="text-center">{{ $preprojet->titre_projet }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->region) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->province) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->commune) }}</td>
-                        <td class="text-center">{{ getlibelle($preprojet->secteur_village) }}</td>
-                        <td class="text-center">
-                            {{ $preprojet->autre_besoin_en_formation }}
-                        </td>
-
+                        <td class="text-center">{{ $plainte->telephone }} / {{ $plainte->email }} </td>
+                        <td class="text-center">{{ getlibelle($plainte->region) }}/{{ getlibelle($plainte->province) }} / {{ getlibelle($plainte->commune) }} / {{ getlibelle($plainte->secteur_village) }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('preprojet_pe.details', $preprojet) }}?type_detail=visualiser" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                {{-- <a  href="#modal-confirm-delete" onclick="delConfirm({{ $preprojet->id }});" data-toggle="modal" title="Supprimer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a> --}}
+                                <a href="{{ route('plainte.details', $plainte)}}?type_detail=visualiser" data-toggle="tooltip" title="Details" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                             </div>
                         </td>
                     </tr>

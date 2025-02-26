@@ -37,6 +37,7 @@
                     <th class="text-center">Nom & prenom </th>
                     <th class="text-center">Sexe </th>
                     <th class="text-center">Contacts </th>
+
                     <th class="text-center">Numéro dossier</th>
                     <th class="text-center" >Titre du projet</th>
                     <th class="text-center" >Secteur d'activité</th>
@@ -79,6 +80,7 @@
                                 @elseif($preprojet->statut=='evaluation_validee')
                                     style="background-color: #497956"
                             @endif>{{ $preprojet->titre_projet }}</td>
+                       
                         <td class="text-center">{{ getlibelle($preprojet->secteur_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->maillon_dactivite) }}</td>
                         <td class="text-center">{{ getlibelle($preprojet->region) }}</td>

@@ -4,7 +4,6 @@
     <div style="border:solid 1px black; margin-left:15%; margin-top:20px;" class="col-md-9" >
         <div class="row" style="border-bottom: solid 1px black; text-align:center; padding-top:10px;">
             <h2>Informations Importantes sur la Gestion des Plaintes</h2>
-
         </div>
         <div class="row" style="font-size:22px; text-align:justify; padding:20px; color:rgb(48, 50, 48)">
             <p style="color: red;">Votre Plainte </p>

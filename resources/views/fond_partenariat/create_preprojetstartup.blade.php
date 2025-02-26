@@ -3,7 +3,7 @@
 
 <div class="section-title">
       <h3>INFORMATIONS SUR LE PROJET</h3>
-      </div>
+</div>
       
       <div class="block">
         <p style="background-color: rgb(231, 179, 179); color">Les champs marqué d'étoile en <span style="color:red; font-size:15px;">*</span> rouge sont obligatoires</p>
