@@ -62,9 +62,11 @@
                         <td class="text-center">{{ $plainte->telephone }} / {{ $plainte->email }} </td>
                         <td class="text-center">{{ getlibelle($plainte->region) }}/{{ getlibelle($plainte->province) }} / {{ getlibelle($plainte->commune) }} / {{ getlibelle($plainte->secteur_village) }}</td>
                         <td class="text-center">
+                        @can('visualiser_une_plainte', Auth::user())
                             <div class="btn-group">
                                 <a href="{{ route('plainte.details', $plainte)}}?type_detail=visualiser" data-toggle="tooltip" title="Details" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                             </div>
+                        @endcan
                         </td>
                     </tr>
                 @endforeach

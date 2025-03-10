@@ -7,6 +7,7 @@ use App\Policies\UserPolicy;
 use App\Policies\ProjetPolicy;
 use App\Policies\ValeurPolicy;
 use App\Policies\SouscriptionPolicy;
+use App\Policies\PlaintePolicy;
 use App\Policies\DashboardPolicy;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -71,6 +72,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('lister_projet_soumis_au_comite',[ProjetPolicy::class,'lister_projet_soumis_au_comite']);
         Gate::define('lister_decision_comite_projet',[ProjetPolicy::class,'lister_decision_comite_projet']);
         Gate::define('verdict_du_comite_plan_daffaire',[ProjetPolicy::class,'verdict_du_comite_plan_daffaire']);
+
+        Gate::define('lister_les_plaintes',[PlaintePolicy::class,'lister']);
+        Gate::define('visualiser_une_plainte',[PlaintePolicy::class,'visuliser']);
+        Gate::define('changer_statut_plainte',[PlaintePolicy::class,'changer_statut']);
 
     
     }

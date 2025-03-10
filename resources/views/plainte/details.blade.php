@@ -16,7 +16,7 @@
         </nav>
 <div class="row" >
 <div class="col-md-6 offset-md-3">
-@can('lister_les_projets_soumis', Auth::user())
+@can('visualiser_une_plainte', Auth::user())
     @if($plainte->statut =='enregistré')
         <nav>
             <button type="button" class="btn btn-success">
@@ -27,8 +27,17 @@
             </button>
         </nav>
     @endif
+    @if($plainte->statut =='en_cours')
+        <nav>
+            <button type="button" class="btn btn-success">
+                <a href="#modal-resolve-plainte" data-toggle="modal"  data-toggle="tooltip" title="Plaintes résolues" class="text-white"><i class="bi bi-plus-square"></i> PLainte résolue </a>
+            </button>
+            <button type="button" class="btn btn-danger">
+                <a href="#modal-archiver-plainte" data-toggle="modal"  data-toggle="tooltip" title="archiver la plainte" class="text-white"><i class="bi bi-plus-square"></i> Archiver la plainte </a>
+            </button>
+        </nav>
+    @endif
 @endcan
-
 </div>
 
 </div>
@@ -115,8 +124,30 @@
             <label class="fb"> {{$plainte->statut}}</label>
             </div>
         </div>
+        @if($plainte->statut=='resolue')
+            <div class="form-group row" >
+                <div class="col-md-9">
+                <label>Commentaire resolution:</label>
+                </div>
+                <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
+                    <label class="fb" style="text-align: justify;"> {{$plainte->commentaire_resolve}}</label>
+                </div>
+            </div>
+        @endif
     </div>
-</div>      
+</div>  
+<div class="row">
+        <div class="col-md-10">
+
+        </div>
+        <div class="col-md-2">
+            <nav>
+                <button type="button" class="btn btn-danger">
+                    <a onclick="window.history.back();"    title="archiver la plainte" class="text-white"><i class="bi bi-plus-square"></i> Fermer </a>
+                </button>
+            </nav>
+        </div>
+</div>    
 </div>
 </div>
 </div>
@@ -153,11 +184,37 @@
         </div>
     </div>
 </div>
+<div id="modal-resolve-plainte" class="modal fade" aria-labelledby="alertModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="padding:15px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa fa-times" ></i> Plaintes resolues</h3>
+            </div>
+            <form method="post"  action="{{route('plainte.resolue')}}" class="form-horizontal form-bordered">
+                {{ csrf_field() }}
+                <input type="hidden" name="plainte_id" id="invest_id_resolve" value="{{ $plainte->id }}">
+            <div class="row">
+                <div class="form-group">
+                    <label for="">Entrez un commentaire :</label>
+                    <textarea id="commantaire_resolve" name="commentaire_resolve" placeholder="Observation" required  cols="60" rows="10" onchange="activerbtn('btn_desactive','commantaire_resolve')" aria-describedby="helpId"></textarea>
+                  </div>
+            </div>
+                <div class="form-group form-actions">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-md btn-warning" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-md btn-success btn_desactive" disabled>Enregistrer</button>
+                    </div>
+                </div>
+        </form>
+            </div>
+            
+        </div>
+ </div>
 <div id="modal-archiver-plainte" class="modal fade" aria-labelledby="alertModalLabel" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document" style="padding:15px;">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fa fa-times" ></i> Rejeter la ligne d'investissement</h3>
+                <h3 class="modal-title"><i class="fa fa-times" ></i> Archiver la plainte</h3>
             </div>
             <form method="post"  action="{{route('plainte.qualifier')}}" class="form-horizontal form-bordered">
                 {{ csrf_field() }}

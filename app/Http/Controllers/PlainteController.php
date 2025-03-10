@@ -58,7 +58,6 @@ class PlainteController extends Controller
                     'statut'=>'en_cours',
                     'categorie'=>$request->categorie_plainte
                 ]);
-
               }
               else{
                 $plainte->update([
@@ -66,6 +65,23 @@ class PlainteController extends Controller
                 ]);
               }
         return redirect()->route('plainte.liste',['type' => 'save'])->with('success','La plainte a été qualifiée');
+    }
+
+
+public function resoudre_plainte(Request $request){
+        $plainte=Plainte::find($request->plainte_id);
+              if($request->commentaire_resolve){
+                $plainte->update([
+                    'statut'=>'resolue',
+                    'commentaire_resolve'=>$request->commentaire_resolve
+                ]);
+              }
+              else{
+                $plainte->update([
+                    'statut'=>'archivé',
+                ]);
+              }
+        return redirect()->route('plainte.liste',['type' => 'save'])->with('success','La plainte a été traitée avec success');
     }
     public function index()
     {

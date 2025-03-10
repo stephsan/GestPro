@@ -32,7 +32,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 >0</h3>
+                    <h3 >{{ $projet_soumis->count() }}</h3>
                     Projets soumis
                 </div>
                 <div class="icon">

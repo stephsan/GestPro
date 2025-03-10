@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Preprojet;
+use App\Models\Projet;
+
 use App\Models\PreprojetPe;
 class DashboardController extends Controller
 {
@@ -29,7 +31,6 @@ class DashboardController extends Controller
     }
     elseif(return_role_adequat(env('ID_ROLE_CONSEILLER_FP')) || return_role_adequat(env('ID_ROLE_RESPONSABLE_FP'))){
       return redirect()->route('dashboard.fp');
-    
     }
     else{
         return redirect()->route('dashboard.fp');
@@ -38,11 +39,11 @@ class DashboardController extends Controller
   }
   public function dashboard_fp(){
     if (Auth::user()->can('acceder_au_dashboard_du_fp')) {
-      $preprojet_soumis= Preprojet::where('entreprise_id','!=',NULL)->get();
-      $nombre_de_preprojet_eligible= Preprojet::where('entreprise_id','!=',NULL)->where('eligible','eligible')->count();
-      $nombre_de_preprojet_selectionne= Preprojet::where('entreprise_id','!=',NULL)->where('decision_du_comite','favorable')->count();
-     // dd($nombre_de_preprojet_selectionne);
-      return view('dashboard.dashboard_fp',compact('preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
+        $preprojet_soumis= Preprojet::where('entreprise_id','!=',NULL)->get();
+        $nombre_de_preprojet_eligible= Preprojet::where('entreprise_id','!=',NULL)->where('eligible','eligible')->count();
+        $nombre_de_preprojet_selectionne= Preprojet::where('entreprise_id','!=',NULL)->where('decision_du_comite','favorable')->count();
+        $projet_soumis=Projet::all();
+      return view('dashboard.dashboard_fp',compact('preprojet_soumis','projet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
     }
   }
   public function dashboard_pe(){
@@ -50,7 +51,7 @@ class DashboardController extends Controller
       $nombre_de_preprojet_soumis= PreprojetPe::where('entreprise_id',NULL)->count();
       $nombre_de_preprojet_eligible= PreprojetPe::where('entreprise_id',NULL)->where('eligible','eligible')->count();
       $nombre_de_preprojet_selectionne= PreprojetPe::where('entreprise_id',NULL)->where('decision_du_comite','favorable')->count();
-    return view('dashboard.dashborad_pe', compact('nombre_de_preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
+      return view('dashboard.dashborad_pe', compact('nombre_de_preprojet_soumis','nombre_de_preprojet_eligible','nombre_de_preprojet_selectionne'));
     }
     else{
       return redirect()->back()->with('error','Vous ne disposez pas des droits requis pour acceder a cette ressource');

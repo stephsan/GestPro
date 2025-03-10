@@ -105,6 +105,8 @@ Route::get('/generate/accuse_de_plainte/{plainte}', [PlainteController::class, '
 Route::get('/lister/plaintes',[PlainteController::class, 'lister'])->name('plainte.liste');
 Route::get('plainte/details/{plainte}',[PlainteController::class, 'details'] )->name('plainte.details');
 Route::post('qualifier/plainte/',[PlainteController::class, 'qualifier'] )->name('plainte.qualifier');
+Route::post('resolve/plainte/',[PlainteController::class, 'resoudre_plainte'] )->name('plainte.resolue');
+
 
 
 Route::get('/accueil', function () {
