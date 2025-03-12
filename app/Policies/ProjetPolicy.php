@@ -50,6 +50,15 @@ class ProjetPolicy
     {
         return $this->getPermission($user,35);
     }
+    public function lister_en_attente_du_ses(User $user)
+    {
+        return $this->getPermission($user,40);
+    }
+    public function donner_lavis_du_ses(User $user)
+    {
+        return $this->getPermission($user,41);
+    }
+    
     public function update(User $user)
     {
         return $this->getPermission($user,56);

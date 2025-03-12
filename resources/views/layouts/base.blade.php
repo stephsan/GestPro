@@ -410,6 +410,24 @@
                 </a>
             </li>
         @endcan
+        @can('lister_en_attente_du_ses', Auth::user())
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=en_attente_de_lavis_ses" class="nav-link @yield('projet_en_attente_de_lavis_ses') ">
+                    <i class="bi bi-circle"></i><span>En attente du SES </span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=en_attente_decision_aneve" class="nav-link @yield('projet_en_attente_decision_aneve') ">
+                    <i class="bi bi-circle"></i><span>En attente ANEVE </span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=traite_par_aneve" class="nav-link @yield('projet_traite_par_aneve') ">
+                    <i class="bi bi-circle"></i><span>Traités par l'ANEVE</span>
+                </a>
+            </li>
+        @endcan
+        
         @can('lister_projet_analyse_par_chef_dantenne', Auth::user())
             <li>
                 <a href="{{ route('projet.lister') }}?type_entreprise=mpme&statut=analyse" class="nav-link @yield('projet_analyse') ">

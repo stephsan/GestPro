@@ -183,10 +183,65 @@ else{
             $texte= "Projets soumis a l'analyse du comité de sélection" ;
             $page='projet_comite_de_selection';
         }
-        else{
-            return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+         
+            else{
+                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+            }
         }
-        }
+        elseif($request->statut=='en_attente_de_lavis_ses'){
+            if (Auth::user()->can('lister_en_attente_du_ses')) {
+                if($request->type_entreprise=='mpme'){
+                    $projets = Projet::where('avis_ses',null)->orderBy('updated_at', 'desc')->get();
+                    $type_entreprise='fp_mpme_existante';
+                }
+                else{
+                    $projets = Projet::where('avis_ses',null)->orderBy('updated_at', 'desc')->get();
+                    $type_entreprise='fp_startup';
+                }
+                $texte= "Projets en attente de l'avis du SES" ;
+                $page='projet_en_attente_de_lavis_ses';
+            }
+             
+                else{
+                    return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+                }
+            }
+            elseif($request->statut=='en_attente_decision_aneve'){
+                if (Auth::user()->can('lister_en_attente_du_ses')) {
+                    if($request->type_entreprise=='mpme'){
+                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve',null)->orderBy('updated_at', 'desc')->get();
+                        $type_entreprise='fp_mpme_existante';
+                    }
+                    else{
+                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve',null)->orderBy('updated_at', 'desc')->get();
+                        $type_entreprise='fp_startup';
+                    }
+                    $texte= "Projets en attente de la décion de l'ANEVE" ;
+                    $page='projet_en_attente_decision_aneve';
+                }
+                 
+                    else{
+                        return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+                    }
+                }
+            elseif($request->statut=='traite_par_aneve'){
+                if (Auth::user()->can('lister_en_attente_du_ses')) {
+                    if($request->type_entreprise=='mpme'){
+                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve','!=',null)->orderBy('updated_at', 'desc')->get();
+                        $type_entreprise='fp_mpme_existante';
+                    }
+                    else{
+                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve','!=',null)->orderBy('updated_at', 'desc')->get();
+                        $type_entreprise='fp_startup';
+                    }
+                    $texte= "Projets traités par l'ANEVE" ;
+                    $page='projet_traite_par_aneve';
+                }
+                    
+                    else{
+                        return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
+                    }
+                }
         elseif($request->statut=='decision_du_comite'){
             if (Auth::user()->can('lister_projet_soumis_au_comite')) {
                 if($request->type_entreprise=='mpme'){
@@ -210,14 +265,16 @@ else{
     public function analyser(Projet $projet)
     {
         $categorie_investissements=Valeur::where('parametre_id', 38)->get();
-        $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE")])->orderBy('updated_at', 'desc')->get();
+        $categorie_projets=Valeur::where('parametre_id', 56)->get();
+
+        $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE"), env("VALEUR_ID_DOCUMENT_AVIS_SES"), env("VALEUR_ID_DOCUMENT_AVIS_ANEVE")])->orderBy('updated_at', 'desc')->get();
     if($projet->preprojet->entreprise_id!=null){
         $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
     }
     else{
         $criteres= GrilleEvalPca::where('categorie','startup')->get();
     }
-        return view("projet.analyse", compact('categorie_investissements','projet', 'piecejointes', 'criteres'));
+        return view("projet.analyse", compact('categorie_projets','categorie_investissements','projet', 'piecejointes', 'criteres'));
     }
     public function rejeter_lanalyse_pa(){
 
@@ -274,15 +331,14 @@ else{
         //dd($montant_investissement_total_appui1.' '.$montant_investissement_total_appui2);
     if($request->hasFile('synthese_plan_de_continute')&&$request->hasFile('synthese_plan_de_continute')){
     //Verification du code de financement suivant le guichet
-   if((($preprojet->guichet==7165 ) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
-        {
-            flash("Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet))->error();
-            return redirect()->back()->with("success","Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
-        }
-    else{
+    if((($preprojet->guichet==7165 ) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
+            {
+                flash("Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet))->error();
+                return redirect()->back()->with("success","Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
+            }
+        else{
             ($preprojet->region_affectation == null )?($zone= $preprojet->region):($zone=$preprojet->region_affectation );
-           // $promoteur = Promotrice::where('code_promoteur',Auth::user()->code_promoteur)->first();
-            $projet = Projet::create([
+             $projet = Projet::create([
                 'preprojet_id' => $request->preprojet_id,
                 'coach_id' => $request->coach,
                 'zone_affectation'=> $zone,
@@ -292,7 +348,6 @@ else{
                 'atouts_promoteur'  => $request->atouts_entreprise,
                 'innovation'  =>$request->innovations_apportes,
                 'statut'  =>"soumis",
-                //'type_entreprise' =>$entreprise->aopOuleader
             ]);
             for($i=0; $i<count($designations); $i++){
                      if($designations[$i]!="" && $couts[$i]!="" && reformater_montant2($request->subvention[$i])!=null){
@@ -305,7 +360,6 @@ else{
                         ]);
                    }
             }
-            
             $projet->update([
                 'montant_demande'=>$projet->investissements->sum('montant')
             ]);
@@ -478,7 +532,6 @@ public function modif_piecej(Request $request){
  return json_encode($data);
 
 }
-
 public function modifier_piecej(Request $request){
     $piecejointe= Piecejointe::find($request->piece_id);
     $piecejointe_type=$piecejointe->type_piece;
@@ -599,6 +652,45 @@ public function storeaval(Request $request){
             ]);
         return redirect()->back()->with('success',"L'avis de l'équipe du fond de partenariat a été enregistré avec success");
        
+    }
+    public function avis_ses(Request $request){
+            $year=date("Y");
+        $projet=Projet::find($request->projet_id);
+        if ($request->hasFile('fiche_sreening_es')) {
+            $file = $request->file('fiche_sreening_es');
+            $extension=$file->getClientOriginalExtension();
+            if($request->type_decision=='avis_ses'){
+                $fileName = $projet->preprojet->num_projet.'_'.'fiche_SES_avis_ses'.'.'.$extension;
+                $emplacement='public/'.$year.'/'.'fiche_SES_avis_ses';
+                $type_doc=env("VALEUR_ID_DOCUMENT_AVIS_SES");
+            }
+            else{
+                $fileName = $projet->preprojet->num_projet.'_'.'fiche_SES_decision_aneve'.'.'.$extension;
+                $emplacement='public/'.$year.'/'.'fiche_SES_decision_aneve';
+                $type_doc=env("VALEUR_ID_DOCUMENT_AVIS_ANEVE");
+            }
+            $urlpiece= $request['fiche_sreening_es']->storeAs($emplacement, $fileName);
+          $pj=  Piecejointe::create([
+                'type_piece'=> $type_doc,
+                'preprojet_fp_id'=>$projet->preprojet->id,
+                'url'=>$urlpiece,
+            ]);
+        if($request->type_decision=='avis_ses')
+            {
+                $projet->update([
+                    'avis_ses'=>$request->avis_ses,
+                    'categorie_projet'=>$request->categorie,
+                ]);
+            }
+        else{
+                $projet->update([
+                    'decision_aneve'=>$request->avis_ses,
+                    'categorie_projet'=>$request->categorie,
+                ]);
+            }
+        }
+        return redirect()->back()->with('success', "Votre avis a été enregistré pour ce projet !!!");
+
     }
     /**
      * Display the specified resource.

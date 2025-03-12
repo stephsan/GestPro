@@ -106,6 +106,9 @@ Route::get('/lister/plaintes',[PlainteController::class, 'lister'])->name('plain
 Route::get('plainte/details/{plainte}',[PlainteController::class, 'details'] )->name('plainte.details');
 Route::post('qualifier/plainte/',[PlainteController::class, 'qualifier'] )->name('plainte.qualifier');
 Route::post('resolve/plainte/',[PlainteController::class, 'resoudre_plainte'] )->name('plainte.resolue');
+Route::post('save/avis_ses/',[ProjetController::class, 'avis_ses'] )->name('projet.avis_ses');
+
+
 
 
 

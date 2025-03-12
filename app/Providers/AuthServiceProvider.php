@@ -76,7 +76,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('lister_les_plaintes',[PlaintePolicy::class,'lister']);
         Gate::define('visualiser_une_plainte',[PlaintePolicy::class,'visuliser']);
         Gate::define('changer_statut_plainte',[PlaintePolicy::class,'changer_statut']);
-
-    
+        Gate::define('lister_en_attente_du_ses',[ProjetPolicy::class,'lister_en_attente_du_ses']);
+        Gate::define('donner_lavis_du_ses',[ProjetPolicy::class,'donner_lavis_du_ses']);
     }
 }

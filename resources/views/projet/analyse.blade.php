@@ -16,6 +16,22 @@
         </nav>
 <div class="row">
 <div class="col-md-6 offset-md-3">
+@can('donner_lavis_du_ses', Auth::user())
+        @if($projet->avis_ses==null)
+            <nav>
+                <button type="button" class="btn btn-success">
+                    <a onclick="setTypeavis('avis_ses','type_decision')" href="#modal-avis-ses" data-toggle="modal"  data-toggle="tooltip" title="Donner l'avis du SES" class="text-white"><i class="bi bi-plus-square"></i> Avis du SES </a>
+                </button>
+            </nav>
+        @endif
+        @if(!($projet->avis_ses==null) && ($projet->decision_aneve==null))
+            <nav>
+                <button type="button" class="btn btn-danger">
+                    <a onclick="setTypeavis('decision_aneve','type_decision')" href="#modal-avis-ses" data-toggle="modal"  data-toggle="tooltip" title="Donner l'avis du SES" class="text-white"><i class="bi bi-plus-square"></i> Décision de l'ANEVE </a>
+                </button>
+            </nav>
+        @endif
+@endcan
 @can('lister_les_projets_soumis', Auth::user())
     @if($projet->statut =='soumis')
         <nav>
@@ -171,6 +187,38 @@
                   </div>
     </div>
     <div class="col-md-4">
+        <h4>Analyse Environementale et Sociale</h4>
+        <div class="form-group row" >
+            <div class="col-md-9">
+            <label>Avis du SES :</label>
+            </div>
+            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
+            <label class="fb"> {{$projet->avis_ses}}</label>
+            </div>
+        </div>
+        <div class="form-group row" >
+            <div class="col-md-9">
+                @if($projet->decision_aneve==null)
+                    <label>Catégorie provisoire :</label>
+                @else
+                    <label>Catégorie  :</label>
+                @endif
+            </div>
+            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
+            <label class="fb"> {{getlibelle($projet->categorie_projet)}}</label>
+            </div>
+        </div>
+        @if ($projet->decision_aneve)
+            <div class="form-group row" >
+                <div class="col-md-9">
+                <label>Décision de l'ANEVE :</label>
+                </div>
+                <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
+                <label class="fb"> {{$projet->decision_aneve}}</label>
+                </div>
+            </div>
+        @endif
+        
         <h2>Evaluation</h2>
         @foreach ( $projet->evaluations as $evaluation)
         <div class="form-group row" >
@@ -553,6 +601,69 @@
         </div>
     </div>
 </div>
+<div id="modal-avis-ses" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2 class="modal-title"> <p id="entete_decision" style="margin-left:50px;text-align: center"></p></h2>
+            </div>
+            <div class="modal-body">
+            <form method="post"  action="{{route('projet.avis_ses')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="projet_id"  id='projet_avis_ses' value="{{ $projet->id }}">
+                    <input type="hidden" name="type_decision"  id='type_decision'>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group{{ $errors->has('fiche_sreening_es') ? ' has-error' : '' }}">
+                            <label class="control-label" for="fiche_sreening_es">Joindre la fiche de Screening E&S  <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input class="form-control" type="file" name="fiche_sreening_es" id="fiche_sreening_es" accept=".pdf, .jpeg, .png"   placeholder="Joindre le plan de continuité des activité" required  onchange="VerifyUploadSizeIsOK('fiche_sreening_es');" >
+                                <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                            </div>
+                            @if ($errors->has('fiche_sreening_es'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('fiche_sreening_es') }}</strong>
+                                </span>
+                                @endif
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label class= "control-label" for="type">Catégorie provisoire du projet<span class="text-danger">*</span></label>
+                                <select id="categorie_projet" name="categorie" class="select-select2" data-placeholder="Choisir la rubrique d'entreprise" style="width: 100%;" required>
+                                    <option ></option>
+                                    @foreach ($categorie_projets as $categorie_projet)
+                                        <option value="{{ $categorie_projet->id }}">{{ $categorie_projet->libelle }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('categorie'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('categorie') }}</strong>
+                                </span>
+                                @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <p style="font-weight: 600; color:red; margin-top:10px;">Avis du Spécialiste en sauvegarde</p>
+                    <div class="col-md-3">
+                        <label><input type="radio" name='avis_ses' value="conforme" required> Conforme</label>
+                    </div> 
+                    <div class="col-md-3">
+                        <label><input type="radio" name='avis_ses' value="non conforme" required> Non Conforme</label>
+                    </div> 
+                </div>
+            <div class="form-group form-actions" style="margin-top: 15px;">
+                <div class="text-right">
+                    <button type="reset" class="btn btn-sm btn-warning" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-sm btn-success">Valider</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+</div>
 <div id="modal-avis-equipe-fp" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -580,8 +691,15 @@
 @endsection
  <script>
     function setTypeavis(type, champ){
+       
         $('#'+champ).val(type);
+        if(type=="decision_aneve")
+            $('#entete_decision').text("Enregistrer la décision finala de l'ANEVE");
+        else
+            $('#entete_decision').text("Enregistrer l'avis de spécialiste en sauvegarde environnementale");
+
     }
+   
     //const inputElement = document.querySelector('input');
     function isValid(champ){
         
@@ -624,6 +742,21 @@ function save_pca_chefdezone(avis){
                 url: url,
                 type:'GET',
                 data: {projet_id: projet_id, observation:observation, avis:avis,type:type} ,
+                error:function(){alert('error');},
+                success:function(){
+                    window.location=document.referrer;
+                }
+            });
+    }
+    function save_avis_equipe_fp(avis){
+        var projet_id= $("#projet_avis_ses").val();
+       // var type = $("#champ_avis_chef_zone").val();
+        var observation= $("#observation_equipe_fp").val();
+        var url = "{{ route('pca.save_avis_equipe_fp') }}";
+        $.ajax({
+                url: url,
+                type:'GET',
+                data: {projet_id: projet_id, observation:observation, avis:avis} ,
                 error:function(){alert('error');},
                 success:function(){
                     window.location=document.referrer;
