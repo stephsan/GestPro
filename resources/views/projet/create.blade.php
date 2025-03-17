@@ -129,16 +129,16 @@
                                             </span>
                                             @endif
                                     </div>
-                                    <div class="form-group{{ $errors->has('synthese_plan_de_continute') ? ' has-error' : '' }}">
-                                        <label class="control-label col-md-4" for="synthese_plan_de_continute">La synthèse du plan d'affaires  <span class="text-danger">*</span></label>
+                                    <div class="form-group{{ $errors->has('fiche_synthetique') ? ' has-error' : '' }}">
+                                        <label class="control-label col-md-4" for="fiche_synthetique">La fiche Synthétique  <span class="text-danger">*</span></label>
                                         <div class="input-group col-md-8">
-                                            <input class="form-control col-md-6" type="file" name="synthese_plan_de_continute" id="synthese_plan_de_continute" accept=".pdf, .jpeg, .png"   placeholder="Joindre la synthèse du plan de continuité des activité" required onchange="VerifyUploadSizeIsOK('synthese_plan_de_continute');">
+                                            <input class="form-control col-md-6" type="file" name="fiche_synthetique" id="fiche_synthetique" accept=".pdf, .jpeg, .png"   placeholder="Joindre la synthèse du plan de continuité des activité" required onchange="VerifyUploadSizeIsOK('fiche_synthetique');">
                                             <span class="input-group-addon"><i class="gi gi-file"></i></span>
-                                            <span class="input-group-addon"><a href="#" class="empty_field" onclick="empty_input_file('synthese_plan_de_continute')">Vider le champ</a></span>
+                                            <span class="input-group-addon"><a href="#" class="empty_field" onclick="empty_input_file('fiche_synthetique')">Vider le champ</a></span>
                                         </div>
-                                        @if ($errors->has('synthese_plan_de_continute'))
+                                        @if ($errors->has('fiche_synthetique'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('synthese_plan_de_continute') }}</strong>
+                                                <strong>{{ $errors->first('fiche_synthetique') }}</strong>
                                             </span>
                                             @endif
                                     </div>

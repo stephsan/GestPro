@@ -35,7 +35,7 @@
     <script src="{{ asset('css/sweetAlert/sweetalert2.all.min.js') }}"></script>
 
     <link href="{{ asset('css/sweetAlert/sweetalert2.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href=" https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css">
     @yield('css')
     <!-- =======================================================
   * Template Name: NiceAdmin

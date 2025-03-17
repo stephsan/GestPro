@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReinitialiseMail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 class UserController extends Controller
 {
     public function __construct()
@@ -82,6 +83,7 @@ class UserController extends Controller
         else{
             $structure_represente=0;
         }
+    try{
        $user= User::create([
             "name"=>$request['nom'],
             "email"=>$request['email'],
@@ -96,6 +98,11 @@ class UserController extends Controller
         $user->roles()->sync($request->roles);
        // flash("Utilisateur ajouté avec succes !!!")->success();
         return redirect()->route("users.index");
+        }
+        catch (QueryException $e) {
+            return redirect()->back()->with('error',"Une erreur est survenue lors de la création du compte utilisateur");
+            
+        }
     }
      else{
     //     flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
@@ -170,6 +177,7 @@ public function reinitialize(Request $request){
         else{
             $structure_represente=$request['structure_rep'];
         }
+    try{
         $user->update([
             "name"=>$request['nom'],
             "email"=>$request['email'],
@@ -183,6 +191,11 @@ public function reinitialize(Request $request){
         $user->roles()->sync($request->roles);
        // flash("Utilisateur modiffié avec succes !!!")->error();
         return redirect()->route("users.index")->with('success',"Utilisateur modifié avec success");
+    }
+    catch (QueryException $e) {
+        return redirect()->back()->with('error',"Une erreur est survenue lors de l'enregistrement. Vérifier si cette adresse n'est pas déja dans la base de données");
+        //return response()->json(['message' => 'Erreur inconnue'], 500);
+    }
     }
          else{
     //        flash("Vous n'avez pas le droit d'acceder à cette resource. Veillez contacter l'administrateur!!!")->error();
@@ -244,34 +257,35 @@ public function verifier_conformite_cpt(Request $request){
 public function storecomptePromoteur(Request $request){
     $request->validate([
         'code_promoteur'=>'unique:users|max:255',
-        'password' => 'required|confirmed|min:6'
+        'password' => 'required|confirmed|min:6',
+        //'email' => 'required|email|unique:users,email',
     ]);
     $promoteur=Promoteur::where('code_promoteur',$request->code_promoteur)->first();
     if(isset($request['code_promoteur'], $request['email'])){
-        $user= User::create([
-            "name"=>$promoteur['nom'],
-            "email"=>$request['email'],
-            'prenom'=> $promoteur['prenom'],
-            'telephone'=> $request ['telephone'],
-            'email' => $request['email'],
-            'isbeneficiary' => 1,
-            'login' => $request['code_promoteur'],
-            'password' => bcrypt($request['password'])
-        ]);
-    }
-    if($user){
-        return redirect()->back();
-        //flash("Votre compte à été créé avec success !!!")->success();
-
-    }
-    else{
-        return redirect()->back();
-        //flash("Desolé votre compte n'a pas été créé. Bien vouloir vérifier la confirmation de mot de passe!!!")->error();
-
+        try{
+            $user= User::create([
+                "name"=>$promoteur['nom'],
+                "email"=>$request['email'],
+                'prenom'=> $promoteur['prenom'],
+                'telephone'=> $request ['telephone'],
+                'email' => $request['email'],
+                'isbeneficiary' => 1,
+                'login' => $request['code_promoteur'],
+                'password' => bcrypt($request['password'])
+            ]);
+            return redirect()->back()->with('success',"Votre compte été créé avec success");
+        }
+        catch (QueryException $e) {
+            return redirect()->back()->with('error',"Une erreur est survenue lors de la création du compte utilisateur");
+            //return response()->json(['message' => 'Erreur inconnue'], 500);
+        }
+        }
+        
     }
    
+   
     
-}
+
 public function logout(Request $request) {
     if(Auth::user()->code_promoteur==null){
         Auth::logout();

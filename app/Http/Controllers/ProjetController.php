@@ -62,7 +62,6 @@ public function rejetter_investissement(Request $request){
 }
 
 public function savedecisioncomite(Request $request){
-   
     $projet=Projet::find($request->projet_id);
     $preprojet= $projet->preprojet;
     $montant_investissement_total = $projet->investissements->sum('montant_valide') + $request->cout;
@@ -160,7 +159,7 @@ else{
                 $type_entreprise='fp_mpme_existante';
             }
             else{
-                $projets = Projet::whereIn('statut',['analysé'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['analysé'])->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_startup';
             }
             $texte= "Projets analyse par le chef d'antenne";
@@ -173,11 +172,11 @@ else{
         elseif($request->statut=='soumis_au_comite_de_selection'){
         if (Auth::user()->can('lister_projet_soumis_au_comite')) {
             if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_ses','!=',null)->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_mpme_existante';
             }
             else{
-                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
+                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_ses','!=',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
                 $type_entreprise='fp_startup';
             }
             $texte= "Projets soumis a l'analyse du comité de sélection" ;
@@ -259,7 +258,9 @@ else{
                 return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
             }
             }
-        return view('projet.lister',compact('projets','type_entreprise','texte','page'));
+        $projet_piecejointes_evaluations=Valeur::where("parametre_id",19)->whereIn('id', [env("VALEUR_ID_DOCUMENT_FICHE_EVALUATION"), env("VALEUR_ID_DOCUMENT_FICHE_DIAGNOSTIC")])->orderBy('updated_at', 'desc')->get();
+
+        return view('projet.lister',compact('projet_piecejointes_evaluations','projets','type_entreprise','texte','page'));
         
     }
     public function analyser(Projet $projet)
@@ -267,13 +268,14 @@ else{
         $categorie_investissements=Valeur::where('parametre_id', 38)->get();
         $categorie_projets=Valeur::where('parametre_id', 56)->get();
 
-        $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE"), env("VALEUR_ID_DOCUMENT_AVIS_SES"), env("VALEUR_ID_DOCUMENT_AVIS_ANEVE")])->orderBy('updated_at', 'desc')->get();
+        $piecejointes=Piecejointe::where("preprojet_fp_id",$projet->preprojet->id)->whereIn('type_piece', [env("VALEUR_ID_DOCUMENT_PCA"), env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"), env("VALEUR_ID_DOCUMENT_DEVIS"),env("VALEUR_ID_DOCUMENT_FONCIER"), env("VALEUR_ID_FICHE_DANALYSE"), env("VALEUR_ID_DOCUMENT_AVIS_SES"), env("VALEUR_ID_DOCUMENT_AVIS_ANEVE"),env('VALEUR_ID_DOCUMENT_FICHE_EVALUATION'),env('VALEUR_ID_DOCUMENT_FICHE_DIAGNOSTIC')])->orderBy('updated_at', 'desc')->get();
     if($projet->preprojet->entreprise_id!=null){
         $criteres= GrilleEvalPca::where('categorie','MPME_existant')->get();
     }
     else{
         $criteres= GrilleEvalPca::where('categorie','startup')->get();
     }
+
         return view("projet.analyse", compact('categorie_projets','categorie_investissements','projet', 'piecejointes', 'criteres'));
     }
     public function rejeter_lanalyse_pa(){
@@ -329,7 +331,7 @@ else{
         }
          $taux_subvention=$montant_subvention_total/ $montant_investissement_total*100;
         //dd($montant_investissement_total_appui1.' '.$montant_investissement_total_appui2);
-    if($request->hasFile('synthese_plan_de_continute')&&$request->hasFile('synthese_plan_de_continute')){
+    if($request->hasFile('fiche_synthetique')&&$request->hasFile('fiche_synthetique')){
     //Verification du code de financement suivant le guichet
     if((($preprojet->guichet==7165 ) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
             {
@@ -380,21 +382,21 @@ else{
             else{
                 $urlplan_de_continute=null;
             }
-            if ($request->hasFile('synthese_plan_de_continute')) {
+            if ($request->hasFile('fiche_synthetique')) {
                 $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"));
-                $file = $request->file('synthese_plan_de_continute');
+                $file = $request->file('fiche_synthetique');
                 $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->code_promoteur.'_'.'synthese_plan_de_continute'.'.'.$extension;
+                $fileName = $preprojet->code_promoteur.'_'.'fiche_synthetique'.'.'.$extension;
                 $emplacement='public/'.$year.'/'.'synthese_pca/'; 
-                $urlsynthese_plan_de_continute= $request['synthese_plan_de_continute']->storeAs($emplacement, $fileName);
+                $urlfiche_synthetique= $request['fiche_synthetique']->storeAs($emplacement, $fileName);
                 Piecejointe::create([
                     'type_piece'=>env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"),
                       'preprojet_fp_id'=>$request->preprojet_id,
-                      'url'=>$urlsynthese_plan_de_continute,
+                      'url'=>$urlfiche_synthetique,
                   ]);
             }
             else{
-                $urlsynthese_plan_de_continute=null;
+                $urlfiche_synthetique=null;
             }
             if ($request->hasFile('devis_des_investissements')) {
                 $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_DEVIS"));
@@ -552,7 +554,7 @@ elseif( $piecejointe->type_piece==env('VALEUR_ID_DOCUMENT_PCA')){
 elseif( $piecejointe->type_piece==env('VALEUR_ID_DOCUMENT_SYNTHESE_PCA')){
     $file = $request->file('piece_file');
     $extension=$file->getClientOriginalExtension();
-    $fileName = Auth::user()->login.'_'.'synthese_plan_de_continute'.'.'.$extension;
+    $fileName = Auth::user()->login.'_'.'fiche_synthetique'.'.'.$extension;
     $chaine='public/'.$year.'/'.'synthese_pca/'; 
 }
 elseif($piecejointe->type_piece==env('VALEUR_ID_DOCUMENT_FONCIER')){
@@ -570,11 +572,16 @@ elseif($piecejointe->type_piece==env('VALEUR_ID_DOCUMENT_ATTESTATION')){
 }
     if ($request->hasFile('piece_file')) {
         $urlpiece= $request->piece_file->storeAs($chaine,$fileName);
-        $piecejointe->update([
-              'url'=>$urlpiece,
-          ]);
+        try{
+            $piecejointe->update([
+                'url'=>$urlpiece,
+            ]);
+            return redirect()->back();
+        }catch(e){
+            return redirect()->back()->with("error','Une erreur est survenue lors de l'engistrement");
+        }
+            
     }
-return redirect()->back();
 }
 public function storeaval(Request $request){
     if (Auth::user()->can('lister_avant_projet_selectionnes_fp')) {
@@ -691,6 +698,36 @@ public function storeaval(Request $request){
         }
         return redirect()->back()->with('success', "Votre avis a été enregistré pour ce projet !!!");
 
+    }
+    public function completer_dossier(Request $request){
+            $year=date("Y");
+    $projet=Projet::find($request->projet_id);
+    $type_pj=Piecejointe::where('preprojet_fp_id',$projet->preprojet->id)->where('type_piece',$request->type_document)->count();
+    ($request->type_document==env('VALEUR_ID_DOCUMENT_FICHE_EVALUATION'))?$type_document=env('VALEUR_ID_DOCUMENT_FICHE_EVALUATION'):$type_document=env('VALEUR_ID_DOCUMENT_FICHE_DIAGNOSTIC');
+    ($request->type_document==env('VALEUR_ID_DOCUMENT_FICHE_EVALUATION'))?$dossier="fiche d'évaluation":$dossier="Fiche de diagnostic";
+    if($type_pj == 0){
+        if ($request->hasFile('document_joint')) {
+           // $this->supprimer_doublon_de_pj($preprojet->id, $type_document);
+            $file = $request->file('document_joint');
+            $extension=$file->getClientOriginalExtension();
+            $fileName = $projet->preprojet->code_promoteur.'_'.'document_joint'.'.'.$extension;
+            $emplacement='public/'.$year.'/'.$dossier.'/'; 
+            $urldocument_joint= $request['document_joint']->storeAs($emplacement, $fileName);
+            Piecejointe::create([
+                'type_piece'=>$type_document,
+                'preprojet_fp_id'=>$projet->preprojet->id,
+                'url'=>$urldocument_joint,
+            ]);
+        }
+        else{
+            $urldocument_joint=null;
+        }
+        return redirect()->back()->with('success','La piece a été enregistrée avec succes');
+
+    }
+    else
+        return redirect()->back()->with('error','Cette piece a déja été joint a ce dossier');
+            
     }
     /**
      * Display the specified resource.

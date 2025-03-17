@@ -63,8 +63,10 @@
 
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ route('pca.analyse', $projet) }}" data-toggle="tooltip" title="Analyser le PCA" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <a  href="#modal-completer-dossier" data-toggle="modal"  data-toggle="tooltip" title="Completer le dossier" class="btn btn-md btn-success" onclick="getprojet('{{ $projet->id }}')"><i class="fa fa-file"></i></a>
+                                <a href="{{ route('pca.analyse', $projet) }}"data-toggle="tooltip"  title="Visuliser le PCA" class="btn btn-md btn-default" ><i class="fa fa-eye"></i></a>
                             </div>
+                            
                         </td>
                     </tr>
                 @endforeach
@@ -75,7 +77,63 @@
 </div>
 </div></div></div></section>
 @endsection
+@section('modal_part')
+<div id="modal-completer-dossier" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-check"></i>Completer le dossier</h2>
+            </div>
+            <div class="modal-body">
+        <form method="post"  action="{{route('projet.complete_file')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <input type="hidden"  class='projet_id' name="projet_id" value="">
+            <div class="row">
+                <div class="form-group col-md-5" >
+                    <label class="control-label " for="example-chosen">Type de document<span class="text-danger">*</span></label>
+                        <select id="type_document"  name="type_document" class="select-select2"  data-placeholder="Type_document" style="width: 100%;" required>
+                            <option></option>
+                           @foreach ($projet_piecejointes_evaluations as $projet_piecejointes_evaluation)
+                            <option value="{{ $projet_piecejointes_evaluation->id}}"
+                                >{{ getlibelle($projet_piecejointes_evaluation->id)}}</option>
+                           @endforeach
+                        </select>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group{{ $errors->has('document_joint') ? ' has-error' : '' }}">
+                        <label class="control-label" for="document_joint">Joindre le document <span class="text-danger">*</span></label>
+                            <input class="form-control" type="file" name="document_joint" id="" accept=".pdf, .jpeg, .png"   placeholder="Charger la grille d'évaluation" required>
+                        @if ($errors->has('document_joint'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('document_joint') }}</strong>
+                            </span>
+                            @endif
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    
+            </div>
+            </div>
+                 
+                <div class="form-group form-actions">
+                    <div class="col-md-8 col-md-offset-4">
+                        <a href="#" class="btn btn-sm btn-warning"  data-dismiss="modal"><i class="fa fa-repeat"></i> Annuler</a>
+                        <button type="submit" class="btn btn-sm btn-success " ><i class="fa fa-arrow-right"></i> Valider</button>
+                    </div>
+                </div>
+            </form>      
+            </div>
+            <!-- END Modal Body -->
+        </div>
+    </div>
+</div>
+@endsection
 <script>
+    function getprojet(valeur){
+       $('.projet_id').val(valeur);
+    }
     function delConfirm(id){
             //alert(id);
             document.getElementById("id_table").setAttribute("value", id);

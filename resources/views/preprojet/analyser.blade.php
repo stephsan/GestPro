@@ -379,7 +379,20 @@
                                   <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                                     <div class="row">
                                         <center><p class="titre-show">Identification du projet</p></center>
-                                        
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <span class="col-md-5 control-label labdetail">Guichet choisi:  </span>
+                                                        <span class="col-md-6" >
+                                                        <span class="valdetail" style="text-justify: auto;">
+                                                        @empty($preprojet->guichet)
+                                                                Informations non disponible
+                                                            @endempty
+                                                          {{ getlibelle($preprojet->guichet) }}
+                                                    </span></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <span class="col-md-5 control-label labdetail">Numero du dossier :  </span>

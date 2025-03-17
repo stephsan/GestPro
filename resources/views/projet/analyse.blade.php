@@ -34,12 +34,15 @@
 @endcan
 @can('lister_les_projets_soumis', Auth::user())
     @if($projet->statut =='soumis')
-        <nav>
-            <button type="button" class="btn btn-success">
-                <a href="#modal-evaluer-pca" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer le projet </a>
-            </button>
-        </nav>
+        {{-- @if($projet->zone_affectation==Auth::user()->zone) --}}
+            <nav>
+                <button type="button" class="btn btn-success">
+                    <a href="#modal-evaluer-pca" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer le projet </a>
+                </button>
+            </nav>
+        {{-- @endif --}}
     @endif
+       
     @if($projet->statut =='evalué')
     <nav>
         <button type="button" class="btn btn-success">

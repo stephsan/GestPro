@@ -194,6 +194,8 @@ Route::group([
     Route::post('/valider/ligne_investissement/',[ProjetController::class,'valider_investissement'])->name('investissement.valide');
     Route::post('/rejetter/investissements', [ProjetController::class, 'rejetter_investissement'])->name('rejeter.investissement');
     Route::get('/pa/save/decision_du_comite', [ProjetController::class, 'savedecisioncomite'])->name('plan_daffaire.save_decision_du_comite');
+    Route::post('/completer/projet/file_eval',[ProjetController::class,'completer_dossier'])->name('projet.complete_file');
+
     // Route::get('/investissment',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
     // Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
 
