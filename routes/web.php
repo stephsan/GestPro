@@ -167,6 +167,16 @@ Route::group([
     Route::get('/preprojet/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe'])->name('preprojet.par_region_et_par_sexe');
     Route::get('/preprojet/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite'])->name('preprojet.par_secteur_dactivite');
     Route::get('/etat/preprojetpe/par_region', [DashboardControllerPE::class, 'avant_projet_par_region_pe'])->name('preprojetpe.par_region');
+//Tableau de bord dynamique plans d'affaire
+    Route::get('/projet/par_region', [DashboardController::class, 'pa_par_region'])->name('projet.par_region');
+    Route::get('/projet/par_region/par_sexe', [DashboardController::class,'pa_soumis_par_region_et_par_sexe'])->name('projet.par_region_et_par_sexe');
+    Route::get('/projet/par_secteur_dactivite', [DashboardController::class,'pa_par_secteur_dactivite'])->name('projet.par_secteur_dactivite');
+    Route::get('/projet/par/guichet', [DashboardController::class,'pa_par_guichet'])->name('projet.reparti_par_guichet');
+
+    
+
+
+
     Route::get('/preprojetpe/par_region/par_sexe', [DashboardControllerPE::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
     Route::get('/preprojetpe/par_secteur_dactivite', [DashboardControllerPE::class,'avant_projet_par_secteur_dactivite_pe'])->name('preprojetpe.par_secteur_dactivite');
     Route::get('/preprojet/selectionne/par_region/par_sexe', [DashboardController::class,'avant_projet_selectionne_par_region_et_par_sexe'])->name('preprojet.selected.par_region_et_par_sexe');
@@ -179,6 +189,8 @@ Route::group([
     Route::get('/scoach/modif/', [CoachController::class, 'modif'])->name('coach.modif');
     Route::post('/coach/save/modif/', [CoachController::class, 'enremodif'])->name('coach.enremodif');
     Route::post("simple-excel/import",  [PreprojetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation');
+    Route::post("PA/simple-excel/import",  [ProjetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation_Plan_daffaire');
+
     Route::post("evaluationPe/import",  [PreprojetController::class, "chargerEvaluationPe"])->name('excel.chargerEvaluationPe');
     Route::get('/preprojet/evaluation/automatiques', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
     Route::resource('grille', GrilleController::class);

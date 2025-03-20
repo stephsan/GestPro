@@ -13,6 +13,8 @@ use App\Models\GrilleEvalPca;
 use App\Models\EvaluationPCA;
 use App\Models\InvestissementProjet;
 use Illuminate\Support\Facades\Auth;
+use Spatie\SimpleExcel\SimpleExcelWriter;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class ProjetController extends Controller
 {
@@ -24,6 +26,22 @@ class ProjetController extends Controller
         $priece_a_supprimer= Piecejointe::where(['type_piece'=>$type_doc, 'preprojet_fp_id'=>$preprojet_id])->first();
         if($priece_a_supprimer){
             $priece_a_supprimer->delete();
+        }
+    }
+    function createEvaluation($idprojet,$indicateur,$note){
+        $evaluation=EvaluationPca::where('projet_id',$idprojet)->where('grilleeval_id',$indicateur)->get();
+        if(count($evaluation)==0){
+            EvaluationPca::create([
+               "projet_id"=>$idprojet,
+               "note"=>$note,
+               "grilleeval_id"=> $indicateur
+           ]);
+        }  
+        else{
+            $evaluation=EvaluationPca::where('projet_id',$idprojet)->where('grilleeval_id',$indicateur)->first();
+            $evaluation->update([
+                "note"=>$note,
+            ]);
         }
     }
 public function valider_investissement(Request $request)
@@ -281,7 +299,29 @@ else{
     public function rejeter_lanalyse_pa(){
 
     }
-
+    public function chargerEvaluation(Request $request){
+        $this->validate($request, [
+            'fichier' => 'bail|required|file|mimes:xlsx'
+        ]);
+        $fichier = $request->fichier->move(public_path(), $request->fichier->hashName());
+        $reader = SimpleExcelReader::create($fichier);
+        $rows = $reader->getRows();
+        foreach($rows as $row){
+            $datas[]= array('num_dossier'=>trim($row['num_dossier']),'1'=>$row['1']);
+        }
+        foreach($datas as $data){
+            $preprojet=Preprojet::where('num_projet',$data['num_dossier'])->first();
+            $projet=Projet::where('preprojet_id', $preprojet->id)->first();
+            if($projet)
+            {
+                $this->createEvaluation($projet->id,1, $data['1']);
+                $projet->update([
+                    'statut' => 'evalué'
+                ]);
+            }
+        }
+        return redirect()->back()->with('success','La liste des évaluation de projet a été importée');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -613,10 +653,10 @@ public function storeaval(Request $request){
         $nombre_devaluation_du_projet = EvaluationPca::where(['projet_id'=>$request->projet,'grilleeval_id'=> $critere->id,])->count();
         if($nombre_devaluation_du_projet==0){
             EvaluationPca::create([
-                'projet_id'=> $request->projet,
-                'grilleeval_id'=> $critere->id,
-                'note'=> $request->$note
-        ]);
+                    'projet_id'=> $request->projet,
+                    'grilleeval_id'=> $critere->id,
+                    'note'=> $request->$note
+            ]);
         }        
         }
 

@@ -182,6 +182,30 @@
                                         </div>
                                     </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <table class="table">
+                                        <thead>
+                                            <th>Region</th>
+                                            <th>Guichet 1</th>
+                                            <th>Guichet 2</th>
+                                            <th>Guichet 3</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($plan_daffaire_par_guichets as $plan_daffaire_par_guichet )
+                                            <tr>
+                                                <td>{{ $plan_daffaire_par_guichet->region }}</td>
+                                                <td>{{ $plan_daffaire_par_guichet->petit_sous_projet }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_petit_sous_projet) }}</td>
+                                                <td>{{ $plan_daffaire_par_guichet->projet_standards }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_projet_standards) }}</td>
+                                                <td>{{ $plan_daffaire_par_guichet->projet_de_transformation_vert }} / {{ format_prix($plan_daffaire_par_guichet->montant_projet_de_transformation_vert) }}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                                
+                            </div>
                              <div class="row">
                                 <div id="preprojet_par_region_par_sexe" style="margin-top: 10px;">
                                     test
@@ -203,20 +227,132 @@
                                     </div>
                              </div>
                             
-                            </div>
+                    </div>
                        
                     <div class="row" id="projets_soumis" style="display: none">
-                        <div class="row">
-                            <div class="col-md-6" id="projet_par_region">
-
-                            </div>
-                            <div class="col-md-6" id="projet_par_secteur_dactivite">
-
-                            </div>
-                        </div>
                         <hr>
-                            <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
-                                test projets
+                            <div id="projet_par_region_par_sexes" style="margin-top: 10px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="dash-block">
+                                        <div class="dash-block-title">
+                                            <h2 class="dash-compteur">
+                                                Projets MPMEs Existantes
+                                            </h2>
+                                        </div>
+                                       <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                                <h4 class="text-left compteur">
+                                                        <strong class="text-danger">{{ $projet_soumis->count() }}</strong>
+                                                        <br>
+                                                        <small>
+                                                            Projets Enregistrés
+                                                        </small>
+                                                </h4>
+                                            </a>
+                                       </div>
+                                       
+                                       <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                                    <h4 class="text-left compteur">
+                                                            <strong class="text-danger">{{ $projet_selectionnes->count() }}</strong>
+                                                            <br>
+                                                            <small>
+                                                                Projets sélectionnés par le comité
+                                                            </small>
+                                                    </h4>
+                                            </a>
+                                        </div>
+                                        <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                            <h4 class="text-left compteur">
+                                                    <strong class="text-danger">{{ format_prix($projet_selectionnes->sum('montant_accorde')) }}</strong>
+                                                    <br>
+                                                    <small>
+                                                       Montant du financement accordé
+                                                    </small>
+                                            </h4>
+                                            </a>
+                                        </div>
+                                        {{-- <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_money('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                            <h4 class="text-left compteur">
+                                                    <strong class="text-danger">{{ format_prix($preprojet_soumis->sum('cout_total')) }}</strong>
+                                                    <br>
+                                                    <small>
+                                                        Montant total des projets soumis
+                                                     </small>
+                                            </h4>
+                                            </a>
+                                        </div> --}}
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="dash-block">
+                                        <div class="dash-block-title">
+                                            <h2 class="dash-compteur">
+                                                Plans d'affaires Startup
+                                            </h2>
+                                        </div>
+                                        <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                                <h4 class="text-left compteur">
+                                                        <strong class="text-danger">{{ 0}}</strong>
+                                                        <br>
+                                                        <small>
+                                                            Projets Enregistrés
+                                                        </small>
+                                                </h4>
+                                            </a>
+                                       </div>
+                                       
+                                       <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                                    <h4 class="text-left compteur">
+                                                            <strong class="text-danger">{{ 0 }}</strong>
+                                                            <br>
+                                                            <small>
+                                                                Projets sélectionnés par le comité
+                                                            </small>
+                                                    </h4>
+                                            </a>
+                                        </div>
+                                        <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                            <h4 class="text-left compteur">
+                                                    <strong class="text-danger"> 0</strong>
+                                                    <br>
+                                                    <small>
+                                                       Montant du financement accordé
+                                                    </small>
+                                            </h4>
+                                            </a>
+                                        </div>
+                                        
+                                        </div>
+                                        </div>
+                                </div>
+
+                                <div class="row">
+                                    <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
+                                       
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6" id="projet_par_region">
+            
+                                        </div>
+                                        <div class="col-md-6" id="projet_par_secteur_dactivite">
+            
+                                        </div>
+                                        
+                                    </div>
+                                    <hr>
+                                    <div id="projet_par_guichet" style="margin-top: 10px;">
+                                        test
+                                    </div>
+                                 </div>
                             </div>
                     </div>
                     <div class="row" id="financement" style="display: none">
@@ -263,6 +399,223 @@
         $('#'+autre_page_3).hide();
         
     }
+</script>
+
+<script language = "JavaScript">
+    function graphiquedynamique_PA(type_entreprise, status_projet){
+        //alert('ok');
+    var url = "{{ route('projet.par_region_et_par_sexe') }}"
+    $.ajax({
+                     url: url,
+                     type: 'GET',
+                     dataType: 'json',
+                    data:{type_entreprise:type_entreprise, statut:status_projet},
+                     error:function(donne){
+                        if (xhr.status == 401) {
+                            window.location.href = ''
+                        }
+                    },
+                     success: function (donnee) {
+                            var masculin= [];
+                            var feminin= [];
+                         
+                            var donnch= new Array();
+                            var status = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                            masculin.push(parseInt(donnee[i].masculin));
+                            feminin.push(parseInt(donnee[i].feminin));
+                           // en_attente_de_paiement.push(parseInt(donnee[i].nbre_facture_en_attente));
+                        }
+                        donnch.push({
+                                    name: 'masculin',
+                                    data:masculin,
+                                    color:'blue',
+                                    dataLabels: {
+                                    enabled: true,
+                                    }
+                                })
+                        donnch.push({
+                                    name: 'féminin',
+                                    data:feminin,
+                                    color:'green',
+                                    dataLabels: {
+                                    enabled: true,
+                                    }
+                                })
+                        console.log(donnch);
+                        for(var i=0; i<donnee.length; i++)
+                                {
+                                        status[i] = donnee[i].region
+                                }
+                        
+                        Highcharts.chart('projet_par_region_par_sexe', {
+                            chart: {
+                                        type: 'column'
+                                    },
+                            xAxis: {
+                                     categories: status
+                                },
+                            title: {
+                                text: "Plan d'affaire "+ status_projet + " par sexe et par région"
+                            },
+                           
+                            credits : {
+                                enabled: false
+                            },
+                           
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                        showInLegend: true
+                                }
+                            },
+                            series:donnch
+                        });
+    
+    }
+    
+    });
+      var url = "{{ route('projet.par_region') }}"
+      $.ajax({
+                     url: url,
+                     type: 'GET',
+                     data:{type_entreprise:type_entreprise, statut:status_projet},
+                     dataType: 'json',
+                     error:function(donne){
+                        if (xhr.status == 401) {
+                            window.location.href = ''
+                        }
+                    },
+                     success: function (donnee) {
+                         
+                            var donnch= new Array();
+                            var regions = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                                        donnch.push({
+                                        name: donnee[i].region,
+                                        y:  parseInt(donnee[i].nombre)} )
+                    
+                        }
+                        
+                        console.log(donnch);
+                        for(var i=0; i<donnee.length; i++)
+                                {
+                                        regions[i] = donnee[i].region
+                                }
+                        
+                        Highcharts.chart('projet_par_region', {
+                            chart: {
+                                        type: 'pie'
+                                    },
+                            xAxis: {
+                                     categories: regions
+                                },
+                            title: {
+                                text: "Proportion des plan d'affaire "+ status_projet + " par région"
+    
+                            },
+                           
+                            credits : {
+                                enabled: false
+                            },
+                           
+                            plotOptions: {
+                                pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                            }
+                        }
+                            },
+                            series: [{
+                        name: 'Nombre',
+                        colorByPoint: true,
+                        data: donnch
+                    }]
+                        });
+    
+    }
+    
+    });
+    var url = "{{ route('projet.par_secteur_dactivite') }}"
+    $.ajax({
+                     url: url,
+                     type: 'GET',
+                     data:{type_entreprise:type_entreprise, statut:status_projet},
+                     dataType: 'json',
+                     error:function(donne){
+                        if (xhr.status == 401) {
+                            window.location.href = ''
+                        }
+                    },
+                     success: function (donnee) {
+                         
+                            var donnch= new Array();
+                            var secteur_dactivites = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                                        donnch.push({
+                                        name: donnee[i].secteur_dactivite,
+                                        y:  parseInt(donnee[i].nombre)} )
+                    
+                        }
+                        
+                        console.log(donnch);
+                        for(var i=0; i<donnee.length; i++)
+                                {
+                                    secteur_dactivites[i] = donnee[i].secteur_dactivite
+                                }
+                        
+                        Highcharts.chart('projet_par_secteur_dactivite', {
+                            chart: {
+                                        type: 'pie'
+                                    },
+                            xAxis: {
+                                     categories: secteur_dactivites
+                                },
+                                tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            title: {
+                                text: "Effectif des plan d'affaires "+ status_projet + " par secteur d'activité"
+                            },
+                            credits : {
+                                enabled: false
+                            },
+                           
+                            plotOptions: {
+                                pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.y:.1f}'
+                            }
+                        }
+                            },
+                            series: [{
+                        name: 'Nombre',
+                        colorByPoint: true,
+                        data: donnch
+                    }]
+                        });
+    
+    }
+    
+    });
+//Repartition par guichet
+
+
+    }  
+            
 </script>
 
 <script language = "JavaScript">

@@ -20,7 +20,7 @@
                 <a href="#modal-import-evaluation" data-toggle="modal"  data-toggle="tooltip" title="Importer les notes d'évaluation" class="text-white"><i class="bi bi-plus-square"></i> Importer les note d'évaluation</a>
             </button>
         </nav>
-    </div><!-- End Page Title -->
+    </div>
 
 <section class="section">
         <div class="row">
