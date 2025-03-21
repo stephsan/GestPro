@@ -66,7 +66,6 @@
                     <i class="ion ion-stats-bars"></i>
                 </div>
                 <a href="#" class="small-box-footer block4" onclick="change_details('impacts','avant_projets_soumis','projets_soumis','financement')">Plus de détails</a>
-
             </div>
                 
         </div>
@@ -182,30 +181,7 @@
                                         </div>
                                     </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <table class="table">
-                                        <thead>
-                                            <th>Region</th>
-                                            <th>Guichet 1</th>
-                                            <th>Guichet 2</th>
-                                            <th>Guichet 3</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($plan_daffaire_par_guichets as $plan_daffaire_par_guichet )
-                                            <tr>
-                                                <td>{{ $plan_daffaire_par_guichet->region }}</td>
-                                                <td>{{ $plan_daffaire_par_guichet->petit_sous_projet }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_petit_sous_projet) }}</td>
-                                                <td>{{ $plan_daffaire_par_guichet->projet_standards }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_projet_standards) }}</td>
-                                                <td>{{ $plan_daffaire_par_guichet->projet_de_transformation_vert }} / {{ format_prix($plan_daffaire_par_guichet->montant_projet_de_transformation_vert) }}</td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                        
-                                    </table>
-                                </div>
-                                
-                            </div>
+                            
                              <div class="row">
                                 <div id="preprojet_par_region_par_sexe" style="margin-top: 10px;">
                                     test
@@ -333,7 +309,36 @@
                                         </div>
                                         </div>
                                 </div>
+                                <div class="row" >
+                                        <div class="col-md-6" id="projet_reparti_par_guichet_nombre">
 
+                                        </div>
+                                        <div class="col-md-6" id="projet_reparti_par_guichet_montant">
+
+                                        </div>
+                                    {{-- <div class="col-md-6">
+                                        <table class="table">
+                                            <thead>
+                                                <th>Region</th>
+                                                <th>Guichet 1</th>
+                                                <th>Guichet 2</th>
+                                                <th>Guichet 3</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($plan_daffaire_par_guichets as $plan_daffaire_par_guichet )
+                                                    <tr>
+                                                        <td>{{ $plan_daffaire_par_guichet->region }}</td>
+                                                        <td>{{ $plan_daffaire_par_guichet->petit_sous_projet }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_petit_sous_projet) }}</td>
+                                                        <td>{{ $plan_daffaire_par_guichet->projet_standards }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_projet_standards) }}</td>
+                                                        <td>{{ $plan_daffaire_par_guichet->projet_de_transformation_vert }} / {{ format_prix($plan_daffaire_par_guichet->montant_projet_de_transformation_vert) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div> --}}
+                                    
+                                </div>
                                 <div class="row">
                                     <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
                                        
@@ -397,13 +402,13 @@
         $('#'+autre_page_1).hide();
         $('#'+autre_page_2).hide();
         $('#'+autre_page_3).hide();
+        graphiquedynamique_PA('mpme','soumis')
         
     }
 </script>
 
 <script language = "JavaScript">
     function graphiquedynamique_PA(type_entreprise, status_projet){
-        //alert('ok');
     var url = "{{ route('projet.par_region_et_par_sexe') }}"
     $.ajax({
                      url: url,
@@ -611,10 +616,172 @@
     }
     
     });
-//Repartition par guichet
-
-
-    }  
+//Nombre de plan d'affaire reparti par guichet 
+var url = "{{ route('projet.reparti_par_guichet') }}"
+$.ajax({
+                 url: url,
+                 type: 'GET',
+                 dataType: 'json',
+                data:{type_entreprise:type_entreprise, statut:status_projet},
+                 error:function(donne){
+                    if (xhr.status == 401) {
+                        window.location.href = ''
+                    }
+                },
+                 success: function (donnee) {
+                        var guichet1= [];
+                        var guichet2= [];
+                        var guichet3= [];
+                        var donnch= new Array();
+                        var status = new Array();
+                    for(var i=0; i<donnee.length; i++)
+                    {
+                        guichet1.push(parseInt(donnee[i].montant_petit_sous_projet));
+                        guichet2.push(parseInt(donnee[i].montant_projet_standards));
+                        guichet3.push(parseInt(donnee[i].montant_projet_de_transformation_vert));
+                    }
+                    donnch.push({
+                                name: 'Guichet 1',
+                                data:guichet1,
+                                color:'blue',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                    donnch.push({
+                                name: 'Guichet 2',
+                                data:guichet2,
+                                color:'orange',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                        donnch.push({
+                            name: 'Guichet 3',
+                            data:guichet3,
+                            color:'green',
+                            dataLabels: {
+                            enabled: true,
+                            }
+                        })
+                    console.log(donnch);
+                    for(var i=0; i<donnee.length; i++)
+                            {
+                                    status[i] = donnee[i].region
+                            }
+                    
+                    Highcharts.chart('projet_reparti_par_guichet_nombre', {
+                        chart: {
+                                    type: 'column'
+                                },
+                        xAxis: {
+                                 categories: status
+                            },
+                        title: {
+                            text: "Plan d'affaires "+ status_projet + " par guichet et par région"
+                        },
+                       
+                        credits : {
+                            enabled: false
+                        },
+                       
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                    showInLegend: true
+                            }
+                        },
+                        series:donnch
+                    });
+}
+});
+var url = "{{ route('projet.reparti_par_guichet') }}"
+$.ajax({
+                 url: url,
+                 type: 'GET',
+                 dataType: 'json',
+                data:{type_entreprise:type_entreprise, statut:status_projet},
+                 error:function(donne){
+                    if (xhr.status == 401) {
+                        window.location.href = ''
+                    }
+                },
+                 success: function (donnee) {
+                        var guichet1= [];
+                        var guichet2= [];
+                        var guichet3= [];
+                        var donnch= new Array();
+                        var status = new Array();
+                    for(var i=0; i<donnee.length; i++)
+                    {
+                        guichet1.push(parseInt(donnee[i].guichet1));
+                        guichet2.push(parseInt(donnee[i].guichet2));
+                        guichet3.push(parseInt(donnee[i].guichet3));
+                    }
+                    donnch.push({
+                                name: 'Guichet 1',
+                                data:guichet1,
+                                color:'blue',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                    donnch.push({
+                                name: 'Guichet 2',
+                                data:guichet2,
+                                color:'orange',
+                                dataLabels: {
+                                enabled: true,
+                                }
+                            })
+                        donnch.push({
+                            name: 'Guichet 3',
+                            data:guichet3,
+                            color:'green',
+                            dataLabels: {
+                            enabled: true,
+                            }
+                        })
+                    console.log(donnch);
+                    for(var i=0; i<donnee.length; i++)
+                            {
+                                    status[i] = donnee[i].region
+                            }
+                    
+                    Highcharts.chart('projet_reparti_par_guichet_montant', {
+                        chart: {
+                                    type: 'column'
+                                },
+                        xAxis: {
+                                 categories: status
+                            },
+                        title: {
+                            text: "Plan d'affaires "+ status_projet + " par guichet et par région"
+                        },
+                       
+                        credits : {
+                            enabled: false
+                        },
+                       
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                    showInLegend: true
+                            }
+                        },
+                        series:donnch
+                    });
+}
+});
+}  
             
 </script>
 

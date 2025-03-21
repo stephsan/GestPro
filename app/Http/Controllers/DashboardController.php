@@ -198,9 +198,9 @@ public function pa_par_secteur_dactivite(Request $request){
 } 
 
 public function pa_par_guichet(Request $request){
-  // if($request->type_entreprise=='mpme'){
-  //   if($request->statut=='soumis')
-  //     {
+   if($request->type_entreprise=='mpme'){
+     if($request->statut=='soumis')
+       {
         $plan_daffaire_par_guichets = DB::table('projets')
                                           ->leftjoin('preprojets',function($join){
                                               $join->on('projets.preprojet_id','=','preprojets.id');
@@ -212,16 +212,38 @@ public function pa_par_guichet(Request $request){
                                           ->where('valeurs.parametre_id',1)
                                           ->groupBy('preprojets.region','valeurs.libelle')
                                           ->select('valeurs.libelle as region',
-                                                DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as petit_sous_projet"),
-                                                DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as projet_standards"),
-                                                DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as projet_de_transformation_vert"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as guichet1"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as guichet2"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as guichet3"),
                                                 DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN projets.montant_demande else 0 end) as montant_petit_sous_projet"),
                                                 DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN projets.montant_demande else 0 end) as montant_projet_standards"),
                                                 DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN projets.montant_demande else 0 end) as montant_projet_de_transformation_vert"),
                                            )
                                           ->get();
-    //   }
-    // }
+       }
+       if($request->statut=='selectionné')
+       {
+        $plan_daffaire_par_guichets = DB::table('projets')
+                                          ->leftjoin('preprojets',function($join){
+                                              $join->on('projets.preprojet_id','=','preprojets.id');
+                                          })
+                                          ->rightJoin('valeurs', function ($join) {
+                                            $join->on('valeurs.id','=','preprojets.region'); 
+                                          })
+                                          ->where('projets.statut','selectionné')
+                                          ->where('valeurs.parametre_id',1)
+                                          ->groupBy('preprojets.region','valeurs.libelle')
+                                          ->select('valeurs.libelle as region',
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN 1 else 0 end) as guichet1"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN 1 else 0 end) as guichet2"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN 1 else 0 end) as guichet3"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7165 THEN projets.montant_demande else 0 end) as montant_petit_sous_projet"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7166 THEN projets.montant_demande else 0 end) as montant_projet_standards"),
+                                                DB::raw("sum(CASE WHEN preprojets.guichet=7167 THEN projets.montant_demande else 0 end) as montant_projet_de_transformation_vert"),
+                                           )
+                                          ->get();
+       }
+     }
     return json_encode($plan_daffaire_par_guichets);
 }
 
