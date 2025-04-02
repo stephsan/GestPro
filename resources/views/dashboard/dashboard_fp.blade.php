@@ -19,7 +19,7 @@
             <div class="small-box bg-default">
                 <div class="inner">
                     <h3 >{{ $all_projet->count() }}</h3>
-                        Projets matures
+                        Réalisations en cours
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
