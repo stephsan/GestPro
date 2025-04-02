@@ -16,11 +16,11 @@
             <form action="{{ route('login') }}" method="post" class="form-product">
                     @method('post')
                     @csrf
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                        <!-- <img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt="Logo" class="logo text-center"/>-->
                         <img src="{{asset('frontend/img/logo-ecotec.jpg')}}" alt="Logo" class="logo text-center"/>
-                    </div>
-                    <h2 class="mb-3 text-center text-success" style="font-style: italic">Système de gestion integrée des bénéficiaires</h2>
+                    </div> --}}
+                    <h2 class="mb-3 text-center text-success" style="font-style: italic">Gest Pro</h2>
 
                     <div class="divider p-divider"></div>
 

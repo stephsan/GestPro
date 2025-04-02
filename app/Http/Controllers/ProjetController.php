@@ -15,6 +15,9 @@ use App\Models\InvestissementProjet;
 use Illuminate\Support\Facades\Auth;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Illuminate\Support\Facades\DB;
+use App\Models\Activite;
+use App\Models\Realisation;
 
 class ProjetController extends Controller
 {
@@ -134,151 +137,12 @@ else{
        
     }
     public function lister(Request $request){
-        if($request->statut=='soumis'){
-    if (Auth::user()->can('lister_les_projets_soumis')) {
-            if($request->type_entreprise=='mpme'){
-                $projets = Projet::orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_mpme_existante';
-            }
-            else{
-                $projets = Projet::whereIn('statut',['soumis','evalué'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_startup';
-            }
-            $texte= 'soumis';
-            $page='projet_soumis';
+        if($request->statut=='encours'){
+            $texte= 'en cours';
+            $page='projet_encours';
+            $projets= Projet::all();
         }
-        else{
-            return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-        }
-        }
-        elseif($request->statut=='soumis_a_lanalyse_chef_dantenne'){
-        if (Auth::user()->can('lister_projet_aanalyse_chef_dantenne')) {
-            if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['soumis','evalué'])
-                                        ->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_mpme_existante';
-            }
-            else{
-                $projets = Projet::whereIn('statut',['soumis','evalué'])
-                                    ->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_startup';
-            }
-            $texte= "Projets a analyser par le chef d'antenne";
-            $page='projet_a_analyse';
-            }
-            else{
-                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-            }
-        }
-        elseif($request->statut=='analyse'){
-        if (Auth::user()->can('lister_projet_analyse_par_chef_dantenne')) {
-            if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['analysé'])->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_mpme_existante';
-            }
-            else{
-                $projets = Projet::whereIn('statut',['analysé'])->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_startup';
-            }
-            $texte= "Projets analyse par le chef d'antenne";
-            $page='projet_analyse';
-            }
-            else{
-                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-            }
-        }
-        elseif($request->statut=='soumis_au_comite_de_selection'){
-        if (Auth::user()->can('lister_projet_soumis_au_comite')) {
-            if($request->type_entreprise=='mpme'){
-                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_ses','!=',null)->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_mpme_existante';
-            }
-            else{
-                $projets = Projet::whereIn('statut',['soumis_au_comite_de_selection'])->where('avis_ses','!=',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
-                $type_entreprise='fp_startup';
-            }
-            $texte= "Projets soumis a l'analyse du comité de sélection" ;
-            $page='projet_comite_de_selection';
-        }
-         
-            else{
-                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-            }
-        }
-        elseif($request->statut=='en_attente_de_lavis_ses'){
-            if (Auth::user()->can('lister_en_attente_du_ses')) {
-                if($request->type_entreprise=='mpme'){
-                    $projets = Projet::where('avis_ses',null)->orderBy('updated_at', 'desc')->get();
-                    $type_entreprise='fp_mpme_existante';
-                }
-                else{
-                    $projets = Projet::where('avis_ses',null)->orderBy('updated_at', 'desc')->get();
-                    $type_entreprise='fp_startup';
-                }
-                $texte= "Projets en attente de l'avis du SES" ;
-                $page='projet_en_attente_de_lavis_ses';
-            }
-             
-                else{
-                    return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-                }
-            }
-            elseif($request->statut=='en_attente_decision_aneve'){
-                if (Auth::user()->can('lister_en_attente_du_ses')) {
-                    if($request->type_entreprise=='mpme'){
-                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve',null)->orderBy('updated_at', 'desc')->get();
-                        $type_entreprise='fp_mpme_existante';
-                    }
-                    else{
-                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve',null)->orderBy('updated_at', 'desc')->get();
-                        $type_entreprise='fp_startup';
-                    }
-                    $texte= "Projets en attente de la décion de l'ANEVE" ;
-                    $page='projet_en_attente_decision_aneve';
-                }
-                 
-                    else{
-                        return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-                    }
-                }
-            elseif($request->statut=='traite_par_aneve'){
-                if (Auth::user()->can('lister_en_attente_du_ses')) {
-                    if($request->type_entreprise=='mpme'){
-                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve','!=',null)->orderBy('updated_at', 'desc')->get();
-                        $type_entreprise='fp_mpme_existante';
-                    }
-                    else{
-                        $projets = Projet::where('avis_ses','!=',null)->where('decision_aneve','!=',null)->orderBy('updated_at', 'desc')->get();
-                        $type_entreprise='fp_startup';
-                    }
-                    $texte= "Projets traités par l'ANEVE" ;
-                    $page='projet_traite_par_aneve';
-                }
-                    
-                    else{
-                        return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-                    }
-                }
-        elseif($request->statut=='decision_du_comite'){
-            if (Auth::user()->can('lister_projet_soumis_au_comite')) {
-                if($request->type_entreprise=='mpme'){
-                    $projets = Projet::whereIn('statut',['selectionné','rejeté'])->orderBy('updated_at', 'desc')->get();
-                    $type_entreprise='fp_mpme_existante';
-                }
-                else{
-                    $projets = Projet::whereIn('statut',['selectionné','rejeté'])->where('avis_chefdezone',null)->where('zone_affectation', Auth::user()->zone)->orderBy('updated_at', 'desc')->get();
-                    $type_entreprise='fp_startup';
-                }
-                $texte= "Projets analysés par le comité de sélection" ;
-                $page='decision_comite_de_selection';
-            }
-            else{
-                return back()->with('error', 'Vous ne disposez pas des droits requis pour cette action.');
-            }
-            }
-        $projet_piecejointes_evaluations=Valeur::where("parametre_id",19)->whereIn('id', [env("VALEUR_ID_DOCUMENT_FICHE_EVALUATION"), env("VALEUR_ID_DOCUMENT_FICHE_DIAGNOSTIC")])->orderBy('updated_at', 'desc')->get();
-
-        return view('projet.lister',compact('projet_piecejointes_evaluations','projets','type_entreprise','texte','page'));
+        return view('projet.lister',compact('projets','texte','page'));
         
     }
     public function analyser(Projet $projet)
@@ -355,127 +219,27 @@ else{
     public function store(Request $request)
     {   $year = date('Y');
         $this->validate($request, [
-    		'preprojet_id'=>'unique:projets,preprojet_id',
+    		'denomination'=>'unique:projets,denomination',
     	]);
-        $designations = $request->designation;
-        $couts = $request->cout;
-        $subventions = $request->subvention;
-        $montant_investissement_total= 0;
-        $montant_subvention_total = 0;
-        $preprojet= Preprojet::find($request->preprojet_id);
-        foreach($subventions as $subvention){
-                $montant_subvention_total = $montant_subvention_total + reformater_montant2($subvention);
+        $lastOne = DB::table('projets')->latest('id')->first();
+        if($lastOne){
+            $code_projet = 'PRJ'.'_00'.$lastOne->id;
         }
-        foreach($couts as $cout){
-            $montant_investissement_total = $montant_investissement_total + reformater_montant2($cout);
-        }
-         $taux_subvention=$montant_subvention_total/ $montant_investissement_total*100;
-        //dd($montant_investissement_total_appui1.' '.$montant_investissement_total_appui2);
-    if($request->hasFile('fiche_synthetique')&&$request->hasFile('fiche_synthetique')){
-    //Verification du code de financement suivant le guichet
-    if((($preprojet->guichet==7165 ) && $taux_subvention >65) || (($preprojet->guichet==7166 ) && $taux_subvention >50) || (($preprojet->guichet==7167 ) && $taux_subvention >65)  )
-            {
-                flash("Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet))->error();
-                return redirect()->back()->with("success","Bien vouloir respecter le code de financement du guichet".' '.getlibelle($preprojet->guichet));
-            }
         else{
-            ($preprojet->region_affectation == null )?($zone= $preprojet->region):($zone=$preprojet->region_affectation );
-             $projet = Projet::create([
-                'preprojet_id' => $request->preprojet_id,
-                'coach_id' => $request->coach,
-                'zone_affectation'=> $zone,
-                'titre_du_projet' => $request->titre_du_projet,
-                'objectifs'  => $request->titre_du_projet,
-                'activites_menees'  => $request->activite_menee,
-                'atouts_promoteur'  => $request->atouts_entreprise,
-                'innovation'  =>$request->innovations_apportes,
-                'statut'  =>"soumis",
-            ]);
-            for($i=0; $i<count($designations); $i++){
-                     if($designations[$i]!="" && $couts[$i]!="" && reformater_montant2($request->subvention[$i])!=null){
-                        InvestissementProjet::create([
-                            "projet_id"=>$projet->id,
-                            "designation"=>$designations[$i],
-                            "montant"=>reformater_montant2($couts[$i]),
-                            "apport_perso"=>reformater_montant2($request->apport_perso[$i]),
-                            "subvention_demandee"=>reformater_montant2($request->subvention[$i])
-                        ]);
-                   }
-            }
-            $projet->update([
-                'montant_demande'=>$projet->investissements->sum('montant')
-            ]);
-                $year=date("Y");
-               if ($request->hasFile('plan_de_continute')) {
-                $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_PCA"));
-                $file = $request->file('plan_de_continute');
-                $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->code_promoteur.'_'.'plan_de_continute'.'.'.$extension;
-                $emplacement='public/'.$year.'/'.'pca/'; 
-                $urlplan_de_continute= $request['plan_de_continute']->storeAs($emplacement, $fileName);
-                Piecejointe::create([
-                    'type_piece'=>env("VALEUR_ID_DOCUMENT_PCA"),
-                    'preprojet_fp_id'=>$request->preprojet_id,
-                    'url'=>$urlplan_de_continute,
-                  ]);
-            }
-            else{
-                $urlplan_de_continute=null;
-            }
-            if ($request->hasFile('fiche_synthetique')) {
-                $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"));
-                $file = $request->file('fiche_synthetique');
-                $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->code_promoteur.'_'.'fiche_synthetique'.'.'.$extension;
-                $emplacement='public/'.$year.'/'.'synthese_pca/'; 
-                $urlfiche_synthetique= $request['fiche_synthetique']->storeAs($emplacement, $fileName);
-                Piecejointe::create([
-                    'type_piece'=>env("VALEUR_ID_DOCUMENT_SYNTHESE_PCA"),
-                      'preprojet_fp_id'=>$request->preprojet_id,
-                      'url'=>$urlfiche_synthetique,
-                  ]);
-            }
-            else{
-                $urlfiche_synthetique=null;
-            }
-            if ($request->hasFile('devis_des_investissements')) {
-                $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_DEVIS"));
-                $file = $request->file('devis_des_investissements');
-                $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->code_promoteur.'_'.'devis_des_investissements'.'.'.$extension;
-                $emplacement='public/'.$year.'/'.'devis_des_investissement_ala_soumission/'; 
-                $urldevis_des_investissements= $request['devis_des_investissements']->storeAs($emplacement, $fileName);
-                Piecejointe::create([
-                    'type_piece'=>env("VALEUR_ID_DOCUMENT_DEVIS"),
-                      'preprojet_fp_id'=>$request->preprojet_id,
-                      'url'=>$urldevis_des_investissements,
-                  ]);
-            }
-            else{
-                $urldevis_des_investissements=null;
-            }
-            if ($request->hasFile('copie_document_foncier')) {
-                $this->supprimer_doublon_de_pj($preprojet->id, env("VALEUR_ID_DOCUMENT_FONCIER"));
-                $file = $request->file('copie_document_foncier');
-                $extension=$file->getClientOriginalExtension();
-                $fileName = $preprojet->code_promoteur.'_'.'copie_document_foncier'.'.'.$extension;
-                $emplacement='public/'.$year.'/'.'foncier/'; 
-                $urlcopie_document_foncier= $request['copie_document_foncier']->storeAs($emplacement, $fileName);
-                Piecejointe::create([
-                    'type_piece'=>env("VALEUR_ID_DOCUMENT_FONCIER"),
-                    'preprojet_fp_id'=>$request->preprojet_id,
-                      'url'=>$urlcopie_document_foncier,
-                  ]);
-            }
-            else{
-                $urlcopie_document_foncier=null;
-            }
-            
+            $code_projet = 'PRJ'.'_00'.'0';
         }
+        Projet::create(
+            [
+                'denomination'=>$request->denomination,
+                'code_projet'=>$code_projet,
+                'statut'=>0
+
+            ]
+            );
        return redirect()->back()->with('success','Le projet a été enregistré avec success');
 }
             
-}
+
 public function pca_modif(Request $request){
     $projet= Projet::find($request->id);
     $data = array(
@@ -763,7 +527,6 @@ public function storeaval(Request $request){
             $urldocument_joint=null;
         }
         return redirect()->back()->with('success','La piece a été enregistrée avec succes');
-
     }
     else
         return redirect()->back()->with('error','Cette piece a déja été joint a ce dossier');
@@ -777,7 +540,50 @@ public function storeaval(Request $request){
      */
     public function show(Projet $projet)
     {
-        //
+       return view('projet.analyse', compact('projet'));
+    }
+
+    public function importer_realisation(Request $request){
+        $this->validate($request, [
+            'fichier' => 'bail|required|file|mimes:xlsx'
+        ]);
+        $fichier = $request->fichier->move(public_path(), $request->fichier->hashName());
+        $reader = SimpleExcelReader::create($fichier);
+        $rows = $reader->getRows();
+        foreach($rows as $row){
+            $datas[]= array('annee'=>trim($row['annee']),'activite_code'=>trim($row['activite_code']),'taux_physique'=>trim($row['taux_physique']),'cible_prevu'=>trim($row['cible_prevu']),'delais_consomme'=>trim($row['delais_consomme']),'taux_decaissement'=>trim($row['taux_decaissement']),'cible_realise'=>trim($row['cible_realise']),'taux_financier'=>trim($row['taux_financier']),'taux_cible'=>trim($row['taux_cible']));
+        }
+        foreach($datas as $data){
+            $activite=Activite::where('code_activite',$data['activite_code'])->first();
+           // $projet=Projet::where('preprojet_id', $preprojet->id)->first();
+            if($activite)
+            {
+                Realisation::create([
+                   'activite_id'=>$activite->id,
+                   'annee'=>$data['annee'],
+                    'taux_physique'=>$data['taux_physique'],
+                    'taux_financier'=>$data['taux_financier'],
+                    'taux_decaissement'=>$data['taux_decaissement'],
+                    'delais_consomme'=>$data['delais_consomme'],
+                    'cible_prevu'=>$data['cible_prevu'],
+                    'cible_realise'=>$data['cible_realise'],
+                    'taux_cible'=>$data['taux_cible']
+                ]);
+                if($data['taux_physique']==0){
+                    $statut_activite='Non demarré';
+                }
+                elseif($data['taux_physique']>0 && $data['taux_physique']<100){
+                         $statut_activite='En cours';
+                }
+                elseif($data['taux_physique']==100){
+                    $statut_activite='Terminé';
+                }
+                $activite->update([
+                    'statut'=>$statut_activite
+                ]);
+            }
+        }
+        return redirect()->back()->with('Fichier de realisation importer avec success');
     }
 
     /**

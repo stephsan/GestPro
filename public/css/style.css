@@ -655,3 +655,23 @@ div.dt-buttons {
   width: 100%;
   height: 500px;
 }
+
+#table_taux {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#table_taux td,
+#table_taux th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#table_taux tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#table_taux tr:hover {
+  background-color: #ddd;
+}

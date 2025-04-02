@@ -11,68 +11,21 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark">Projet</li>
-                <li class="breadcrumb-item active text-dark">Visuliser</li>
+                <li class="breadcrumb-item active text-dark">Visualiser</li>
             </ol>
         </nav>
 <div class="row">
 <div class="col-md-6 offset-md-3">
 @can('donner_lavis_du_ses', Auth::user())
-        @if($projet->avis_ses==null)
-            <nav>
-                <button type="button" class="btn btn-success">
-                    <a onclick="setTypeavis('avis_ses','type_decision')" href="#modal-avis-ses" data-toggle="modal"  data-toggle="tooltip" title="Donner l'avis du SES" class="text-white"><i class="bi bi-plus-square"></i> Avis du SES </a>
-                </button>
-            </nav>
-        @endif
-        @if(!($projet->avis_ses==null) && ($projet->decision_aneve==null))
-            <nav>
-                <button type="button" class="btn btn-danger">
-                    <a onclick="setTypeavis('decision_aneve','type_decision')" href="#modal-avis-ses" data-toggle="modal"  data-toggle="tooltip" title="Donner l'avis du SES" class="text-white"><i class="bi bi-plus-square"></i> Décision de l'ANEVE </a>
-                </button>
-            </nav>
-        @endif
-@endcan
-@can('lister_les_projets_soumis', Auth::user())
-    @if($projet->statut =='soumis')
-        {{-- @if($projet->zone_affectation==Auth::user()->zone) --}}
-            <nav>
-                <button type="button" class="btn btn-success">
-                    <a href="#modal-evaluer-pca" data-toggle="modal"  data-toggle="tooltip" title="Evaluer l'avant projet" class="text-white"><i class="bi bi-plus-square"></i> Evaluer le projet </a>
-                </button>
-            </nav>
-        {{-- @endif --}}
-    @endif
        
-    @if($projet->statut =='evalué')
-    <nav>
-        <button type="button" class="btn btn-success">
-            <a href="#modal-avis-chefdezone-pca" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe technique" class="text-white"><i class="bi bi-plus-square"></i> Avis du chef d'antenne </a>
-        </button>
-    </nav>
-@endif
-@can('valider_levaluation_de_lavant_projet_fp', Auth::user())
-    @if($projet->statut =='analysé')
-    <nav>
-        <button type="button" class="btn btn-danger">
-        <a href="#modal-rejet-de-lanalyse" data-toggle="modal"  data-toggle="tooltip" title="Rejeter l'analyse du plan d'affaire" class="text-white"><i class="bi bi-plus-square"></i> Rejetter l'analyse </a>
-        </button>
-        <button type="button" class="btn btn-success">
-            <a href="#modal-avis-equipe-fp" data-toggle="modal"  data-toggle="tooltip" title="Avis de l'équipe de fonds de partenariat" class="text-white"><i class="bi bi-plus-square"></i> Avis de l'équipe FP </a>
-        </button>
-    </nav>
-    @endif
+            <nav>
+                <button type="button" class="btn btn-success">
+                    <a href="#modal-composante" data-toggle="modal"  data-toggle="tooltip" title="Ajouter une composante au projet" class="text-white"><i class="bi bi-plus-square"></i> Ajouter les composantes </a>
+                </button>
+            </nav>
+      
 @endcan
 
-@endcan
-@can('valider_la_decision_du_comite',Auth::user())
-    @if($projet->statut =='soumis_au_comite_de_selection')
-    <nav>
-        <button type="button" class="btn btn-success">
-            <a href="#modal-decision-comite-de-selection" data-toggle="modal"  data-toggle="tooltip" title="Décision du comité de sélection" class="text-white"><i class="bi bi-plus-square"></i> Décision du comité de sélection </a>
-        </button>
-    </nav>
-    @endif
-@endcan
 
 </div>
 
@@ -85,305 +38,93 @@
 <div class="card">
 <div class="row">
     <div class="col-md-7" style="margin-left:15px;">
-    @if ($projet->motif_du_rejet_de_lanalyse)
+    
         <div class="form-group row" >
             <div class="col-md-4">
-            <label>Motif de rejet de l'analyse :</label>
+            <label>Dénomination du projet :</label>
             </div>
             <div class="col-sm-7 mb-3 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->motif_du_rejet_de_lanalyse}}</label>
-            </div>
-        </div>
-    @endif
-                <div class="form-group row">
-                    <div class="col-md-4">
-                    <label>Coach:</label>
-                    </div>
-                    <div class="col-sm-7 mb-3 mb-sm-0">
-                    <label class="fb"> {{$projet->coach->nom}} {{$projet->coach->prenom}} / {{$projet->coach->contact}}</label>
-                    </div>
-                </div>
-        
-                <div class="form-group row">
-                    <div class="col-md-4">
-                      <label>Titre du projet :</label>
-                    </div>
-                    <div class="col-sm-7 mb-3 mb-sm-0">
-                      <label class="fb"> {{$projet->titre_du_projet}}</label>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                      <div class="col-sm-4">
-                        <label>Coût total du projet :</label>
-                      </div>
-                      <div class="col-sm-7 mb-3 mb-sm-0">
-                        <label class="fb"> {{ format_prix($projet->investissements->sum('montant'))   }} </label>
-                      </div>
-              </div>
-              <div class="form-group row">
-                <div class="col-sm-4">
-                  <label>Coût total du projet validé:</label>
-                </div>
-                <div class="col-sm-7 mb-3 mb-sm-0">
-                  <label class="fb"> {{ format_prix($projet->investissementvalides->sum('montant_valide'))   }} </label>
-                </div>
-            </div>
-            @if(count($projet->investissements)!=0)
-                <div class="form-group row">
-                    <div class="col-sm-4">
-                    <label>Coût du projet validés:</label>
-                    </div>
-                    <div class="col-sm-7 mb-3 mb-sm-0">
-                    <label class="fb"> {{ format_prix($projet->investissementvalides->sum('montant_valide'))   }} </label>
-                    </div>
-                </div>
-                
-            @endif
-              <div class="form-group row">
-                <div class="col-sm-4">
-                  <label>Subvention demandée:</label>
-                </div>
-                <div class="col-sm-7 mb-3 mb-sm-0">
-                  <label class="fb"> {{ format_prix($projet->investissements->sum('subvention_demandee'))   }}</label>
-                </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-sm-4">
-                  <label>Apport personnel :</label>
-                </div>
-                <div class="col-sm-7 mb-3 mb-sm-0">
-                  <label class="fb"> {{ format_prix($projet->investissements->sum('apport_perso'))   }} </label>
-                </div>
-             </div>
-             <div class="form-group row">
-                <div class="col-sm-4">
-                  <label>Subvention accordée :</label>
-                </div>
-                <div class="col-sm-7 mb-3 mb-sm-0">
-                  <label class="fb"> {{ format_prix($projet->investissements->sum('subvention_demandee_valide'))   }}</label>
-                </div>
-             </div>
-                  <div class="form-group row">
-                    <div class="col-sm-4">
-                      <label>Les objectifs :</label>
-                    </div>
-                    <div class="col-sm-8 mb-3 mb-sm-0">
-                      <label class="fb"> {{ $projet->objectifs }} </label>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                      <div class="col-sm-4">
-                        <label>Les activités ménées :</label>
-                      </div>
-                      <div class="col-sm-8 mb-3 mb-sm-0">
-                        <p style="text-align: justify">  {{ $projet->activites_menees }} </p>
-                      </div>
-                  </div>
-                  <div class="form-group row">
-                      <div class="col-sm-4">
-                        <label>Les Atouts du projet :</label>
-                      </div>
-                      <div class="col-sm-8 mb-3 mb-sm-0">
-                        <p style="text-align: justify"> {{  $projet->innovation }}</p>
-                      </div>
-                  </div>
-    </div>
-    <div class="col-md-4">
-        <h4>Analyse Environementale et Sociale</h4>
-        <div class="form-group row" >
-            <div class="col-md-9">
-            <label>Avis du SES :</label>
-            </div>
-            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->avis_ses}}</label>
+            <label class="fb"> {{$projet->denomination}}</label>
             </div>
         </div>
         <div class="form-group row" >
-            <div class="col-md-9">
-                @if($projet->decision_aneve==null)
-                    <label>Catégorie provisoire :</label>
-                @else
-                    <label>Catégorie  :</label>
-                @endif
+            <div class="col-md-4">
+            <label>Taux physique :</label>
             </div>
-            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
-            <label class="fb"> {{getlibelle($projet->categorie_projet)}}</label>
+            <div class="col-sm-7 mb-3 mb-sm-0">
+            <label class="fb"> {{ $projet->taux_physique }}</label>
             </div>
         </div>
-        @if ($projet->decision_aneve)
-            <div class="form-group row" >
-                <div class="col-md-9">
-                <label>Décision de l'ANEVE :</label>
-                </div>
-                <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
-                <label class="fb"> {{$projet->decision_aneve}}</label>
-                </div>
-            </div>
-        @endif
-        
-        <h2>Evaluation</h2>
-        @foreach ( $projet->evaluations as $evaluation)
         <div class="form-group row" >
-            <div class="col-md-9">
-            <label>{{ $evaluation->critere->libelle }} :</label>
+            <div class="col-md-4">
+            <label>Taux financier :</label>
             </div>
-            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
-            <label class="fb"> {{$evaluation->note}}</label>
+            <div class="col-sm-7 mb-3 mb-sm-0">
+            <label class="fb"> {{ $projet->taux_financier }}</label>
             </div>
         </div>
-        @endforeach
         <div class="form-group row" >
-            <div class="col-md-9">
-            <label>Total:</label>
+            <div class="col-md-4">
+            <label>Taux de décaissement :</label>
             </div>
-            <div class="col-sm-3 mb-3 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->evaluations->sum('note')}}</label>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 row">
-        <div class="col-md-4">
-            <label>Avis Chef de Zone:</label>
-            </div>
-            <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->avis_chefdantenne}}</label>
+            <div class="col-sm-7 mb-3 mb-sm-0">
+            <label class="fb"> {{ $projet->taux_decaissement}}</label>
             </div>
         </div>
-    <div class="col-md-6 row">
-        <div class="col-md-4">
-            <label>Observation chef de Zone:</label>
-            </div>
-            <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->observation_chefdantenne}}</label>
-            </div>
+ 
+              
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6 row">
-        <div class="col-md-4">
-            <label>Avis UGP:</label>
-            </div>
-            <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->avis_equipe_fp}}</label>
-        </div>
-    </div>
-    <div class="col-md-6 row">
-        <div class="col-md-4">
-            <label>Observation UGP:</label>
-            </div>
-            <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->observation_equipe_fp}}</label>
-        </div>
-    </div>
-@if($projet->liste_dattente_observations)
-    <div class="col-md-6">
-        <div class="col-md-6">
-            <label>Observation Liste d'attente:</label>
-            </div>
-            <div class="col-sm-6 mb-6 mb-sm-0" style="color: red">
-            <label class="fb"> {{$projet->liste_dattente_observations}}</label>
-        </div>
-    </div>
-@endif
 </div>
 <hr>
 
 <div class="row">
+    <nav>
+        <button type="button" class="btn btn-success">
+            <a  href="#modal-composantes" data-toggle="modal"  data-toggle="tooltip" title="Donner l'avis du SES" class="text-white"><i class="bi bi-plus-square"></i> Ajouter les composantes </a>
+        </button>
+    </nav>
     <table class="table table-vcenter table-condensed table-bordered  valdetail"   >
         <thead>
-        <h4>Les investissements</h4>
+        <h4>Les composantes du projet</h4>
                 <tr>
                     <th>N°</th>
-                    <th>Designation</th>
-                    <th>Coût total</th>
-                    <th>Subvention Demandée</th>
-                    <th>Apport Personnel</th>
-                    <th>Coût accordé</th>
-                    <th>Subvention accordée</th>
+                    <th>Code composante</th>
+                    <th>Denomination</th>
+                    <th>Taux physique</th>
                     <th>Actions</th>
                 </tr>
           </thead>
           <tbody id="tbadys">
-    @foreach($projet->investissements as $key => $investissement)
-    <tr 
-    @if($investissement->statut == 'validé' )
-        style="color:green;"
-    @elseif($investissement->statut == 'rejeté')
-    style="color:red;"
-
-    @endif>
+    @foreach($projet->composantes as $key => $composante)
+    <tr>
             <td>
             {{ $key + 1 }}
             </td>
                  <td>
-                    {{getlibelle($investissement->designation)}}
+                    {{$composante->code_composante}}
                 </td>
                 <td>
-                    {{format_prix($investissement->montant)}}
+                    {{$composante->denomination}}
                 </td>
                 <td>
-                    {{format_prix($investissement->apport_perso)}}
+                    {{ $composante->taux_physique }}
                 </td>
-                <td>
-                    {{format_prix($investissement->subvention_demandee)}}
-                </td>
-                <td>
-                    {{format_prix($investissement->montant_valide)}}
-                </td>
-                <td>
-                    {{format_prix($investissement->subvention_demandee_valide)}}
-                </td>
+                <td class="text-center">
+                    <div class="btn-group">
+                        <a href="{{ route('composante.show', $composante) }}"data-toggle="tooltip"  title="Visuliser le PCA" class="btn btn-md btn-default" ><i class="fa fa-eye"></i></a> 
+                        
+                    </div>
     <td>
-    @can('verdict_du_comite_plan_daffaire', Auth::user())
-        @if ($projet->statut=='soumis_au_comite_de_selection' && ($investissement->statut==null))
-            <a  href="#rejetter_investissement" data-toggle="modal"title="Rejetter la ligne- d'investissement"  onclick="edit_investissemnt_by_comite({{ $investissement->id }});" class="btn btn-md btn-danger" ><i class="fa fa-times"></i> </a>
-            <a href="#modal-valider-investissement" data-toggle="modal" title="Valider la ligne d'investissement" onclick="edit_investissemnt_by_comite({{ $investissement->id }});" class="btn btn-md btn-success" ><i class="fa fa-check"></i> </a>
-        @endif
-    @endcan
+   
 </td>
 
 </tr>
 @endforeach
 </tbody>
 </table>
-</div>       
-<div class="row">
-    <h4> Documents au PCA </h4>
-       
-        <div class="table-responsive">
-            <table class="table table-vcenter table-condensed table-bordered listepdf valdetail"   >
-                <thead>
-                        <tr>
-                            <th>N°</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                  </thead>
-                  <tbody id="tbadys">
-            @foreach($piecejointes as $key => $piecejointe)
-            <tr>
-                    <td>
-                    {{ $key + 1 }}
-                    </td>
-                         <td>
-                            {{getlibelle($piecejointe->type_piece)}}
-                        </td>
-            <td>
-                <a href="{{ route('telechargerpiecejointe',$piecejointe->id)}}"title="télécharger" class="btn btn-xs btn-default"  target="_blank"><i class="fa fa-download"></i> </a>
-                <a href="{{ route('detaildocument',$piecejointe->id)}}"title="Visualiser le document" class="btn btn-xs btn-default" ><i class="fa fa-eye"></i> </a>
-            </td>
-    
-        </tr>
-    @endforeach
-    </tbody>
-    </table>
-          </div>
+</div>    
     
 
-</div>
 </div>
 </div>
 </div>
@@ -404,24 +145,24 @@
             <div class="row">
                 <div class="form-group col-md-3" >
                     <label class="control-label " for="example-chosen">Categorie d'investissement<span class="text-danger">*</span></label>
-                        <select id="categorie_invest"  name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
+                        {{-- <select id="categorie_invest"  name="designation" class="form-control" onchange="afficher();" data-placeholder="formalisée?" style="width: 100%;" required>
                             <option></option>
                            @foreach ($categorie_investissements as $categorie_investissment)
                             <option value="{{ $categorie_investissment->id}}"
                                 >{{ getlibelle($categorie_investissment->id)}}</option>
                            @endforeach
-                        </select>
+                        </select> --}}
                 </div>
                  <div class="col-md-3" >
                     <div class="form-group">
                         <label class="control-label" for="example-username"> Montant</label>
                             <input type="text" id="montant_invest" name="cout"  min="0" class="form-control" placeholder="Montant ..." text="Valeur depassé" required >
                     </div>
-                    @if ($errors->has('cout'))
+                    {{-- @if ($errors->has('cout'))
                     <span class="help-block">
                         <strong>{{ $errors->first('cout') }}</strong>
                     </span>
-                    @endif
+                    @endif --}}
                 </div> 
                 <div class="col-md-3" >
                     <div class="form-group">
@@ -523,21 +264,7 @@
                         @endif
                 </div>
                <div class="row">
-                @foreach ($criteres as $critere )
-                <div class="col-md-4" >
-                    <div class="form-group row">
-                        <label class="control-label" for="example-username">{{ $critere->libelle}}  sur {{ $critere->ponderation}} </label>
-                            <input type="number" id="{{ $critere->id}}" name="{{ $critere->id}}" max='{{ $critere->ponderation}}' min="0" class="form-control" placeholder="Evaluer ..." text="Valeur depassé" required onchange="isValid('{{ $critere->id}}')">
-                    </div>
-                    <p id='message_ponderation_depasse' style="background-color:red; display:none">La Note maximal pour ce critère est {{ $critere->ponderation}}</p>
-                    @if ($errors->has('note'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('note') }}</strong>
-                    </span>
-                    @endif
-                </div>  
-            
-                @endforeach
+                
                 </div> 
                 <div class="form-group form-actions">
                     <div class="col-md-8 col-md-offset-4">
@@ -604,58 +331,33 @@
         </div>
     </div>
 </div>
-<div id="modal-avis-ses" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-composantes" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h2 class="modal-title"> <p id="entete_decision" style="margin-left:50px;text-align: center"></p></h2>
+                <h2 class="modal-title"> <p  style="margin-left:50px;text-align: center"></p>Ajouter une nouvelle composante au projet</h2>
             </div>
             <div class="modal-body">
-            <form method="post"  action="{{route('projet.avis_ses')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+            <form method="post"  action="{{ route('composante.store') }}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    <input type="hidden" name="projet_id"  id='projet_avis_ses' value="{{ $projet->id }}">
-                    <input type="hidden" name="type_decision"  id='type_decision'>
+                    <input type="hidden" name="projet_id"  id='projet_id' value="{{ $projet->id }}">
                 <div class="row">
-                    <div class="col-md-7">
-                        <div class="form-group{{ $errors->has('fiche_sreening_es') ? ' has-error' : '' }}">
-                            <label class="control-label" for="fiche_sreening_es">Joindre la fiche de Screening E&S  <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <input class="form-control" type="file" name="fiche_sreening_es" id="fiche_sreening_es" accept=".pdf, .jpeg, .png"   placeholder="Joindre le plan de continuité des activité" required  onchange="VerifyUploadSizeIsOK('fiche_sreening_es');" >
-                                <span class="input-group-addon"><i class="fa fa-file"></i></span>
-                            </div>
-                            @if ($errors->has('fiche_sreening_es'))
+                    <div class="col-md-6">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <label class=" control-label" for="name">Libellé de la composante <span class="text-danger">*</span></label>
+                                <div class="input-group" style ='width:100%'>
+                                        <input id="libelle" type="text" class="form-control" name="denomination" value="{{ old('denomination') }}" required autofocus>
+                                        <span class="input-group-addon"><i class="gi gi-user"></i></span>
+                                </div>
+                                @if ($errors->has('denomination'))
                                 <span class="help-block">
-                                    <strong>{{ $errors->first('fiche_sreening_es') }}</strong>
-                                </span>
-                                @endif
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
-                            <label class= "control-label" for="type">Catégorie provisoire du projet<span class="text-danger">*</span></label>
-                                <select id="categorie_projet" name="categorie" class="select-select2" data-placeholder="Choisir la rubrique d'entreprise" style="width: 100%;" required>
-                                    <option ></option>
-                                    @foreach ($categorie_projets as $categorie_projet)
-                                        <option value="{{ $categorie_projet->id }}">{{ $categorie_projet->libelle }}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('categorie'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('categorie') }}</strong>
+                                    <strong>{{ $errors->first('denomination') }}</strong>
                                 </span>
                                 @endif
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <p style="font-weight: 600; color:red; margin-top:10px;">Avis du Spécialiste en sauvegarde</p>
-                    <div class="col-md-3">
-                        <label><input type="radio" name='avis_ses' value="conforme" required> Conforme</label>
-                    </div> 
-                    <div class="col-md-3">
-                        <label><input type="radio" name='avis_ses' value="non conforme" required> Non Conforme</label>
-                    </div> 
-                </div>
+                
             <div class="form-group form-actions" style="margin-top: 15px;">
                 <div class="text-right">
                     <button type="reset" class="btn btn-sm btn-warning" data-dismiss="modal">Annuler</button>
@@ -797,7 +499,7 @@ function save_pca_chefdezone(avis){
  <script>
         function edit_investissemnt_by_comite(id){
                     var id=id;
-                    var url = "{{ route('investissement.modif') }}";
+                    var url = "{{ route('composante.modif') }}";
                     $.ajax({
                         url: url,
                         type:'GET',

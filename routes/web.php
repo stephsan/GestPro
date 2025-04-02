@@ -9,17 +9,9 @@ use App\Http\Controllers\ValeurController;
 use App\Http\Controllers\ParametreController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\PromoteurController;
-use App\Http\Controllers\EntrepriseController;
-use App\Http\Controllers\PreprojetController;
-use App\Http\Controllers\CritereController;
 use App\Http\Controllers\ProjetController;
-use App\Http\Controllers\CoachController;
-use App\Http\Controllers\BeneficiaireController;
-use App\Http\Controllers\GrilleController;
-use App\Http\Controllers\SouscriptionPEController;
-use App\Http\Controllers\PlainteController;
-
+use App\Http\Controllers\ComposanteController;
+use App\Http\Controllers\ActiviteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +24,7 @@ use App\Http\Controllers\PlainteController;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return redirect()->route('dashboard.fp');
 })->name('index');
 
 Route::get('/inscrire', function () {
@@ -54,80 +46,27 @@ Route::middleware([
 });
 
 Route::get('/register',[UserController::class,'register']);
-Route::post("/contact/message/", [SouscriptionPEController::class, "contactSendMessage"])->name("contact");
-Route::get('page/souscription/PF/personne', [SouscriptionPEController::class,'create_personne'])->name('fp.create.personne');
-Route::get('page/souscription/PE/personne', [SouscriptionPEController::class,'create_personne'])->name('pe.create.personne');
 
-Route::get('page/souscription/PF/entreprise', [SouscriptionPEController::class,'create_entreprise'])->name('fp.create.entreprise');
-Route::resource("promoteur", PromoteurController::class);
-Route::resource("entreprise", EntrepriseController::class);
-Route::post("souscription/manage/steps/fp",[EntrepriseController::class, 'creation'])->name("steps.manage.creation");
-Route::post("souscription/manage/steps/pe",[EntrepriseController::class, 'creation_pe'])->name("steps.manage.creation_pe");
-
-Route::post("page/souscription/PF/preprojet/creation",[PreprojetController::class, 'store_preprojet'])->name("preprojet.creation");
-Route::post("page/souscription/PE/preprojet/creation",[PreprojetController::class, 'store_preprojet_pe'])->name("preprojet_pe.creation");
-Route::get("recepisse/print/{promoteur}",[EntrepriseController::class,'genereRecpisse'])->name("generer.recepisse");
-Route::get("store/second/entreprise/{promoteur}", [EntrepriseController::class, 'create2'])->name("secondEntreprise.store");
-Route::post("/souscription/poursuivre/",[PromoteurController::class, 'search_promoteur'])->name("search.promoteur");
-Route::get("/rechercher/promoteur/parcode_promoteur",[PromoteurController::class, 'search_promoteur_parcode_promoteur'])->name("promoteur.search");
-Route::get("/souscription/control_doublon", [PromoteurController::class, 'control_doublon_souscription'])->name("souscription.control_doublon");
-Route::resource("souscription",PreprojetController::class);
-Route::get('afficher_details/preprojet/FP/{preprojet}', [PreprojetController::class, 'afficher_details_fp'])->name("preprojet.details");
-Route::get('afficher_details/preprojet/PE/{preprojet}', [PreprojetController::class, 'afficher_details_pe'])->name("preprojet_pe.details");
-Route::get("/lister/souscription/FP", [PreprojetController::class, 'lister_fp'])->name("preprojet.lister_fp");
-Route::get("/lister/souscription/PE", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
-Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
-Route::get('detail/{piecejointe}', [PreprojetController::class,'detaildocument'])->name('detaildocument');
 // Route::get("/lister/documents/utliles", [PreprojetController::class, 'lister_pe'])->name("preprojet.lister_pe");
 Route::get('documents/telechargeables',[DocumentController::class, 'lister_docs_pubics'])->name('documents.public');
 Route::get('telechargerdocument/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocs');
 Route::post('/store/beneficiary/compte', [UserController::class,'storecomptePromoteur'])->name('beneficiary_compte.store');
-Route::get('/profile/beneficiary', [BeneficiaireController::class,'get_my_data'])->name('beneficiaire.profil');
 
-Route::get('/pca/modif',[ProjetController::class, 'pca_modif'])->name('pca.modif');
-Route::post('/pca/modifier',[ProjetController::class, 'pca_modifier'])->name('pca.modifier');
+Route::get('/projet/modif',[ProjetController::class, 'pca_modif'])->name('pca.modif');
+Route::post('/projet/modifier',[ProjetController::class, 'pca_modifier'])->name('pca.modifier');
 Route::get('/piecejointe/modif',[ProjetController::class, 'modif_piecej'])->name('piece.modif');
 Route::post('/piecejointe/modifier',[ProjetController::class, 'modifier_piecej'])->name('piecejointe.modifier');
-Route::get('/investissement',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
-Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
-
-Route::post('add/investissement', [ProjetController::class, 'add_investissement'])->name('add.investissement'); 
-Route::post("/projet/add/piecejointe/",[ProjetController::class,'add_piecej_to_projet'])->name('add.piecetoprojet');
 
 
 route::get("/verifier_promoteur/compte/",[UserController::class,'verifier_conformite_cpt'])->name('verifier_validite_cpt_promo');
  Route::get('beneficiary/project/{document}', [DocumentController::class,'telecharger'])->name('telechargerdocument');
 // Route::get('telechargerpiece/{piecejointe}', [PreprojetController::class,'telecharger'])->name('telechargerpiecejointe');
-Route::resource('projet',ProjetController::class);
-Route::get('/plainte/create', [PlainteController::class, 'accueil'])->name('plainte.accueil');
-Route::post('/plainte/storage', [PlainteController::class, 'store'])->name('plainte.store');
-Route::get('/generate/accuse_de_plainte/{plainte}', [PlainteController::class, 'generer_laccuse_de_plainte'])->name('plainte.generate_accuse');
-Route::get('/lister/plaintes',[PlainteController::class, 'lister'])->name('plainte.liste');
-Route::get('plainte/details/{plainte}',[PlainteController::class, 'details'] )->name('plainte.details');
-Route::post('qualifier/plainte/',[PlainteController::class, 'qualifier'] )->name('plainte.qualifier');
-Route::post('resolve/plainte/',[PlainteController::class, 'resoudre_plainte'] )->name('plainte.resolue');
-Route::post('save/avis_ses/',[ProjetController::class, 'avis_ses'] )->name('projet.avis_ses');
 
-
-
-
-
-Route::get('/accueil', function () {
-    return view('index');
-})->name("accueil");
-Route::get("/test", function () {
-    return view('preprojet.show');
-})->name("test");
 Route::group([  
     "prefix" => "administration",
 ], function(){
-    Route::resource('critere', CritereController::class);
-    Route::get('modif/critere',[CritereController::class, 'modifier'] )->name('critere.modif');
-    Route::post('/critaria/store_modif/critere',[CritereController::class, 'modifierstore'] )->name('critere.storemodif');
+    
     Route::resource('users', UserController::class);
-    Route::resource('documents', DocumentController::class);
-    Route::get('critariat/modif/critere',[DocumentController::class, 'modifier'] )->name('document.modif');
-    Route::post('store_modif/critere',[DocumentController::class, 'modifierstore'] )->name('document.storemodif');
     Route::resource('permissions', PermissionController::class);
     Route::resource("role",RoleController::class);
     Route::resource("parametres",ParametreController::class);
@@ -135,46 +74,14 @@ Route::group([
     Route::get('/valeur', [ValeurController::class, 'selection'])->name("valeur.selection");
     Route::get("/reinitialise/password",[UserController::class, 'reinitialize'] )->name("user.reinitialize");
     Route::get('/listeval', [ValeurController::class,"listevakeur"])->name("valeur.listeval");
-    Route::post('evaluation/preprojet', [PreprojetController::class,'evaluer'])->name('preprojet.evaluation');
-    Route::post('modify/evaluation/preprojet', [PreprojetController::class,'evaluation_modify'])->name('preprojet.evaluation_modify');
-    Route::post('modify/evaluation/preprojet_pe', [PreprojetController::class,'evaluation_modify_pe'])->name('preprojet.evaluation_modify_pe');
 
-    Route::post('evaluation/preprojet_pe', [PreprojetController::class,'evaluer_pe'])->name('preprojet_pe.evaluation');
-    Route::get('preprojet/save/eligibilite/fp',[PreprojetController::class,'save_eligibilite'])->name('preprojet.save_eligibilite');
-    Route::get('preprojetpe/enregistre/eligibilite/pe',[PreprojetController::class,'save_eligibilite_pe'])->name('preprojet.save_eligibilite_pe');
-
-    Route::get("/lister/preprojet/FP/traitement", [PreprojetController::class, 'lister_preprojet_fp_en_traitement'])->name("preprojet.traitement");
-    Route::get("/lister/preprojet/FP/preselectionnes", [PreprojetController::class, 'lister_preprojet_fp_preselectionnes'])->name("preprojet.selected");
-    Route::get("/erfdfg/preprojet/PE/preselectionnes", [PreprojetController::class, 'lister_preprojet_pe_preselectionnes'])->name("preprojet_pe.selected");
-
-    Route::get("/lister/preprojet/PE/traitement", [PreprojetController::class, 'lister_preprojet_pe_en_traitement'])->name("preprojetpe.traitement");
-    Route::get("/lister/preprojet/PE/preselectionnes", [PreprojetController::class, 'lister_preprojet_pe_preselectionnes'])->name("preprojetpe.selected");
-    Route::get("/completer/preprojet/evaluation/", [PreprojetController::class, 'completer_evaluation_automatique'])->name("preprojetpe.completer_evaluation_automatique");
-
-
-    Route::get('preprojet/valider/evaluation/fp',[PreprojetController::class,'valider_evaluation'])->name('preprojet.valider_evaluation');
-    Route::get('preprojet/valider/evaluation/pe',[PreprojetController::class,'valider_evaluation_pe'])->name('preprojet.valider_evaluation_pe');
-    Route::get('enre/avis/de/lequipe/preprojet/fp',[PreprojetController::class,'save_avis_de_lequipe'])->name('preprojet.save_avis_de_lequipe');
-    Route::get('enre/avis/de/lequipe/preprojet/pe',[PreprojetController::class,'save_avis_de_lequipe_pe'])->name('preprojet.save_avis_de_lequipe_pe');
-    Route::get('save/decision/du/comite/preprojet/fp',[PreprojetController::class,'save_avis_decision_du_comite'])->name('preprojet.save_decision_du_comite');
-    Route::get('save/decision/du/comite/preprojet/pe',[PreprojetController::class,'save_avis_decision_du_comite_pe'])->name('preprojet.save_decision_du_comite_pe');
-    Route::get('soumis/au/comite/preprojet/fp',[PreprojetController::class,'lister_preprojet_soumis_au_comite_fp'])->name('preprojet.soumis_au_comite_fp');
-    Route::get('soumis/au/comite/preprojet/pe',[PreprojetController::class,'lister_preprojet_soumis_au_comite_pe'])->name('preprojet.soumis_au_comite_pe');
-
-    Route::get('/dashboard/programme/entreprendre',[DashboardController::class,'dashboard_pe'])->name('dashboard.pe');
-    Route::get('/dashboard/fonds/partenariat',[DashboardController::class,'dashboard_fp'])->name('dashboard.fp');
-    Route::get('/etat/preprojet/par_region', [DashboardController::class, 'avant_projet_par_region'])->name('preprojet.par_region');
-    Route::get('/preprojet/par_region/par_sexe', [DashboardController::class,'avant_projet_soumis_par_region_et_par_sexe'])->name('preprojet.par_region_et_par_sexe');
-    Route::get('/preprojet/par_secteur_dactivite', [DashboardController::class,'avant_projet_par_secteur_dactivite'])->name('preprojet.par_secteur_dactivite');
+    Route::get('/dashboard/fonds/partenariat',[DashboardController::class,'dashboard'])->name('dashboard.fp');
     Route::get('/etat/preprojetpe/par_region', [DashboardControllerPE::class, 'avant_projet_par_region_pe'])->name('preprojetpe.par_region');
 //Tableau de bord dynamique plans d'affaire
     Route::get('/projet/par_region', [DashboardController::class, 'pa_par_region'])->name('projet.par_region');
     Route::get('/projet/par_region/par_sexe', [DashboardController::class,'pa_soumis_par_region_et_par_sexe'])->name('projet.par_region_et_par_sexe');
     Route::get('/projet/par_secteur_dactivite', [DashboardController::class,'pa_par_secteur_dactivite'])->name('projet.par_secteur_dactivite');
     Route::get('/projet/par/guichet', [DashboardController::class,'pa_par_guichet'])->name('projet.reparti_par_guichet');
-
-    
-
 
 
     Route::get('/preprojetpe/par_region/par_sexe', [DashboardControllerPE::class,'avant_projet_soumis_par_region_et_par_sexe_pe'])->name('preprojetpe.par_region_et_par_sexe');
@@ -190,15 +97,10 @@ Route::group([
     Route::post('/coach/save/modif/', [CoachController::class, 'enremodif'])->name('coach.enremodif');
     Route::post("simple-excel/import",  [PreprojetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation');
     Route::post("PA/simple-excel/import",  [ProjetController::class, "chargerEvaluation"])->name('excel.chargerEvaluation_Plan_daffaire');
-
     Route::post("evaluationPe/import",  [PreprojetController::class, "chargerEvaluationPe"])->name('excel.chargerEvaluationPe');
     Route::get('/preprojet/evaluation/automatiques', [DashboardController::class,'avant_projet_par_guichet'])->name('preprojet.par_guichet');
-    Route::resource('grille', GrilleController::class);
-    Route::get('gril/modif',[GrilleController::class, 'modifier'] )->name('grille.modif');
-    Route::post('gri/store_modif',[GrilleController::class, 'modifierstore'] )->name('grille.storemodif');
     Route::post('pa_eval/store',[ProjetController::class, 'storeaval'] )->name('pca.evaluation');
     Route::get('/pa/analyse/{projet}',[ProjetController::class, 'analyser'])->name('pca.analyse');
-    Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
     Route::get('/pa/valider/analyse', [ProjetController::class, 'valider_analyse'])->name('pca.valider_analyse');
     Route::get('/pa/avis_chefdentenne', [ProjetController::class, 'pca_save_avis_chefdantenne'])->name('pca.save_avis_chefdantenne');
     Route::get('/pa/avis_equipe_fp', [ProjetController::class, 'pca_save_avis_equipe_fp'])->name('pca.save_avis_equipe_fp');
@@ -208,9 +110,21 @@ Route::group([
     Route::get('/pa/save/decision_du_comite', [ProjetController::class, 'savedecisioncomite'])->name('plan_daffaire.save_decision_du_comite');
     Route::post('/completer/projet/file_eval',[ProjetController::class,'completer_dossier'])->name('projet.complete_file');
 
-    // Route::get('/investissment',[ProjetController::class, 'invest_modif'])->name('investissement.modif');
-    // Route::post('/investissment/modifier',[ProjetController::class, 'invest_modifier'])->name('investissement.modifier');
+    Route::get('projetsss/lister/',[ProjetController::class,'lister'])->name('projet.lister');
+    Route::get('modif/composante',[ComposanteController::class,'modif'])->name('composante.modif');
+    Route::resource('projet',ProjetController::class);
+    Route::resource('composante',ComposanteController::class);
+    Route::resource('activite',ActiviteController::class);
+    Route::post('importer/realisation',[ProjetController::class,'importer_realisation'])->name('realisation.import');
+    Route::get('/dashboard/details',[DashboardController::class,'dashboard'])->name('dashboard.detail');
+    Route::get('pre/projet/composante', [DashboardController::class,'taux_par_composante'])->name('projet.taux_par_composante');
+    Route::get('situation/par_categorie', [DashboardController::class,'taux_par_categorie_dactivite'])->name('preprojet.par_region');
+    Route::get('taux/statut/activite', [DashboardController::class,'taux_par_statut_activite'])->name('preprojet.par_secteur_dactivite');
+    Route::get('get/taux/projet', [DashboardController::class,'getTaux'])->name('projet.getTaux');
+    Route::get('get/taux/par/categorie_projet', [DashboardController::class,'taux_par_categorie'])->name('projet.taux_par_categorie');
+    Route::get('situation/par/satut/activite', [DashboardController::class,'repartition_par_satut_activite'])->name('activite.repartition_par_statut');
 
-
+    
+    
 
 });

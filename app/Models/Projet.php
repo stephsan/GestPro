@@ -12,25 +12,36 @@ class Projet extends Model
     public function preprojet(){
         return $this->belongsTo(Preprojet::class);
     }
-    public function investissements(){
-        return $this->hasMany(InvestissementProjet::class);
+    public function composantes(){
+        return $this->hasMany(Composante::class,'projet_id');
     }
-    public function investissementvalides(){
-        return $this->hasMany(InvestissementProjet::class)->where('statut', 'valide');
+    public function getTauxPhysiqueAttribute() {
+        return round($this->composantes->avg('taux_physique'), 2);
     }
-    public function coach(){
-        return $this->belongsTo(Coach::class, 'coach_id');
+    public function getTauxFinancierAttribute() {
+        return round($this->composantes->avg('taux_financier'), 2);
     }
-    public function evaluations(){
-        return $this->hasMany(EvaluationPca::class);
+    public function getTauxDecaissementAttribute() {
+        return round($this->composantes->avg('taux_decaissement'), 2);
     }
+   
+   
     protected static function boot(){
         parent::boot();
         static::creating(function($projet){
-            $projet->slug= 'PRJ'.$projet->preprojet->num_projet.$projet->id;
+            $projet->slug= 'PRJ00'.$projet->code_projet;
   
         });
     }
+
+    public function sluggable(): array
+     {
+         return [
+             'slug' => [
+                 'source' => 'code_projet'
+             ]
+         ];
+     }
        public function getRouteKeyName()
       {
           return 'slug';

@@ -1,13 +1,13 @@
 @extends('./layouts/base')
 @section('title')
-@section($type_entreprise, 'show')
+
 @section($page, 'active')
 @endsection
 @section('css')
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1 class="text-success">Plan d'affaire</h1>
+        <h1 class="text-success">Projets</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark">{{ $texte }}</li>
@@ -22,8 +22,12 @@
         <div class="row">
             <nav>
                 <button type="button" class="btn btn-success">
-                    <a href="#modal-import-evaluation" data-toggle="modal"  data-toggle="tooltip" title="Importer les notes d'évaluation" class="text-white"><i class="bi bi-plus-square"></i> Importer les note d'évaluation</a>
+                    <a href="#modal-add-projet" data-toggle="modal"  data-toggle="tooltip" title="Importer les notes d'évaluation" class="text-white"><i class="bi bi-plus-square"></i> Ajouter un projet</a>
                 </button>
+                <button type="button" class="btn btn-warning" style="float:right">
+                    <a href="#modal-import-realisation" data-toggle="modal"  data-toggle="tooltip" title="Importer les réalisations" class="text-white"><i class="bi bi-plus-square"></i> Importer réalisations</a>
+                </button>
+               
             </nav>
             <div class="col-lg-12">
                 <div class="card">
@@ -34,15 +38,8 @@
             <thead>
                 <tr class="text-danger">
                     <th class="text-center">Numéro</th>
-                    <th class="text-center" >Guichet</th>
-                    <th class="text-center">Promoteur </th>
-                    <th class="text-center">Contacts </th>
-                    <th class="text-center">Entreprise </th>
-                    <th class="text-center">Numéro dossier</th>
-                    <th class="text-center">Titre du projet</th>
-                    <th class="text-center">Montant du projet</th>
-                    <th class="text-center">Subvention Solicitée</th>
-                    <th class="text-center">Apport personnel</th>
+                    <th class="text-center" >Code du projet</th>
+                    <th class="text-center" >Titre du projet</th>
                     <th class="text-center">Statut</th>
                     <th class="text-center">Actions</th>
                 </tr>
@@ -57,21 +54,21 @@
                         @endphp
                     <tr>
                         <td class="text-center" style="width: 10%">{{ $i }}</td>
-                        <td class="text-center">{{ getlibelle($projet->preprojet->guichet) }}</td>
-                        <td class="text-center">{{ $projet->preprojet->promoteur->nom }} {{ $projet->preprojet->promoteur->prenom}} </td>
-                        <td class="text-center">{{ $projet->preprojet->promoteur->telephone_promoteur }}/{{ $projet->preprojet->promoteur->mobile_promoteur }}</td>
-                        <td class="text-center">{{ $projet->preprojet->entreprise->denomination }}</td>
-                        <td class="text-center">{{ $projet->preprojet->num_projet }}</td>
-                        <td class="text-center">{{ $projet->titre_du_projet }}</td>
-                        <td class="text-center">{{ format_prix($projet->montant_demande) }}</td>
-                        <td class="text-center">{{ format_prix($projet->investissements->sum('subvention_demandee')) }}</td>
-                        <td class="text-center">{{ format_prix($projet->investissements->sum('apport_perso')) }}</td>
-                        <td class="text-center">{{ $projet->statut }}</td>
+                        <td class="text-center">{{ $projet->code_projet }}</td>
+                        <td class="text-center">{{ $projet->denomination }}</td>
+                        <td class="text-center">
+                            @if ($projet->statut==0)
+                                En cours
+                                @else
+                                Clos
+                            @endif
+                            
 
                         <td class="text-center">
                             <div class="btn-group">
-                                <a  href="#modal-completer-dossier" data-toggle="modal"  data-toggle="tooltip" title="Completer le dossier" class="btn btn-md btn-success" onclick="getprojet('{{ $projet->id }}')"><i class="fa fa-file"></i></a>
-                                <a href="{{ route('pca.analyse', $projet) }}"data-toggle="tooltip"  title="Visuliser le PCA" class="btn btn-md btn-default" ><i class="fa fa-eye"></i></a>
+                                <a href="{{ route('projet.show', $projet) }}"data-toggle="tooltip"  title="Visuliser le PCA" class="btn btn-md btn-default" ><i class="fa fa-eye"></i></a> 
+                                {{-- <a  href="#modal-completer-dossier" data-toggle="modal"  data-toggle="tooltip" title="Completer le dossier" class="btn btn-md btn-success" onclick="getprojet('{{ $projet->id }}')"><i class="fa fa-file"></i></a>
+                                <a href="{{ route('pca.analyse', $projet) }}"data-toggle="tooltip"  title="Visuliser le PCA" class="btn btn-md btn-default" ><i class="fa fa-eye"></i></a> --}}
                             </div>
                             
                         </td>
@@ -85,19 +82,33 @@
 </div></div></div></section>
 @endsection
 @section('modal_part')
-<div id="modal-completer-dossier" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-add-projet" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-check"></i>Completer le dossier</h2>
+                <h2 class="modal-title"><i class="fa fa-check"></i>Ajouter un  projet</h2>
             </div>
             <div class="modal-body">
-        <form method="post"  action="{{route('projet.complete_file')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
+        <form method="post"  action="{{route('projet.store')}}" class="form-horizontal form-bordered" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <input type="hidden"  class='projet_id' name="projet_id" value="">
             <div class="row">
-                <div class="form-group col-md-5" >
+                <div class="col-md-6">
+                    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                        <label class=" control-label" for="name">Dénomination du projet <span class="text-danger">*</span></label>
+                            <div class="input-group" style ='width:100%'>
+                                    <input id="libelle" type="text" class="form-control" name="denomination" value="{{ old('denomination') }}" required autofocus>
+                                    <span class="input-group-addon"><i class="gi gi-user"></i></span>
+                            </div>
+                            @if ($errors->has('denomination'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('denomination') }}</strong>
+                            </span>
+                            @endif
+                    </div>
+                </div>
+                {{-- <div class="form-group col-md-5" >
                     <label class="control-label " for="example-chosen">Type de document<span class="text-danger">*</span></label>
                         <select id="type_document"  name="type_document" class="select-select2"  data-placeholder="Type_document" style="width: 100%;" required>
                             <option></option>
@@ -105,7 +116,7 @@
                             <option value="{{ $projet_piecejointes_evaluation->id}}"
                                 >{{ getlibelle($projet_piecejointes_evaluation->id)}}</option>
                            @endforeach
-                        </select>
+                        </select> 
                 </div>
                 <div class="col-md-7">
                     <div class="form-group{{ $errors->has('document_joint') ? ' has-error' : '' }}">
@@ -117,7 +128,7 @@
                             </span>
                             @endif
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="row">
                     
@@ -136,16 +147,16 @@
         </div>
     </div>
 </div>
-<div id="modal-import-evaluation" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modal-import-realisation" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-pencil"></i> Importer les notes de l'évaluation</h2>
+                <h2 class="modal-title"><i class="fa fa-pencil"></i> Importer les realisations</h2>
             </div>
             <div class="modal-body">
-                <p>Sélectionnez un fichier Excel (.xlsx) pour importer les notes d'évaluation.<br><strong>Les colonnes : </strong></p>
-                <form method="POST" action="{{ route('excel.chargerEvaluation_Plan_daffaire') }}" enctype="multipart/form-data" >
+                <p>Sélectionnez un fichier Excel (.xlsx) pour importer les réalisations.<br><strong>Les colonnes : </strong></p>
+                <form method="POST" action="{{ route('realisation.import') }}" enctype="multipart/form-data" >
                     @csrf
                     <input type="file" name="fichier" required>
                     <button type="submit" >Importer</button>

@@ -6,7 +6,7 @@
 @endsection
 @section('content')
     <div class="pagetitle">
-        <h1 class="text-success">Tableau de bord du fond de partenariat</h1>
+        <h1 class="text-success">Tableau de bord </h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item text-dark">Accueil</li>
@@ -18,8 +18,8 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 >{{ $preprojet_soumis->count() }}</h3>
-                    Avant-projets Enregistrés
+                    <h3 >{{ $all_projet->count() }}</h3>
+                        Projets matures
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -32,8 +32,8 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-default">
                 <div class="inner">
-                    <h3 >{{ $projet_soumis->count() }}</h3>
-                    Projets soumis
+                    <h3 >{{ $all_projet->count() }}</h3>
+                    Projets en etudes
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -46,7 +46,7 @@
             <div class="small-box bg-default">
                 <div class="inner">
                     <h3 > 0 </h3>
-                    Financement accordé
+                   Financements en cours
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -60,14 +60,13 @@
             <div class="small-box bg-default">
                 <div class="inner">
                     <h3 >0</h3>
-                    Impacts
+                    Financements 
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
                 <a href="#" class="small-box-footer block4" onclick="change_details('impacts','avant_projets_soumis','projets_soumis','financement')">Plus de détails</a>
             </div>
-                
         </div>
     </div>
     <section class="section">
@@ -82,116 +81,80 @@
                                     <div class="dash-block">
                                     <div class="dash-block-title">
                                         <h2 class="dash-compteur">
-                                            Avants-projets MPMEs Existantes
+                                            Projets en cours
                                         </h2>
                                     </div>
-                                   <div class="themed-background-muted-light">
-                                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">{{ $preprojet_soumis->count() }}</strong>
-                                                    <br>
-                                                    <small>
-                                                        Avants-projets Enregistrés
-                                                    </small>
-                                            </h4>
-                                        </a>
-                                   </div>
-                                   
-                                   <div class="themed-background-muted-light">
-                                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'eligible');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                @foreach ( $projets_en_cours as $projets_en_cour )
+                                        <div class="themed-background-muted-light">
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique('{{ $projets_en_cour->id }}');"  class="widget widget-hover-effect2 themed-background-muted-light">
                                                 <h4 class="text-left compteur">
-                                                        <strong class="text-danger">{{ $nombre_de_preprojet_eligible }}</strong>
+                                                        {{-- <strong class="text-danger">{{ $all_projet->count() }}</strong> --}}
                                                         <br>
                                                         <small>
-                                                        Avant-projets Eligibles
+                                                           {{ $projets_en_cour->denomination }}
                                                         </small>
                                                 </h4>
-                                        </a>
+                                            </a>
                                     </div>
-                                    <div class="themed-background-muted-light">
-                                        <a href="javascript:void(0)" onclick="graphiquedynamique('mpme', 'selectionne');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                        <h4 class="text-left compteur">
-                                                <strong class="text-danger">{{ $nombre_de_preprojet_selectionne }}</strong>
-                                                <br>
-                                                <small>
-                                                   Avant-projets préselectionnés par le comité
-                                                </small>
-                                        </h4>
-                                        </a>
-                                    </div>
-                                    <div class="themed-background-muted-light">
-                                        <a href="javascript:void(0)" onclick="graphiquedynamique_money('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                        <h4 class="text-left compteur">
-                                                <strong class="text-danger">{{ format_prix($preprojet_soumis->sum('cout_total')) }}</strong>
-                                                <br>
-                                                <small>
-                                                    Montant total des projets soumis
-                                                 </small>
-                                        </h4>
-                                        </a>
-                                    </div>
-                                    
+                                @endforeach
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="dash-block">
                                     <div class="dash-block-title">
                                         <h2 class="dash-compteur">
-                                            Avants-projets Startup
+                                            Projets finalisés
                                         </h2>
                                     </div>
-                                    <div class="themed-background-muted-light">
-                                        <h4 class="text-left compteur">
-                                                <strong class="text-danger">0</strong>
-                                                <br>
-                                                <small>
-                                                   Avant-projets Enregistrés
-                                                </small>
-                                        </h4>
-                                        </div>
+                                    @foreach ($projets_en_cours as $projets_en_cour )
                                         <div class="themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">0</strong>
-                                                    <br>
-                                                    <small>
-                                                        Avant-projets Eligibles
-                                                    </small>
-                                            </h4>
-                                        </div>
-                                        <div class="themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">0</strong>
-                                                    <br>
-                                                    <small>
-                                                        Avant-projets préselectionnés par le comité
-                                                    </small>
-                                            </h4>
-                                        </div>
-                                        <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_money('startup', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">0</strong>
-                                                    <br>
-                                                    <small>
-                                                       Montant total des projets soumis 
-                                                    </small>
-                                            </h4>
+                                            <a href="javascript:void(0)" onclick="graphiquedynamique('{{ $projets_en_cour->id }}', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
+                                                <h4 class="text-left compteur">
+                                                        {{-- <strong class="text-danger">{{ $all_projet->count() }}</strong> --}}
+                                                        <br>
+                                                        <small>
+                                                        {{ $projets_en_cour->denomination }}
+                                                        </small>
+                                                </h4>
                                             </a>
                                         </div>
+                                    @endforeach
                                         </div>
                                     </div>
                             </div>
                             
                              <div class="row">
-                                <div id="preprojet_par_region_par_sexe" style="margin-top: 10px;">
-                                    test
+                                <div class="col-md-6" id="taux_de_composante">
+        
+                                </div>
+                                <div class="col-md-6" id="taux_par_categorie_dactivite">
+    
                                 </div>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-6" id="preprojet_par_region">
-        
+                                    
+                                    <div class="col-md-6" id="differents_taux">
+                                        <h4 style="text-align: center">Situation sur la réalisation du projet</h4>
+                                            <table id="table_taux">
+                                                <tr style="border: solid 1px black">
+                                                    <td>Taux physique</td>
+                                                    <td id="taux_physique"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Taux financier</td>
+                                                    <td id="taux_financier"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Taux de decaissement</td>
+                                                    <td id="taux_decaissement"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Délais consommé</td>
+                                                    <td id="delais_consomme"></td>
+                                                </tr>
+                                            </table>
                                     </div>
-                                    <div class="col-md-6" id="preprojet_par_secteur_dactivite">
+                                    <div class="col-md-6" id="par_statut_dactivite">
         
                                     </div>
                                     
@@ -202,163 +165,6 @@
                                         test
                                     </div>
                              </div>
-                            
-                    </div>
-                       
-                    <div class="row" id="projets_soumis" style="display: none">
-                        <hr>
-                            <div id="projet_par_region_par_sexes" style="margin-top: 10px;">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="dash-block">
-                                        <div class="dash-block-title">
-                                            <h2 class="dash-compteur">
-                                                Projets MPMEs Existantes
-                                            </h2>
-                                        </div>
-                                       <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                                <h4 class="text-left compteur">
-                                                        <strong class="text-danger">{{ $projet_soumis->count() }}</strong>
-                                                        <br>
-                                                        <small>
-                                                            Projets Enregistrés
-                                                        </small>
-                                                </h4>
-                                            </a>
-                                       </div>
-                                       
-                                       <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                                    <h4 class="text-left compteur">
-                                                            <strong class="text-danger">{{ $projet_selectionnes->count() }}</strong>
-                                                            <br>
-                                                            <small>
-                                                                Projets sélectionnés par le comité
-                                                            </small>
-                                                    </h4>
-                                            </a>
-                                        </div>
-                                        <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">{{ format_prix($projet_selectionnes->sum('montant_accorde')) }}</strong>
-                                                    <br>
-                                                    <small>
-                                                       Montant du financement accordé
-                                                    </small>
-                                            </h4>
-                                            </a>
-                                        </div>
-                                        {{-- <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_money('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger">{{ format_prix($preprojet_soumis->sum('cout_total')) }}</strong>
-                                                    <br>
-                                                    <small>
-                                                        Montant total des projets soumis
-                                                     </small>
-                                            </h4>
-                                            </a>
-                                        </div> --}}
-                                        
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="dash-block">
-                                        <div class="dash-block-title">
-                                            <h2 class="dash-compteur">
-                                                Plans d'affaires Startup
-                                            </h2>
-                                        </div>
-                                        <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'soumis');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                                <h4 class="text-left compteur">
-                                                        <strong class="text-danger">{{ 0}}</strong>
-                                                        <br>
-                                                        <small>
-                                                            Projets Enregistrés
-                                                        </small>
-                                                </h4>
-                                            </a>
-                                       </div>
-                                       
-                                       <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                                    <h4 class="text-left compteur">
-                                                            <strong class="text-danger">{{ 0 }}</strong>
-                                                            <br>
-                                                            <small>
-                                                                Projets sélectionnés par le comité
-                                                            </small>
-                                                    </h4>
-                                            </a>
-                                        </div>
-                                        <div class="themed-background-muted-light">
-                                            <a href="javascript:void(0)" onclick="graphiquedynamique_PA('mpme', 'selectionné');"  class="widget widget-hover-effect2 themed-background-muted-light">
-                                            <h4 class="text-left compteur">
-                                                    <strong class="text-danger"> 0</strong>
-                                                    <br>
-                                                    <small>
-                                                       Montant du financement accordé
-                                                    </small>
-                                            </h4>
-                                            </a>
-                                        </div>
-                                        
-                                        </div>
-                                        </div>
-                                </div>
-                                <div class="row" >
-                                        <div class="col-md-6" id="projet_reparti_par_guichet_nombre">
-
-                                        </div>
-                                        <div class="col-md-6" id="projet_reparti_par_guichet_montant">
-
-                                        </div>
-                                    {{-- <div class="col-md-6">
-                                        <table class="table">
-                                            <thead>
-                                                <th>Region</th>
-                                                <th>Guichet 1</th>
-                                                <th>Guichet 2</th>
-                                                <th>Guichet 3</th>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($plan_daffaire_par_guichets as $plan_daffaire_par_guichet )
-                                                    <tr>
-                                                        <td>{{ $plan_daffaire_par_guichet->region }}</td>
-                                                        <td>{{ $plan_daffaire_par_guichet->petit_sous_projet }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_petit_sous_projet) }}</td>
-                                                        <td>{{ $plan_daffaire_par_guichet->projet_standards }} <br> {{ format_prix($plan_daffaire_par_guichet->montant_projet_standards) }}</td>
-                                                        <td>{{ $plan_daffaire_par_guichet->projet_de_transformation_vert }} / {{ format_prix($plan_daffaire_par_guichet->montant_projet_de_transformation_vert) }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                            
-                                        </table>
-                                    </div> --}}
-                                    
-                                </div>
-                                <div class="row">
-                                    <div id="projet_par_region_par_sexe" style="margin-top: 10px;">
-                                       
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6" id="projet_par_region">
-            
-                                        </div>
-                                        <div class="col-md-6" id="projet_par_secteur_dactivite">
-            
-                                        </div>
-                                        
-                                    </div>
-                                    <hr>
-                                    <div id="projet_par_guichet" style="margin-top: 10px;">
-                                        test
-                                    </div>
-                                 </div>
-                            </div>
                     </div>
                     <div class="row" id="financement" style="display: none">
                         <div class="row">
@@ -395,7 +201,256 @@
 </section>
 @endsection
 @section('script')
+<script language = "JavaScript">
+    function graphiquedynamique(projet_id){
+        //alert('ok');
+    var url = "{{ route('projet.taux_par_composante') }}"
+    $.ajax({
+                     url: url,
+                     type: 'GET',
+                     dataType: 'json',
+                    data:{projet_id:projet_id},
+                     error:function(donne){
+                        if (xhr.status == 401) {
+                            window.location.href = ''
+                        }
+                    },
+                     success: function (donnee) {
+                            var taux_physique= [];
+                            var taux_financier= [];
+                         
+                            var donnch= new Array();
+                            var status = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                            taux_physique.push(parseInt(donnee[i].taux_physique));
+                            taux_financier.push(parseInt(donnee[i].taux_financier));
+                           // en_attente_de_paiement.push(parseInt(donnee[i].nbre_facture_en_attente));
+                        }
+                        donnch.push({
+                                    name: 'Taux physique',
+                                    data:taux_physique,
+                                    color:'blue',
+                                    dataLabels: {
+                                    enabled: true,
+                                    }
+                                })
+                        donnch.push({
+                                    name: 'Taux financier',
+                                    data:taux_financier,
+                                    color:'grey',
+                                    dataLabels: {
+                                    enabled: true,
+                                    }
+                                })
+                        console.log(donnch);
+                        for(var i=0; i<donnee.length; i++)
+                                {
+                                        status[i] = donnee[i].libelle
+                                }
+                        
+                        Highcharts.chart('taux_de_composante', {
+                            chart: {
+                                        type: 'column'
+                                    },
+                            xAxis: {
+                                     categories: status
+                                },
+                                yAxis: { 
+                                    title: { text: 'Pourcentage (%)' },
+                                    max: 100
+                                },
+                                tooltip: {
+                        pointFormat: '<b>{point.y}%</b>' // Ajout du %
+                    },
+                            plotOptions: {
+                                column: {
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{y}%' // Ajout du % sur les valeurs affichées
+                                    }
+                                }
+                            },
+                                    title: {
+                                text: "Statut projet  par composante"
+                            },
+                           
+                            credits : {
+                                enabled: false
+                            },
+                           
+                         
+                            series:donnch
+                        });
+    
+    }
+    
+    });
+       var url = "{{ route('projet.getTaux') }}"
+       $.ajax({
+                      url: url,
+                      type: 'GET',
+                      data:{projet_id:projet_id},
+                      dataType: 'json',
+                      error:function(donne){
+                         if (xhr.status == 401) {
+                             window.location.href = ''
+                         }
+                     },
+                      success: function (donnee) {
+                        $('#taux_physique').html(donnee.taux_physique +' %')
+                        $('#taux_financier').html(donnee.taux_financier +' %')
+                        $('#taux_decaissement').html(donnee.taux_decaissement +' %')  
+                        $('#delais_consomme').html(donnee.delais_consomme +' %')
+     }
+     });
+     var url = "{{ route('projet.taux_par_categorie') }}"
+       $.ajax({
+                      url: url,
+                      type: 'GET',
+                      data:{projet_id:projet_id},
+                      dataType: 'json',
+                      error:function(donne){
+                         if (xhr.status == 401) {
+                             window.location.href = ''
+                         }
+                     },
+                      success: function (donnee) {
+        {
+                            var donnch= new Array();
+                            var categories = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                          donnch.push({
+                                    name: donnee[i].categorie,
+                                    y:  parseInt(donnee[i].moyenne_taux),
+                                    dataLabels: {
+                                                enabled: true,
+                                        }
+                                } )
+                        }
+                        for(var i=0; i<donnee.length; i++)
+                            {
+    
+                                    categories[i] = donnee[i].categorie
+    
+                            }
+                        Highcharts.chart('taux_par_categorie_dactivite', {
+                            chart: {
+                                        type: 'column'
+                                    },
+                                    xAxis: {
+                                     categories: categories
+                                },
+                          
+                                yAxis: { 
+                                    title: { text: name+ ' Pourcentage (%)' },
+                                    max: 100
+                                },
+                            title: {
+                                text: 'Progression du projet par categorie'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            credits:{
+                                enabled:false,
+                            },
+                            plotOptions: {
+                                column: {
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{y}%' // Ajout du % sur les valeurs affichées
+                                    }
+                                }
+                            },
+                           
+                            series: [{
+                                name: 'Taux',
+                                colorByPoint: true,
+                                data: donnch
+                            }]
+                        });
 
+    }
+     }
+     });
+     
+     var url = "{{ route('activite.repartition_par_statut') }}"
+       $.ajax({
+                      url: url,
+                      type: 'GET',
+                      data:{projet_id:projet_id},
+                      dataType: 'json',
+                      error:function(donne){
+                         if (xhr.status == 401) {
+                             window.location.href = ''
+                         }
+                     },
+                      success: function (donnee) {
+        {
+                            var donnch= new Array();
+                            var status = new Array();
+                        for(var i=0; i<donnee.length; i++)
+                        {
+                          donnch.push({
+                                    name: donnee[i].statut,
+                                    y:  parseInt(donnee[i].nombre_activite),
+                                    dataLabels: {
+                                                enabled: true,
+                                        }
+                                } )
+                        }
+                        for(var i=0; i<donnee.length; i++)
+                            {
+    
+                                    status[i] = donnee[i].statut
+    
+                            }
+                        Highcharts.chart('par_statut_dactivite', {
+                            chart: {
+                                        type: 'pie'
+                                    },
+                                    xAxis: {
+                                     categories: status
+                                },
+                          
+                                yAxis: { 
+                                    title: { text: name+ ' Pourcentage (%)' },
+                                   
+                                },
+                            title: {
+                                text: 'Statut des activités'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            credits:{
+                                enabled:false,
+                            },
+                            plotOptions: {
+                                pie: {
+                                    size: '80%', 
+                                    innerSize: '50%',   // Définit la taille du graphique (70% du conteneur)
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.name}: {point.y}'
+                                    }
+                                }
+                                },
+                           
+                            series: [{
+                                name: 'Taux',
+                                colorByPoint: true,
+                                data: donnch
+                            }]
+                        });
+
+    }
+     }
+     });
+    }          
+</script>
 <script>
     function change_details(page_active_id, autre_page_1, autre_page_2, autre_page_3,){
         $('#'+page_active_id).show();
@@ -403,7 +458,6 @@
         $('#'+autre_page_2).hide();
         $('#'+autre_page_3).hide();
         graphiquedynamique_PA('mpme','soumis')
-        
     }
 </script>
 
@@ -785,221 +839,10 @@ $.ajax({
             
 </script>
 
-<script language = "JavaScript">
-function graphiquedynamique(type_entreprise, status_projet){
-    //alert('ok');
-var url = "{{ route('preprojet.par_region_et_par_sexe') }}"
-$.ajax({
-                 url: url,
-                 type: 'GET',
-                 dataType: 'json',
-                data:{type_entreprise:type_entreprise, statut:status_projet},
-                 error:function(donne){
-                    if (xhr.status == 401) {
-                        window.location.href = ''
-                    }
-                },
-                 success: function (donnee) {
-                        var masculin= [];
-                        var feminin= [];
-                     
-                        var donnch= new Array();
-                        var status = new Array();
-                    for(var i=0; i<donnee.length; i++)
-                    {
-                        masculin.push(parseInt(donnee[i].masculin));
-                        feminin.push(parseInt(donnee[i].feminin));
-                       // en_attente_de_paiement.push(parseInt(donnee[i].nbre_facture_en_attente));
-                    }
-                    donnch.push({
-                                name: 'masculin',
-                                data:masculin,
-                                color:'blue',
-                                dataLabels: {
-                                enabled: true,
-                                }
-                            })
-                    donnch.push({
-                                name: 'féminin',
-                                data:feminin,
-                                color:'green',
-                                dataLabels: {
-                                enabled: true,
-                                }
-                            })
-                    console.log(donnch);
-                    for(var i=0; i<donnee.length; i++)
-                            {
-                                    status[i] = donnee[i].region
-                            }
-                    
-                    Highcharts.chart('preprojet_par_region_par_sexe', {
-                        chart: {
-                                    type: 'column'
-                                },
-                        xAxis: {
-                                 categories: status
-                            },
-                        title: {
-                            text: "Avant-projets "+ status_projet + " par sexe et par région"
-                        },
-                       
-                        credits : {
-                            enabled: false
-                        },
-                       
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: false
-                                },
-                                    showInLegend: true
-                            }
-                        },
-                        series:donnch
-                    });
 
-}
-
-});
-  var url = "{{ route('preprojet.par_region') }}"
-  $.ajax({
-                 url: url,
-                 type: 'GET',
-                 data:{type_entreprise:type_entreprise, statut:status_projet},
-                 dataType: 'json',
-                 error:function(donne){
-                    if (xhr.status == 401) {
-                        window.location.href = ''
-                    }
-                },
-                 success: function (donnee) {
-                     
-                        var donnch= new Array();
-                        var regions = new Array();
-                    for(var i=0; i<donnee.length; i++)
-                    {
-                                    donnch.push({
-                                    name: donnee[i].region,
-                                    y:  parseInt(donnee[i].nombre)} )
-                
-                    }
-                    
-                    console.log(donnch);
-                    for(var i=0; i<donnee.length; i++)
-                            {
-                                    regions[i] = donnee[i].region
-                            }
-                    
-                    Highcharts.chart('preprojet_par_region', {
-                        chart: {
-                                    type: 'pie'
-                                },
-                        xAxis: {
-                                 categories: regions
-                            },
-                        title: {
-                            text: "Proportion des Avant-projets "+ status_projet + " par région"
-
-                        },
-                       
-                        credits : {
-                            enabled: false
-                        },
-                       
-                        plotOptions: {
-                            pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                        }
-                    }
-                        },
-                        series: [{
-                    name: 'Nombre',
-                    colorByPoint: true,
-                    data: donnch
-                }]
-                    });
-
-}
-
-});
-var url = "{{ route('preprojet.par_secteur_dactivite') }}"
-$.ajax({
-                 url: url,
-                 type: 'GET',
-                 data:{type_entreprise:type_entreprise, statut:status_projet},
-                 dataType: 'json',
-                 error:function(donne){
-                    if (xhr.status == 401) {
-                        window.location.href = ''
-                    }
-                },
-                 success: function (donnee) {
-                     
-                        var donnch= new Array();
-                        var secteur_dactivites = new Array();
-                    for(var i=0; i<donnee.length; i++)
-                    {
-                                    donnch.push({
-                                    name: donnee[i].secteur_dactivite,
-                                    y:  parseInt(donnee[i].nombre)} )
-                
-                    }
-                    
-                    console.log(donnch);
-                    for(var i=0; i<donnee.length; i++)
-                            {
-                                secteur_dactivites[i] = donnee[i].secteur_dactivite
-                            }
-                    
-                    Highcharts.chart('preprojet_par_secteur_dactivite', {
-                        chart: {
-                                    type: 'pie'
-                                },
-                        xAxis: {
-                                 categories: secteur_dactivites
-                            },
-                            tooltip: {
-                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                        },
-                        title: {
-                            text: "Effectif des Avant-projets "+ status_projet + " par secteur d'activité"
-                        },
-                        credits : {
-                            enabled: false
-                        },
-                       
-                        plotOptions: {
-                            pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.y:.1f}'
-                        }
-                    }
-                        },
-                        series: [{
-                    name: 'Nombre',
-                    colorByPoint: true,
-                    data: donnch
-                }]
-                    });
-
-}
-
-});
-}          
-</script>
 <script>
     $(function() {
-        graphiquedynamique('mpme', 'soumis');
+        graphiquedynamique(1);
     })
 </script>
 <script>
